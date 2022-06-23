@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MainTask</string>
+    <string name="titulo">Titulo</string>
+    <string name="subtitulo">Subtitulo</string>
 </resources>
