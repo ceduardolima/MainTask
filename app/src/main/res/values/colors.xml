@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="default_text_color">#CC000000</color>
+    <color name="default_button_color">#CCF23E16</color>
+    <color name="default_button_color_opaque">#F23E16</color>
 </resources>
