@@ -20,9 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="100dp"
             android:text="@string/titulo"
-            android:textSize="25sp"
+            android:textSize="12pt"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,22 +35,56 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="100dp"
             android:text="@string/subtitulo"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textSize="20sp"
+            android:textSize="10pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <ImageView
+            android:id="@+id/task_item_check"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_alert"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@id/task_item_title"
+            app:layout_constraintTop_toTopOf="@id/task_item_title"/>
+
+        <ImageView
+            android:id="@+id/task_item_marker"
+            style="@style/task_item_marker"
+            android:layout_width="40dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="@id/task_item_container"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/task_item_subtitulo"
+            app:layout_constraintStart_toStartOf="@id/task_item_title"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:id="@+id/author"
+                style="@style/task_item_details"
+                android:text="@string/author"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                style="@style/task_item_details"
+                android:text="@string/descri_o"
+                android:maxLines="4"
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/author"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/task_item_marker"
-        style="@style/task_item_marker"
-        android:layout_width="40dp"
-        app:layout_constraintStart_toEndOf="@id/task_item_container"
-        app:layout_constraintTop_toTopOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

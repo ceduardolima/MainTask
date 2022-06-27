@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MainTask</string>
     <string name="titulo">Titulo</string>
-    <string name="subtitulo">Subtitulo</string>
+    <string name="subtitulo">Data</string>
+    <string name="author">Author</string>
+    <string name="descri_o">Descrição</string>
 </resources>
