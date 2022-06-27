@@ -3,26 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/nav_agenda"
-        android:icon="@drawable/ic_checklist"
-        android:title="Sua Agenda"/>
+    <group android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_account"
-        android:title="Perfil"/>
+        <item
+            android:id="@+id/nav_agenda"
+            android:icon="@drawable/ic_checklist"
+            android:title="Sua Agenda" />
 
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Configurações"/>
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_account"
+            android:title="Perfil"/>
 
-    <item
-        android:id="@+id/nav_ajuda"
-        android:icon="@drawable/ic_baseline_help_outline_24"
-        android:title="Ajuda"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Configurações"/>
 
+        <item
+            android:id="@+id/nav_ajuda"
+            android:icon="@drawable/ic_baseline_help_outline_24"
+            android:title="Ajuda"/>
+
+
+    </group>
 
 
 </menu>
