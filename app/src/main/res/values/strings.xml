@@ -2,4 +2,6 @@
     <string name="app_name">MainTask</string>
     <string name="titulo">Titulo</string>
     <string name="subtitulo">Subtitulo</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

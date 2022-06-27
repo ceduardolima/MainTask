@@ -12,12 +12,24 @@
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/task_item.xml" value="0.25" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1345" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/default_button_shape.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/default_popupbutton_green.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/default_task_item_shape.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_account.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_arrow_back.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_checklist.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_launcher_background.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_logo.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_menu.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_pause.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_play.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_settings.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_stop.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/layout/nav_header.xml" value="0.22" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/layout/task_item.xml" value="0.2" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/menu/nav_menu.xml" value="0.25" />
       </map>
     </option>
   </component>
