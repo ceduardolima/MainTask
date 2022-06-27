@@ -3,5 +3,6 @@
     <string name="titulo">Titulo</string>
     <string name="subtitulo">Data</string>
     <string name="author">Author</string>
-    <string name="descri_o">Descrição</string>
+    <string name="description">Descrição</string>
+    <string name="detalhar_o_s">Detalhar O.S</string>
 </resources>
