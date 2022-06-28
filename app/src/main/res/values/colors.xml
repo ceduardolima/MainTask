@@ -10,7 +10,7 @@
     <color name="underLine">#BDB8B8</color>
 
     <color name="default_text_color">#CC000000</color>
-
+    <color name="default_orange">#F23E16</color>
     <color name="default_button_color">#CCF23E16</color>
     <color name="default_button_color_opaque">#F23E16</color>
     <color name="deafult_popup_color_green">#CC04BF44</color>
@@ -19,4 +19,6 @@
     <color name="urgency">#BF1304</color>
     <color name="not_urgent">#04BF44</color>
     <color name="middle_urgency">#DDC706</color>
+    <color name="login_main_field_color">#CCC9C5C5</color>
+
 </resources>

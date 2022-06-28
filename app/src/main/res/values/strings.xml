@@ -5,5 +5,7 @@
     <string name="close">Close</string>
     <string name="subtitulo">Data</string>
     <string name="author">Author</string>
-    <string name="descri_o">Descrição</string>
+    <string name="description">Descrição</string>
+    <string name="detalhar_o_s">Detalhar O.S</string>
+    <string name="criar_conta">Criar conta</string>
 </resources>
