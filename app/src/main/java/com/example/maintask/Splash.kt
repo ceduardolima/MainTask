@@ -35,7 +35,6 @@ class Splash : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener {
 
-
             true
         }
     }
