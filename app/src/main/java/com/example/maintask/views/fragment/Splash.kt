@@ -1,15 +1,12 @@
-package com.example.maintask
+package com.example.maintask.views.fragment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.maintask.R
 import com.google.android.material.navigation.NavigationView
 
 class Splash : AppCompatActivity() {
@@ -27,7 +24,7 @@ class Splash : AppCompatActivity() {
         val drawerLayout : DrawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
 
-        toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close)
+        toggle = ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 

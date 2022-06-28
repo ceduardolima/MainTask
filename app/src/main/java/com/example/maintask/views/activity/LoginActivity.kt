@@ -1,7 +1,8 @@
-package com.example.maintask
+package com.example.maintask.views.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.maintask.R
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
