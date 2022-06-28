@@ -45,4 +45,6 @@ dependencies {
     // ViewModel e LiveData - Dependencias para o MVVM
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
+    // Circle ImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

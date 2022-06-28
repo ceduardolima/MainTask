@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#1090A1">
+    android:background="@color/navbar_header_background_color">
     
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="150dp"
@@ -16,21 +16,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/default_font_subtitle"
         android:id="@+id/user_name"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:textSize="10pt"
         android:text="Nome Do Usuario"
         android:textColor="@color/white"
-        android:textStyle="bold"/>
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:textSize="16dp"
+        style="@style/default_font_body"
+        android:layout_marginStart="20dp"
+        android:textSize="6pt"
         android:text="Emailusuario@gmail.com"
-        android:textColor="@color/underLine"/>
+        android:textColor="@color/white"/>
 
     <View
         android:layout_width="match_parent"

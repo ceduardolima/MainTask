@@ -21,5 +21,6 @@
     <color name="not_urgent">#04BF44</color>
     <color name="middle_urgency">#DDC706</color>
     <color name="login_main_field_color">#CCC9C5C5</color>
+    <color name="navbar_header_background_color">#025159</color>
 
 </resources>
