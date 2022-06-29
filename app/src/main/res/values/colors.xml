@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="underLine">#BDB8B8</color>
     <color name="laranja">#1090A1</color>
-
+    <color name="transparent">#00FFFFFF</color>
     <color name="default_text_color">#CC000000</color>
     <color name="default_orange_opaque">#F23E16</color>
     <color name="default_orange">#CCF23E16</color>

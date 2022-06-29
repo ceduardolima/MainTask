@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background_img"
+    android:background="@color/transparent"
     tools:context=".views.activity.LoginActivity">
 
 
@@ -67,7 +67,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/login_create_acount_bt"
+            android:id="@+id/login_create_account_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/default_textbutton_style"
@@ -88,8 +88,8 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintStart_toStartOf="@id/login_create_acount_bt"
-            app:layout_constraintTop_toBottomOf="@id/login_create_acount_bt"
+            app:layout_constraintStart_toStartOf="@id/login_create_account_bt"
+            app:layout_constraintTop_toBottomOf="@id/login_create_account_bt"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

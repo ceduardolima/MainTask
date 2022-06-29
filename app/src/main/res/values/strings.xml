@@ -8,4 +8,6 @@
     <string name="description">Descrição</string>
     <string name="detalhar_o_s">Detalhar O.S</string>
     <string name="criar_conta">Criar conta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

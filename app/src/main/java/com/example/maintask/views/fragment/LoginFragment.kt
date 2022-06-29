@@ -5,18 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.viewmodel.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
-    private lateinit var emailEditText: TextInputLayout
-    private lateinit var passwordEditText: TextInputLayout
-    private lateinit var loginButton: Button
     private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,15 +37,20 @@ class LoginFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        emailEditText = view.findViewById(R.id.login_textedit_user)
-        passwordEditText = view.findViewById(R.id.login_textedit_pwd)
-        loginButton = view.findViewById(R.id.login_bt)
+        val emailEditText = view.findViewById<TextInputLayout>(R.id.login_textedit_user)
+        val passwordEditText = view.findViewById<TextInputLayout>(R.id.login_textedit_pwd)
+        val loginButton = view.findViewById<Button>(R.id.login_bt)
+        val createAccountBt = view.findViewById<TextView>(R.id.login_create_account_bt)
 
         loginButton.setOnClickListener {
             val email = emailEditText.editText?.text.toString()
             val password = passwordEditText.editText?.text.toString()
 
             loginViewModel.login(email, password)
+        }
+
+        createAccountBt.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_createAccountFragment)
         }
 
         return view
