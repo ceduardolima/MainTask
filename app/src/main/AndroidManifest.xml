@@ -16,12 +16,14 @@
         android:theme="@style/Theme.MainTask"
         tools:targetApi="31">
         <activity
+            android:name=".views.activity.CreateAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.fragment.Splash"
             android:exported="false" />
         <activity
             android:name=".views.activity.LoginActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

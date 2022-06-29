@@ -3,17 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/create_acount_photo_btn_shape.xml" value="0.1335" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/default_button_shape.xml" value="0.111" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/default_popupbutton_green.xml" value="0.1335" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/default_popupbutton_red.xml" value="0.1345" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/default_popupbutton_yes.xml" value="0.1345" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/default_task_item_shape.xml" value="0.1345" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_add_photo.xml" value="0.147" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/login_field_container_shape.xml" value="0.145" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/login_textedit_shape.xml" value="0.145" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/navbar_header_shape.xml" value="0.1035" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/task_item_marker_shape.xml" value="0.1345" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/font/font.xml" value="0.216796875" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_create_acount.xml" value="0.1911231884057971" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_login.xml" value="0.21" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_create_acount.xml" value="0.17889492753623187" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_login.xml" value="0.2033514492753623" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/nav_header.xml" value="0.2033514492753623" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/task_item.xml" value="0.25" />
