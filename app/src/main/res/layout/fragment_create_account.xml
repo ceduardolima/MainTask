@@ -1,51 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/transparent"
     tools:context=".views.fragment.CreateAccountFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="@drawable/login_field_container_shape">
 
-        <TextView
-            style="@style/default_font_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cadastro"
-            android:textColor="@color/white"
-            android:textSize="14pt"
-            android:layout_marginTop="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageButton
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/create_acount_photo_btn_shape"
-            android:src="@drawable/ic_add_photo"
-            android:layout_marginTop="150dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="20dp"
+                >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="150dp"
-            app:civ_border_width="0.5dp"
-            app:civ_border_color="@color/default_orange_opaque"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    style="@style/default_font_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text="Cadastro"
+                    android:textColor="@color/white"
+                    android:textSize="16pt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="150dp"
+                    android:background="@drawable/create_acount_photo_btn_shape"
+                    android:src="@drawable/ic_add_photo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/create_account_add_photo_bt"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="150dp"
+                    app:civ_border_color="@color/default_orange_opaque"
+                    app:civ_border_width="0.5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/create_account_textedit_name"
+                    style="@style/login_edit_text"
+                    android:layout_marginTop="20dp"
+                    android:hint="Nome"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/create_account_add_photo_bt"
+                    app:startIconDrawable="@drawable/ic_login_user">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:inputType="textPersonName"
+                        android:textCursorDrawable="@drawable/login_texcursor_shape" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/create_account_textedit_email"
+                    style="@style/login_edit_text"
+                    android:layout_marginTop="10dp"
+                    android:hint="Email"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/create_account_textedit_name"
+                    app:startIconDrawable="@drawable/ic_email">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:inputType="textPersonName"
+                        android:textCursorDrawable="@drawable/login_texcursor_shape" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/create_account_textedit_pwd"
+                    style="@style/login_edit_text"
+                    android:layout_marginTop="10dp"
+                    android:hint="Senha"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/create_account_textedit_email"
+                    app:startIconDrawable="@drawable/ic_login_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:inputType="textPassword"
+                        android:textCursorDrawable="@drawable/login_texcursor_shape" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/create_account_textedit_confirm"
+                    style="@style/login_edit_text"
+                    android:layout_marginTop="10dp"
+                    android:hint="Confirmar senha"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/create_account_textedit_pwd"
+                    app:startIconDrawable="@drawable/ic_login_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:inputType="textPassword"
+                        android:textCursorDrawable="@drawable/login_texcursor_shape" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    style="@style/default_button_style"
+                    android:layout_height="70dp"
+                    android:layout_width="match_parent"
+                    android:layout_margin="20dp"
+                    android:text="Cadastrar"
+                    android:textSize="10pt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/create_account_textedit_confirm"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 
 
 </FrameLayout>
