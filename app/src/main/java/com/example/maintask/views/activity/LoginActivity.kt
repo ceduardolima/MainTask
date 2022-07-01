@@ -23,6 +23,7 @@ class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks {
 
     private lateinit var navController: NavController
     private lateinit var dialog: AlertDialog
+    override var selectedPhotoPath: Uri? = null
 
     // Executa a ação caso a permissão tenha sido aceita, caso não esteja aceita ele mostra a dialog
     private val requestGallery =
@@ -43,6 +44,8 @@ class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks {
     private val resultGallery =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.data != null) {
+                selectedPhotoPath = result.data?.data!!
+
                 val bitmap: Bitmap = if (Build.VERSION.SDK_INT < 28) {
                     MediaStore.Images.Media.getBitmap(
                         baseContext.contentResolver,
@@ -63,6 +66,7 @@ class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks {
     companion object {
         private val PERMITION_GALLERY = android.Manifest.permission.READ_EXTERNAL_STORAGE
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
