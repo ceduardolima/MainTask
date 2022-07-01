@@ -18,7 +18,7 @@ class LoginRepository (private val application: Application) {
                     userMutableLiveData.postValue(firebaseAuth.currentUser)
                 }
                 else {
-                    Toast.makeText(application, "Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(application, "Email, ou senha, inválido", Toast.LENGTH_LONG).show()
                 }
             }
     }

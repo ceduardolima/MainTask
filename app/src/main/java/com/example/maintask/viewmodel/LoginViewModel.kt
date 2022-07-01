@@ -1,5 +1,6 @@
 package com.example.maintask.viewmodel
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.maintask.model.repository.LoginRepository
@@ -11,7 +12,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val userMutableLiveData = loginRepository.userMutableLiveData
 
     fun login(email: String, password: String) {
-        loginRepository.login(email, password)
+        when {
+            (email.isEmpty() || password.isEmpty()) -> Toast.makeText(getApplication(), "Todos os campos devem ser preenchidos", Toast.LENGTH_LONG).show()
+
+            else -> loginRepository.login(email.trim(), password.trim())
+        }
     }
 
 }
