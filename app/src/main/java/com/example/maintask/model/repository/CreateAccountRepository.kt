@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class CreateAcountRepository(private val application: Application) {
+class CreateAccountRepository(private val application: Application) {
     val userMutableLiveData: MutableLiveData<FirebaseUser> = MutableLiveData()
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 

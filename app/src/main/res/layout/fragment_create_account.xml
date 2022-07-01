@@ -37,6 +37,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:id="@+id/create_account_add_photo_bt"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="150dp"
@@ -47,7 +48,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/create_account_add_photo_bt"
+                    android:id="@+id/create_account_photo"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="150dp"
