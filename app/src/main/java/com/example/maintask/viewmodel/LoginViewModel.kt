@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.maintask.model.repository.LoginRepository
+import com.example.maintask.utils.NetworkChecker
 import com.google.firebase.auth.FirebaseUser
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,6 +18,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
             else -> loginRepository.login(email.trim(), password.trim())
         }
+    }
+
+    interface Callbacks {
+        val networkChecker: NetworkChecker
     }
 
 }

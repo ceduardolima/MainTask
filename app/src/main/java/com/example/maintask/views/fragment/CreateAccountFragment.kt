@@ -1,6 +1,7 @@
 package com.example.maintask.views.fragment
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,15 +11,25 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
+import com.example.maintask.utils.NetworkChecker
 import com.example.maintask.viewmodel.CreateAccountViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class CreateAccountFragment : Fragment() {
     private lateinit var createAccountViewModel: CreateAccountViewModel
     private var callbacks: CreateAccountViewModel.Callbacks? = null
+    private val networkChecker by lazy {
+        NetworkChecker(
+            ContextCompat.getSystemService(
+                requireContext(),
+                ConnectivityManager::class.java
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +45,6 @@ class CreateAccountFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as CreateAccountViewModel.Callbacks
-
     }
 
     override fun onDetach() {
@@ -69,14 +79,17 @@ class CreateAccountFragment : Fragment() {
             val name = nameTextEdit.editText?.text.toString()
             val pwdConfirm = pwdConfirmTextEdit.editText?.text.toString()
 
-            callbacks?.let { callback ->
-                createAccountViewModel.register(
-                    name,
-                    email,
-                    password,
-                    pwdConfirm,
-                    callback.selectedPhotoPath
-                )
+            // Verifica se há conexao com a internet
+            networkChecker.performActionIfConnected(requireContext()) {
+                callbacks?.let { callback ->
+                    createAccountViewModel.register(
+                        name,
+                        email,
+                        password,
+                        pwdConfirm,
+                        callback.selectedPhotoPath
+                    )
+                }
             }
         }
 

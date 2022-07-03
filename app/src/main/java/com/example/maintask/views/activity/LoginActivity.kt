@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.maintask.R
+import com.example.maintask.utils.NetworkChecker
 import com.example.maintask.viewmodel.CreateAccountViewModel
+import com.example.maintask.viewmodel.LoginViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks {
+class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks{
 
     private lateinit var navController: NavController
     private lateinit var dialog: AlertDialog

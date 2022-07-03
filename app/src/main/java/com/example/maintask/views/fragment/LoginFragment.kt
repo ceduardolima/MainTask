@@ -1,5 +1,6 @@
 package com.example.maintask.views.fragment
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +8,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
+import com.example.maintask.utils.NetworkChecker
 import com.example.maintask.viewmodel.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private val networkChecker by lazy {
+        NetworkChecker(
+            ContextCompat.getSystemService(
+                requireContext(),
+                ConnectivityManager::class.java
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +56,10 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             val email = emailEditText.editText?.text.toString()
             val password = passwordEditText.editText?.text.toString()
-
-            loginViewModel.login(email, password)
+            // Verifica se ha conexao com a internet
+            networkChecker.performActionIfConnected(context) {
+                loginViewModel.login(email, password)
+            }
         }
 
         createAccountBt.setOnClickListener {
