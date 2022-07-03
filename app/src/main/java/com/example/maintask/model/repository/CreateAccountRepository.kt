@@ -15,7 +15,7 @@ import java.util.*
 class CreateAccountRepository(private val application: Application) {
     val userMutableLiveData: MutableLiveData<FirebaseUser> = MutableLiveData()
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val emptyUri = Uri.parse("")
+    private val emptyString = ""
 
     // Funcao que realiza o registro no firebase
     fun register(name: String, email: String, password: String, path: Uri?) {
@@ -26,9 +26,11 @@ class CreateAccountRepository(private val application: Application) {
 
                     val filename = UUID.randomUUID().toString()
 
-                    if(path != null)
-                        saveUserInFireStore(name, filename, path)
-                    else saveUserInFireStore(name, filename, emptyUri)
+                    if (path != null)
+                        saveImgInFireStore(name, filename, path) { uri ->
+                            saveUserInFireStore(name, uri)
+                        }
+                    else saveUserInFireStore(name, emptyString)
 
                     userMutableLiveData.postValue(firebaseAuth.currentUser)
                 } else {
@@ -44,39 +46,46 @@ class CreateAccountRepository(private val application: Application) {
             }
     }
 
-    private fun saveUserInFireStore(name: String, filename: String, path: Uri) {
+    private fun saveImgInFireStore(name: String, filename: String, path: Uri, action: (uri: String) -> Unit) {
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
 
         // Envia a imagem para o firebase
         ref.putFile(path)
-            .addOnCompleteListener {
-                // Apos o upload, ele obtem o uri da imagem
+            .addOnSuccessListener {
+                // Faz o download da url da imagem enviada
                 ref.downloadUrl
-                    .addOnCompleteListener { uri ->
-                        Log.i("teste", "path: ${uri.toString()}")
-                        // Cria o modelo de usuario
-                        val user = UserModel(
-                            firebaseAuth.uid,
-                            name,
-                            firebaseAuth.currentUser?.email,
-                            uri.toString()
-                        )
-                        // Após enviar e obter o uri da image, usa o firestore para armazenar os dados
-                        FirebaseFirestore.getInstance().collection("users")
-                            .add(user)
-                            .addOnSuccessListener { document ->
-                                Log.i("teste", "id do documento: ${document.id}")
-                            }
-                            .addOnFailureListener { e ->
-                                e.message?.let { Log.i("teste", "Falha ao criar o usuário no") }
-                            }
+                    .addOnSuccessListener { uri ->
+                        Log.i("teste", "Download da uri feito com sucesso: ${uri.toString()}")
+                        action(uri.toString())
                     }
                     .addOnFailureListener() { e ->
                         Log.i("teste", "falha no download do uri: ${e.message}")
+                        action(emptyString)
                     }
             }
             .addOnFailureListener() { e ->
-                e.message?.let { Log.e("teste", "falha no envio: $it") }
+                Log.e("teste", "falha no envio da foto: ${e.message}")
+                action(emptyString)
             }
+    }
+
+    private fun saveUserInFireStore(name: String, uri: String) {
+        val user = UserModel(
+            firebaseAuth.uid,
+            name,
+            firebaseAuth.currentUser?.email,
+            uri
+        )
+
+        // Usa o firestore para armazenar os dados do usuario
+        FirebaseFirestore.getInstance().collection("users")
+            .add(user)
+            .addOnSuccessListener { document ->
+                Log.i("teste", "Usuario cadastrado co sucesso: ${user.toString()}")
+            }
+            .addOnFailureListener { e ->
+                e.message?.let { Log.i("teste", "Falha ao criar o usuário no firestore: ${e.message}") }
+            }
+
     }
 }
