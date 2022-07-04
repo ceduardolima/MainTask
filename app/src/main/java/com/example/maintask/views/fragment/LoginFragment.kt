@@ -1,5 +1,6 @@
 package com.example.maintask.views.fragment
 
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.utils.NetworkChecker
 import com.example.maintask.viewmodel.LoginViewModel
+import com.example.maintask.views.activity.MainActivity
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
@@ -27,6 +29,17 @@ class LoginFragment : Fragment() {
                 ConnectivityManager::class.java
             )
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Faz o login automático para o caso do usuário ja estar logado
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginViewModel.keepLogin {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,15 +67,26 @@ class LoginFragment : Fragment() {
         val createAccountBt = view.findViewById<TextView>(R.id.login_create_account_bt)
 
         loginButton.setOnClickListener {
+            loginButton.isEnabled = false
             val email = emailEditText.editText?.text.toString()
             val password = passwordEditText.editText?.text.toString()
+
             // Verifica se ha conexao com a internet
             networkChecker.performActionIfConnected(context) {
-                loginViewModel.login(email, password)
+
+                // Faz verifica o login do usuario
+                loginViewModel.login(email, password) {
+                    // Faz a mudança de tela
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
             }
+            loginButton.isEnabled = true
         }
 
         createAccountBt.setOnClickListener {
+            // Faz a mudança de fragmento
             findNavController().navigate(R.id.action_loginFragment_to_createAccountFragment)
         }
 

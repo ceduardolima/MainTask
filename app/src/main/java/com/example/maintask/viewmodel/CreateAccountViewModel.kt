@@ -5,8 +5,6 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.example.maintask.model.repository.CreateAccountRepository
-import com.google.firebase.firestore.auth.User
-import java.util.*
 
 class CreateAccountViewModel(application: Application) : AndroidViewModel(application) {
     private val createAccountRepository = CreateAccountRepository(application)
