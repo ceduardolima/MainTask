@@ -1,6 +1,5 @@
 package com.example.maintask.views.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.maintask.R
-import com.example.maintask.databinding.FragmentPerfilBinding
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -38,6 +36,9 @@ class Perfil : Fragment() {
             val cidade = cidadeEditText.editText?.text.toString()
 
         }
+        return view
+    }
+}
 
 
 
