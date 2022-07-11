@@ -7,13 +7,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
+        android:id="@+id/toolbar_menu_bt"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
         android:clickable="true"
         android:contentDescription="Toolbar menu icon"
         android:focusable="true"
-        android:id="@+id/toolbar_menu_bt"
-        android:layout_centerVertical="true"
-        android:layout_height="40dp"
-        android:layout_width="40dp"
         android:src="@drawable/ic_menu" />
 
     <TextView
