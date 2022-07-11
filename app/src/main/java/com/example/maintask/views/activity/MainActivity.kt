@@ -1,6 +1,7 @@
 package com.example.maintask.views.activity
 
 import android.app.Notification
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -19,11 +20,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         title = "Sua Agenda";
+
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
