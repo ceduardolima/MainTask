@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.maintask.R
-import com.example.maintask.views.activity.MainActivity
+import com.example.maintask.views.activity.LoginActivity
 
 class Splash : AppCompatActivity() {
 
@@ -27,8 +27,6 @@ class Splash : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
 
-        val actionBar = supportActionBar
-        actionBar!!.hide()
 
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation)
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation)
@@ -40,7 +38,7 @@ class Splash : AppCompatActivity() {
         title_txt.animation = bottomAnimation
 
         Handler().postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, SPLASH_SCREEN.toLong())

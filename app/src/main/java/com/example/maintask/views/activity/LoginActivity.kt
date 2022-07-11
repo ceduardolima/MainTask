@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks{
     private lateinit var dialog: AlertDialog
     override var selectedPhotoPath: Uri? = null
 
+
+
     // Executa a ação caso a permissão tenha sido aceita, caso não esteja aceita ele mostra a dialog
     private val requestGallery =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { permition ->
