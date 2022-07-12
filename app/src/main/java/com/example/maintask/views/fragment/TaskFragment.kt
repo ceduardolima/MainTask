@@ -46,7 +46,7 @@ class TaskFragment : Fragment() {
         recyclerView.adapter = adapter
         taskMutableList.addAll(taskViewModel.getTaskList())
 
-        changeLayoutParams(recyclerView)
+
 
         lateButton.setOnClickListener {changeListVisibility(arrowLate, recyclerView)}
 

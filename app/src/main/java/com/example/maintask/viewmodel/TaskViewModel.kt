@@ -15,11 +15,11 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         return mutableListOf(
             TaskModel(
                 "Titulo",
-                LocalDate.parse("2022-01-02", DateTimeFormatter.ISO_DATE),
+                LocalDate.parse("2022-09-02", DateTimeFormatter.ISO_DATE),
                 0,
                 true,
-                "....",
-                "....",
+                "Carlos Eduardo",
+                "oste explodiu e tal e tal e tal e tal e tal e tal e tal e tal e tal e tal e tal",
                 "....",
                 "....",
             )
