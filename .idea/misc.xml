@@ -48,12 +48,14 @@
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_settings.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_stop.xml" value="0.13" />
         <entry key="..\:/Games/MainTask/app/src/main/res/drawable/ic_troca_foto_minuatura.xml" value="0.13" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_perfil.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/fragment_create_account.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/fragment_perfil.xml" value="0.2" />
+        <entry key="..\:/Games/MainTask/app/src/main/res/layout/fragment_task.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/nav_header.xml" value="0.22" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/task_item.xml" value="0.2" />
         <entry key="..\:/Games/MainTask/app/src/main/res/layout/toolbar.xml" value="0.2" />
