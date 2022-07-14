@@ -2,19 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.fragment.TaskFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/main_toolbar"
-            layout="@layout/toolbar" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <Button
         android:id="@+id/task_late_bt"
@@ -29,7 +20,6 @@
     <ImageView
         android:id="@+id/task_late_arrow"
         style="@style/task_arrow"
-        android:layout_marginTop="80dp"
         android:rotation="90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
