@@ -5,9 +5,20 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/taskFragment">
 
+    <action android:id="@+id/action_global_perfil"
+        app:destination="@id/perfil2"/>
+
+    <action android:id="@+id/action_global_home"
+        app:destination="@+id/taskFragment"/>
+
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.example.maintask.views.fragment.TaskFragment"
         android:label="fragment_task"
         tools:layout="@layout/fragment_task" />
+    <fragment
+        android:id="@+id/perfil2"
+        android:name="com.example.maintask.views.fragment.Perfil"
+        android:label="fragment_perfil"
+        tools:layout="@layout/fragment_perfil" />
 </navigation>

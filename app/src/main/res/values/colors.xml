@@ -22,5 +22,5 @@
     <color name="middle_urgency">#DDC706</color>
     <color name="login_main_field_color">#CCB8B8B8</color>
     <color name="navbar_header_background_color">#025159</color>
-
+    <color name="black_80">#CC000000</color>
 </resources>

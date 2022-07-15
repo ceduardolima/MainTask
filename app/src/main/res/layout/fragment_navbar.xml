@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/navbar_shape"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:elevation="3dp"
+    android:orientation="horizontal"
+    tools:context=".views.fragment.NavbarFragment">
+
+
+    <ImageButton
+        android:id="@+id/navbar_home"
+        style="@style/navbar_button_style"
+        android:src="@drawable/ic_home"
+         />
+
+    <ImageButton
+        android:id="@+id/navbar_perfil"
+        style="@style/navbar_button_style"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/ic_login_user"
+        />
+
+    <ImageButton
+        android:id="@+id/navbar_settings"
+        style="@style/navbar_button_style"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/ic_settings"
+        />
+
+    <ImageButton
+        android:id="@+id/navbar_help"
+        style="@style/navbar_button_style"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/ic_baseline_help_24" />
+
+
+</LinearLayout>
