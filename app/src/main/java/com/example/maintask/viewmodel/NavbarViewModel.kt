@@ -1,4 +1,12 @@
 package com.example.maintask.viewmodel
 
-class NavbarViewModel {
+import android.app.Application
+import android.widget.TextView
+import androidx.lifecycle.AndroidViewModel
+
+class NavbarViewModel(application: Application) : AndroidViewModel(application) {
+
+    interface Callbacks {
+        var toolbarTitle: TextView
+    }
 }
