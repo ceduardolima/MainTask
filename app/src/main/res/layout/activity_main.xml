@@ -17,24 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
-        android:layout_marginBottom="50dp"
         app:defaultNavHost="true"
         app:layout_constraintTop_toBottomOf="@id/main_toolbar"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:navGraph="@navigation/nav_bar_graph" />
+        app:navGraph="@navigation/main_nav_graph"
+        />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_navbar_fragment"
+        android:name="com.example.maintask.views.fragment.NavbarFragment"
+        android:layout_height="100dp"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/navbar_header_background_color"
-        app:itemRippleColor="@color/nav_bar_color"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/nav_menu"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

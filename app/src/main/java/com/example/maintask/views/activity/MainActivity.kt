@@ -32,12 +32,6 @@ class MainActivity : AppCompatActivity() {
         // Define o navController a partir do navHost
         navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        setupWithNavController(bottomNavigationView, navController)
-
-
-
-
     }
 
 
