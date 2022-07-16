@@ -9,6 +9,7 @@
         android:id="@+id/action_global_perfil"
         app:destination="@id/perfil2"
         app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />
 
