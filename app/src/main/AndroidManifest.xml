@@ -20,7 +20,7 @@
             android:name=".views.activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".views.activity.LoginActivity"
+            android:name=".views.fragment.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.fragment.Splash"
+            android:name=".views.activity.LoginActivity"
 
             android:exported="false"/>
     </application>
