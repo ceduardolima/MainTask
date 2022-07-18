@@ -5,11 +5,21 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/taskFragment">
 
-    <action android:id="@+id/action_global_perfil"
-        app:destination="@id/perfil2"/>
+    <action
+        android:id="@+id/action_global_perfil"
+        app:destination="@id/perfil2"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_left"
+        app:popExitAnim="@anim/to_right" />
 
-    <action android:id="@+id/action_global_home"
-        app:destination="@+id/taskFragment"/>
+    <action
+        android:id="@+id/action_global_home"
+        app:destination="@+id/taskFragment"
+        app:enterAnim="@anim/from_left"
+        app:exitAnim="@anim/to_right"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
 
     <fragment
         android:id="@+id/taskFragment"

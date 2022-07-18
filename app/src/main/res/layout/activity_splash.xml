@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SplashLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="8dp"
-    android:background="@color/white"
+    app:layoutDescription="@xml/activity_splash_scene"
     tools:context=".views.fragment.Splash">
 
     <ImageView
+        android:id="@+id/image_splash"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:id="@+id/image_splash"
-        android:layout_marginTop="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/logo_sem_titulo"/>
+        android:src="@drawable/logo_sem_titulo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.405" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/text_splash"
         style="@style/default_font_title"
-        android:text="Main Task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
+        android:text="Main Task"
         android:textSize="50sp"
-        android:layout_gravity="center"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.692" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

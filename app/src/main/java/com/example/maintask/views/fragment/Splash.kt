@@ -14,7 +14,7 @@ import com.example.maintask.views.activity.LoginActivity
 
 class Splash : AppCompatActivity() {
 
-    val SPLASH_SCREEN = 2500
+    val SPLASH_SCREEN = 2700
 
     private lateinit var topAnimation: Animation
     private lateinit var bottomAnimation: Animation

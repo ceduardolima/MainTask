@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@color/navbar_header_background_color"
-    android:layout_height="70dp"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/navbar_header_background_color"
     android:padding="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:layoutDescription="@xml/toolbar_scene">
 
     <ImageView
         android:id="@+id/toolbar_menu_bt"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="Toolbar menu icon"
         android:focusable="true"
-        android:src="@drawable/ic_menu" />
+        android:src="@drawable/ic_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        style="@style/default_font_activity_title"
-        android:gravity="center"
         android:id="@+id/toolbar_menu_title"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
+        style="@style/default_font_activity_title"
         android:layout_width="wrap_content"
-        android:text="@string/sua_agenda" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/sua_agenda"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.motion.widget.MotionLayout>
 
