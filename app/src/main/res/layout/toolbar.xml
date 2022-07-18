@@ -9,19 +9,6 @@
     android:padding="10dp"
     app:layoutDescription="@xml/toolbar_scene">
 
-    <ImageView
-        android:id="@+id/toolbar_menu_bt"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="Toolbar menu icon"
-        android:focusable="true"
-        android:src="@drawable/ic_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/toolbar_menu_title"

@@ -18,8 +18,7 @@
     <color name="default_popup_color_red">#CCBF1304</color>
 
     <color name="urgency">#BF1304</color>
-    <color name="not_urgent">#04BF44</color>
-    <color name="middle_urgency">#DDC706</color>
+    <color name="completed">#04BF44</color>
     <color name="login_main_field_color">#CCB8B8B8</color>
     <color name="navbar_header_background_color">#025159</color>
     <color name="black_80">#CC000000</color>

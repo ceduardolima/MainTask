@@ -21,6 +21,7 @@
         <ImageView
             android:id="@+id/task_item_marker"
             style="@style/task_item_marker"
+            android:backgroundTint="@color/urgency"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,16 +58,6 @@
             android:textSize="8pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <ImageView
-            android:id="@+id/task_item_check"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/ic_alert"
-            app:layout_constraintStart_toEndOf="@id/task_item_title"
-            app:layout_constraintTop_toTopOf="@id/task_item_container"
-            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/task_item_details_container"
