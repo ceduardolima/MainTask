@@ -7,6 +7,6 @@ import androidx.lifecycle.AndroidViewModel
 class NavbarViewModel(application: Application) : AndroidViewModel(application) {
 
     interface Callbacks {
-        var toolbarTitle: TextView
+
     }
 }

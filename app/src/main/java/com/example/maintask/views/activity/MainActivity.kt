@@ -16,15 +16,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.maintask.R
+import com.example.maintask.callbacks.MainActivityCallbacks
+import com.example.maintask.model.TaskModel
 import com.example.maintask.viewmodel.NavbarViewModel
 import com.example.maintask.views.fragment.LoginFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity() : AppCompatActivity(), NavbarViewModel.Callbacks{
+class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
     override lateinit var toolbarTitle: TextView
+    override var selectedTask: TaskModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,5 +40,16 @@ class MainActivity() : AppCompatActivity(), NavbarViewModel.Callbacks{
         navController = navHostFragment.navController
 
         toolbarTitle = findViewById(R.id.toolbar_menu_title)
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.fragments[0];
+        if (fragment.isVisible) {
+            super.onBackPressed()
+            finishAffinity()
+            
+        } else {
+            supportFragmentManager.popBackStack();
+        }
     }
 }

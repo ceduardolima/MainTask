@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/default_task_item_shape"
+        android:elevation="5dp">
+
+        <ImageView
+            android:id="@+id/details_task_marker"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/task_item_marker_shape"
+            android:backgroundTint="@color/urgency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/details_task_title"
+            style="@style/default_font_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/titulo"
+            android:textSize="14pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/details_task_days"
+            style="@style/default_font_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dias faltantes"
+            android:textSize="12pt"
+            app:layout_constraintStart_toStartOf="@id/details_task_title"
+            app:layout_constraintTop_toBottomOf="@id/details_task_title" />
+
+        <TextView
+            android:id="@+id/details_task_author"
+            style="@style/default_font_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="10dp"
+            android:text="author"
+            android:textSize="12pt"
+            app:layout_constraintStart_toStartOf="@id/details_task_days"
+            app:layout_constraintTop_toBottomOf="@id/details_task_days" />
+
+        <TextView
+            android:id="@+id/details_task_description"
+            style="@style/default_font_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="descrição"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="10dp"
+            android:textSize="10pt"
+            app:layout_constraintStart_toStartOf="@id/details_task_author"
+            app:layout_constraintTop_toBottomOf="@id/details_task_author" />
+
+        <TextView
+            android:id="@+id/details_task_actions"
+            style="@style/default_font_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="10dp"
+            android:text="ações"
+            android:textSize="10pt"
+            app:layout_constraintStart_toStartOf="@id/details_task_description"
+            app:layout_constraintTop_toBottomOf="@id/details_task_description" />
+
+        <TextView
+            android:id="@+id/details_task_tools"
+            style="@style/default_font_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Ferramentas"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="40dp"
+            android:textSize="10pt"
+            app:layout_constraintStart_toStartOf="@id/details_task_actions"
+            app:layout_constraintTop_toBottomOf="@id/details_task_actions"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/details_task_start_os"
+            style="@style/default_button_style"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="30dp"
+            android:text="Iniciar Ocorência"
+            android:textSize="10pt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_task_tools"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+</FrameLayout>

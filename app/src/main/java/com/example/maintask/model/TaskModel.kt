@@ -1,5 +1,6 @@
 package com.example.maintask.model
 
+import java.io.Serializable
 import java.text.DateFormat
 import java.time.LocalDate
 import java.util.*
@@ -11,6 +12,6 @@ data class TaskModel(
     val isEmergency: Boolean,
     val author: String,
     val description: String,
-    val material: String,
+    val tools: String,
     val actions: String
 )

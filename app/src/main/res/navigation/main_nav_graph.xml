@@ -25,10 +25,20 @@
         android:id="@+id/taskFragment"
         android:name="com.example.maintask.views.fragment.TaskFragment"
         android:label="fragment_task"
-        tools:layout="@layout/fragment_task" />
+        tools:layout="@layout/fragment_task" >
+        <action
+            android:id="@+id/action_taskFragment_to_detailTaskFragment"
+            app:destination="@id/detailTaskFragment"/>
+
+    </fragment>
     <fragment
         android:id="@+id/perfil2"
         android:name="com.example.maintask.views.fragment.Perfil"
         android:label="fragment_perfil"
         tools:layout="@layout/fragment_perfil" />
+    <fragment
+        android:id="@+id/detailTaskFragment"
+        android:name="com.example.maintask.views.fragment.DetailTaskFragment"
+        android:label="fragment_detail_task"
+        tools:layout="@layout/fragment_detail_task" />
 </navigation>

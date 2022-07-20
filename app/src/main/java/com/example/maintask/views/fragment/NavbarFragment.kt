@@ -13,16 +13,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
+import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.viewmodel.CreateAccountViewModel
 import com.example.maintask.viewmodel.LoginViewModel
 import com.example.maintask.viewmodel.NavbarViewModel
 
 class NavbarFragment : Fragment() {
-    private lateinit var callbacks: NavbarViewModel.Callbacks
+    private lateinit var callbacks: MainActivityCallbacks
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callbacks = context as NavbarViewModel.Callbacks
+        callbacks = context as MainActivityCallbacks
     }
 
     override fun onDetach() {
