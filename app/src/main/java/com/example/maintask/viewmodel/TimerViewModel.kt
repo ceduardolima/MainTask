@@ -1,4 +1,8 @@
 package com.example.maintask.viewmodel
 
-class TimerViewModel {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+
+class TimerViewModel(application: Application) : AndroidViewModel(application) {
+
 }

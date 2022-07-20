@@ -15,6 +15,7 @@
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_home.xml" value="0.134" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_login_user.xml" value="0.138" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_menu.xml" value="0.134" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_play.xml" value="0.1345" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/ic_settings.xml" value="0.138" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/login_field_container_shape.xml" value="0.145" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/login_textedit_shape.xml" value="0.145" />
@@ -22,6 +23,7 @@
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/navbar_header_shape.xml" value="0.1035" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/navbar_shape.xml" value="0.138" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/task_item_marker_shape.xml" value="0.1345" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/drawable/timer_item_shape.xml" value="0.1345" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/font/font.xml" value="0.216796875" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_create_acount.xml" value="0.1911231884057971" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/activity_login.xml" value="0.21" />
@@ -33,9 +35,11 @@
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_navbar.xml" value="0.20425724637681159" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_perfil.xml" value="0.17" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_task.xml" value="0.21603260869565216" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/fragment_timer.xml" value="0.20425724637681159" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/nav_header.xml" value="0.2033514492753623" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/navbar_item.xml" value="0.20425724637681159" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/task_item.xml" value="0.25" />
+        <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/timer_item.xml" value="0.20425724637681159" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/layout/toolbar.xml" value="0.18704710144927536" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/menu/nav_menu.xml" value="0.22447916666666667" />
         <entry key="..\:/Documentos/Programacao/PET/Fase02/MainTask/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1345" />

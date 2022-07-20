@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
 import java.time.LocalDate
@@ -32,6 +34,7 @@ class DetailTaskFragment : Fragment() {
         val taskDescription = view.findViewById<TextView>(R.id.details_task_description)
         val taskActions = view.findViewById<TextView>(R.id.details_task_actions)
         val taskTools = view.findViewById<TextView>(R.id.details_task_tools)
+        val goToTimerFragmentButton = view.findViewById<Button>(R.id.details_task_start_os)
 
         taskTitle.text = task?.title
         deadline.text = daysLeft(task?.date?.dayOfYear ?: 0)
@@ -39,6 +42,8 @@ class DetailTaskFragment : Fragment() {
         taskDescription.text = "Descrição: ${task?.description}"
         taskActions.text = "Ações: ${task?.actions}"
         taskTools.text = "Ferramentas: ${task?.tools}"
+
+        goToTimerFragmentButton.setOnClickListener { findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment) }
 
         return view
     }
