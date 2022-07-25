@@ -54,6 +54,10 @@ class NavbarFragment : Fragment() {
             callbacks.toolbarTitle.text = "Sua Agenda"
         }
 
+        helpBt.setOnClickListener {
+            findNavController().navigate(R.id.action_global_ajuda)
+            callbacks.toolbarTitle.text = "Ajuda"
+        }
         return view
     }
 

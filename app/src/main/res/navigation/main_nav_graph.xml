@@ -34,8 +34,7 @@
     <fragment
         android:id="@+id/perfil2"
         android:name="com.example.maintask.views.fragment.Perfil"
-        android:label="fragment_perfil"
-        tools:layout="@layout/fragment_perfil" />
+        android:label="fragment_perfil" />
     <fragment
         android:id="@+id/detailTaskFragment"
         android:name="com.example.maintask.views.fragment.DetailTaskFragment"
@@ -50,4 +49,16 @@
         android:name="com.example.maintask.views.fragment.TimerFragment"
         android:label="fragment_timer"
         tools:layout="@layout/fragment_timer" />
+    <fragment
+        android:id="@+id/ajudaFragment"
+        android:name="com.example.maintask.views.fragment.AjudaFragment"
+        android:label="fragment_ajuda"
+        tools:layout="@layout/fragment_ajuda" />
+    <action
+        android:id="@+id/action_global_ajuda"
+        app:destination="@id/ajudaFragment"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_left"
+        app:popExitAnim="@anim/to_right" />
 </navigation>
