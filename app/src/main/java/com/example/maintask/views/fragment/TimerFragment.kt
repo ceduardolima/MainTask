@@ -15,7 +15,6 @@ import com.example.maintask.model.adapters.TimerAdapter
 
 
 class TimerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var callbacks: MainActivityCallbacks? = null
     private lateinit var timerRecyclerView: RecyclerView
 
