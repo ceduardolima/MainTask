@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
-import com.example.maintask.model.TaskModel
+import com.example.maintask.model.task.TaskModel
 import com.example.maintask.model.adapters.TaskAdapter
-import com.example.maintask.viewmodel.CreateAccountViewModel
 import com.example.maintask.viewmodel.TaskViewModel
 
 class TaskFragment() : Fragment(){

@@ -2,17 +2,12 @@ package com.example.maintask.model.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
-import com.example.maintask.model.TaskModel
+import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
 
 class TaskAdapter(context: Context, tasks: MutableList<TaskModel>): TaskAdapterAbstract(context, tasks){

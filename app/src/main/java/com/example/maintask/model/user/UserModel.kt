@@ -1,4 +1,4 @@
-package com.example.maintask.model
+package com.example.maintask.model.user
 
 import android.net.Uri
 

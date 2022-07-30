@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
-import com.example.maintask.model.TaskModel
 
 class TimerAdapter(
     val context: Context,

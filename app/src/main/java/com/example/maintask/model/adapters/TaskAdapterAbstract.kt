@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
-import com.example.maintask.model.TaskModel
+import com.example.maintask.model.task.TaskModel
 
 abstract class TaskAdapterAbstract(
     val context: Context,

@@ -1,4 +1,4 @@
-package com.example.maintask.model
+package com.example.maintask.model.task
 
 import java.io.Serializable
 import java.text.DateFormat
