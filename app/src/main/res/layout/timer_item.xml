@@ -10,16 +10,28 @@
         android:layout_height="wrap_content"
         style="@style/default_font_body"
         android:textSize="8pt"
-        android:textStyle="bold"
         android:maxLines="2"
         android:text="Ação"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <TextView
+        android:id="@+id/timer_item_elapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        style="@style/default_font_body"
+        android:textSize="8pt"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/timer_item_action"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <ImageButton
+        android:id="@+id/timer_item_play_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_play"
