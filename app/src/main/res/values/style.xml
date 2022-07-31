@@ -104,4 +104,9 @@
         <item name="android:backgroundTint">@color/navbar_item</item>
         <item name="android:tint">#E6000000</item>
     </style>
+
+    <!-- Main homepage default Theme AppTheme -->
+    <iten name="backgroundColor"></iten>
+
+
 </resources>

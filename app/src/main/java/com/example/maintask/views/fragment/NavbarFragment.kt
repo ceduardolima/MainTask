@@ -58,6 +58,11 @@ class NavbarFragment : Fragment() {
             findNavController().navigate(R.id.action_global_ajuda)
             callbacks.toolbarTitle.text = "Ajuda"
         }
+
+        settingsBt.setOnClickListener {
+            findNavController().navigate(R.id.action_global_ajuda)
+            callbacks.toolbarTitle.text = "Configurações"
+        }
         return view
     }
 

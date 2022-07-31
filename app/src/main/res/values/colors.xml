@@ -22,4 +22,9 @@
     <color name="login_main_field_color">#CCB8B8B8</color>
     <color name="navbar_header_background_color">#025159</color>
     <color name="black_80">#CC000000</color>
+
+    <color name="colorPrimary">#E91E63</color>
+    <color name="colorPrimaryDark">#D81B60</color>
+    <color name="colorAccent">#E040FB</color>
+
 </resources>

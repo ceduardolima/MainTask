@@ -11,4 +11,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sua_agenda">Sua Agenda</string>
+
+    <!-- NoteDown this Strings -->
+    <string name="Setting">Setting</string>
+    <string name="Dark">Dark Mode</string>
+    <string name="Launch">Launch second activity</string>
+    <string name="Second_Activity">Welcome to activity 2</string>
+    <string name="Text1">Welcome on DarkMOde</string>
+    <string name="Text2">Have a look of this application designed\n for you the dark mode on one click by you</string>
+
 </resources>
