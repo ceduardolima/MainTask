@@ -39,8 +39,6 @@ class TimerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val timerFragment = inflater.inflate(R.layout.fragment_timer, container, false)
-        val titulo = timerFragment.findViewById<TextView>(R.id.timer_fragment_title)
-        titulo.text = selectedTask.title
         createTheRecyclerViewAndSetAdapter(timerFragment)
         return timerFragment
     }
