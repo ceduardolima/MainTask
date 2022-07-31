@@ -15,7 +15,7 @@ data class TaskActionModel(
 
     fun resetStopwatch() = stopwatch.stop()
 
-    fun elipsedTime() = stopwatch.getElipsedTime()
+    fun elapsedTime() = stopwatch.getElapsedTime()
 
     fun isStopwatchRunning() = stopwatch.isRunning()
 }

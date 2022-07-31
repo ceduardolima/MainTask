@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class Stopwatch {
     private val stopwatchStateHolder = StopwatchStateHolder()
     private var job: Job? = null
-    private val mutableTicker = MutableStateFlow("00:00:00")
+    private val mutableTicker = MutableStateFlow(StopwatchStateHolder.DEFAULT_TIME)
     private val scope = CoroutineScope(Main)
 
     companion object {
@@ -27,7 +27,6 @@ class Stopwatch {
 
     private fun startJobAndExecuteSomeFunc(function: () -> Unit) {
         scope.launch {
-            Log.i("stopwatch", "isActive: ${isActive}")
             while (isActive) {
                 mutableTicker.value = stopwatchStateHolder.getStringTimeRepresentation()
                 function()
@@ -53,10 +52,10 @@ class Stopwatch {
     }
 
     private fun clearValue() {
-        mutableTicker.value = ""
+        mutableTicker.value = StopwatchStateHolder.DEFAULT_TIME
     }
 
-    fun getElipsedTime() = mutableTicker.value
+    fun getElapsedTime() = mutableTicker.value
 
     fun isRunning(): Boolean = stopwatchStateHolder.isRunning()
 }

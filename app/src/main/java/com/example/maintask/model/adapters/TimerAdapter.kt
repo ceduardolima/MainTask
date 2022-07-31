@@ -21,6 +21,7 @@ class TimerAdapter(
             val action: TextView = timerRecyclerView.findViewById(R.id.timer_item_action)
             val elapsedTime: TextView = timerRecyclerView.findViewById(R.id.timer_item_elapsedTime)
             val playButton: ImageButton = timerRecyclerView.findViewById(R.id.timer_item_play_button)
+            val resetButton: ImageButton = timerRecyclerView.findViewById(R.id.timer_item_reset_button)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerViewHolder {
@@ -37,6 +38,9 @@ class TimerAdapter(
                 holder.elapsedTime
             )
         }
+        holder.resetButton.setOnClickListener{
+            resetStopwatch(taskActions[position], holder.playButton, holder.elapsedTime)
+        }
     }
 
     private fun startStopStopwatch(action: TaskActionModel, button: ImageButton, elapsedTime: TextView){
@@ -47,6 +51,12 @@ class TimerAdapter(
             action.startStopwatch(elapsedTime)
             button.setImageResource(R.drawable.ic_pause)
         }
+    }
+
+    private fun resetStopwatch(action: TaskActionModel, button: ImageButton,elapsedTime: TextView){
+        action.resetStopwatch()
+        elapsedTime.text = action.elapsedTime()
+        button.setImageResource(R.drawable.ic_play)
     }
 
     override fun getItemCount() = taskActions.size

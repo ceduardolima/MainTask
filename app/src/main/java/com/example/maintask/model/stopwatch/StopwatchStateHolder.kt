@@ -2,7 +2,7 @@ package com.example.maintask.model.stopwatch
 
 class StopwatchStateHolder: StopwatchCalculator() {
     companion object {
-        private const val DEFAULT_TIME = "00:00:000"
+        const val DEFAULT_TIME = "00:00:00"
     }
 
     fun start() {
@@ -14,7 +14,7 @@ class StopwatchStateHolder: StopwatchCalculator() {
     }
 
     fun stop() {
-        StopwatchState.Paused(INIT_TIME)
+        currentState = StopwatchState.Paused(INIT_TIME)
     }
 
     fun getStringTimeRepresentation(): String {
@@ -22,6 +22,7 @@ class StopwatchStateHolder: StopwatchCalculator() {
             is StopwatchState.Paused -> currentState.elapsedTime
             is StopwatchState.Running -> elapsedTimeCalculate(currentState)
         }
+
         return format(elapsedTime)
     }
 
@@ -30,7 +31,11 @@ class StopwatchStateHolder: StopwatchCalculator() {
         val minutes = timestamp / 60
         val minutesFormatted = (minutes % 60).pad(2)
         val hoursFormatted = (minutes / 60).pad(2)
-        return "$hoursFormatted:$minutesFormatted:$secondsFormatted"
+        return if(timestamp > 0) {
+            "$hoursFormatted:$minutesFormatted:$secondsFormatted"
+        } else {
+            DEFAULT_TIME
+        }
     }
 
     private fun Long.pad(desiredLength: Int) = this.toString().padStart(desiredLength, '0')
@@ -40,5 +45,4 @@ class StopwatchStateHolder: StopwatchCalculator() {
             is StopwatchState.Running -> true
             is StopwatchState.Paused -> false
         }
-
 }
