@@ -1,27 +1,13 @@
 package com.example.maintask.views.activity
 
-import android.app.Notification
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
-import com.example.maintask.model.TaskModel
-import com.example.maintask.viewmodel.NavbarViewModel
-import com.example.maintask.views.fragment.LoginFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
+import com.example.maintask.model.task.TaskModel
 
 class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
     private lateinit var navController: NavController

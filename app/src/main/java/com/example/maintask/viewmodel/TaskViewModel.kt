@@ -2,8 +2,7 @@ package com.example.maintask.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import com.example.maintask.model.TaskModel
+import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

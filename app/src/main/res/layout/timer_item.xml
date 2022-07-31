@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="100dp"
+    android:layout_margin="10dp"
+    android:elevation="5dp"
+    android:background="@drawable/default_task_item_shape"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -10,23 +13,47 @@
         android:layout_height="wrap_content"
         style="@style/default_font_body"
         android:textSize="8pt"
-        android:textStyle="bold"
         android:maxLines="2"
         android:text="Ação"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <TextView
+        android:id="@+id/timer_item_elapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        style="@style/default_font_body"
+        android:textSize="8pt"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@id/timer_item_reset_button"
+        app:layout_constraintEnd_toEndOf="@id/timer_item_play_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
+        android:id="@+id/timer_item_play_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_play"
         android:background="@drawable/timer_item_shape"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timer_item_elapsedTime"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/timer_item_reset_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_reset"
+        android:background="@drawable/timer_item_shape"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@id/timer_item_play_button"
+        app:layout_constraintTop_toBottomOf="@id/timer_item_elapsedTime"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.maintask.views.fragment
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,15 +13,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.adapters.TimerAdapter
+import com.example.maintask.model.task.TaskModel
+import com.example.maintask.viewmodel.TimerViewModel
 
 
 class TimerFragment : Fragment() {
     private var callbacks: MainActivityCallbacks? = null
     private lateinit var timerRecyclerView: RecyclerView
+    private val timerViewModel = TimerViewModel(Application())
+    private lateinit var selectedTask: TaskModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as MainActivityCallbacks
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(callbacks?.selectedTask != null)
+            selectedTask = callbacks!!.selectedTask!!
     }
 
     override fun onCreateView(
@@ -28,19 +39,17 @@ class TimerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val timerFragment = inflater.inflate(R.layout.fragment_timer, container, false)
-        val titulo = timerFragment.findViewById<TextView>(R.id.timer_fragment_title)
-        titulo.text = callbacks?.selectedTask?.title
+        createTheRecyclerViewAndSetAdapter(timerFragment)
+        return timerFragment
+    }
 
-        timerRecyclerView = timerFragment.findViewById(R.id.timer_action_recycler_view)
+    private fun createTheRecyclerViewAndSetAdapter(fragment: View){
+        timerRecyclerView = fragment.findViewById(R.id.timer_action_recycler_view)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
-
-        val multableListOfActions = callbacks?.selectedTask?.actions?.split(", ")?.toMutableList()
-
-        val timerAdapter = multableListOfActions?.let { TimerAdapter(requireContext(), it) }
-        
+        val mutableListOfActions = timerViewModel.stringToMutableTaskActionModel(selectedTask.actions)
+        val timerAdapter = TimerAdapter(requireContext(), mutableListOfActions)
         timerRecyclerView.adapter = timerAdapter
-        return timerFragment
     }
 
 
