@@ -11,8 +11,13 @@ import com.example.maintask.R
 class ConfigFragments : Fragment() {
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
+
+        return  inflater.inflate(R.layout.fragment_config_fragments, container, false)
     }
+
 }

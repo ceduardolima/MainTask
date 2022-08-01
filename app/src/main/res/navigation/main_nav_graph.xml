@@ -58,6 +58,18 @@
         android:id="@+id/action_global_ajuda"
         app:destination="@id/ajudaFragment"
         app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_right"
+        app:popEnterAnim="@anim/from_left"
+        app:popExitAnim="@anim/to_right" />
+    <fragment
+        android:id="@+id/configFragments"
+        android:name="com.example.maintask.views.fragment.ConfigFragments"
+        android:label="fragment_config_fragments"
+        tools:layout="@layout/fragment_config_fragments" />
+    <action
+        android:id="@+id/action_global_config"
+        app:destination="@id/configFragments"
+        app:enterAnim="@anim/from_right"
         app:exitAnim="@anim/to_left"
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />

@@ -60,7 +60,7 @@ class NavbarFragment : Fragment() {
         }
 
         settingsBt.setOnClickListener {
-            findNavController().navigate(R.id.action_global_ajuda)
+            findNavController().navigate(R.id.action_global_config)
             callbacks.toolbarTitle.text = "Configurações"
         }
         return view

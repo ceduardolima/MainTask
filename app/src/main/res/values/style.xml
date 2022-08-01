@@ -105,8 +105,5 @@
         <item name="android:tint">#E6000000</item>
     </style>
 
-    <!-- Main homepage default Theme AppTheme -->
-    <iten name="backgroundColor"></iten>
-
 
 </resources>
