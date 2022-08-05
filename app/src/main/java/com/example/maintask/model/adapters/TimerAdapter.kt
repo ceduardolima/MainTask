@@ -37,7 +37,7 @@ class TimerAdapter(
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
-        holder.action.text = taskActions[position].action
+        holder.action.text = "${taskActions[position].order} - ${taskActions[position].action}"
         holder.playButton.setOnClickListener {
             if (verifyAvailableToStart(position)) {
                 startStopStopwatch(
@@ -54,17 +54,18 @@ class TimerAdapter(
     }
 
     private fun verifyAvailableToStart(position: Int): Boolean {
-        if (isTheFirstAction(position)) return true
-        val elapsedTimeOfLastAction =
-            taskActions[position - 1].elapsedTime()
-        val seconds = elapsedTimeOfLastAction.split(":")[2].toInt()
-        val minutes = elapsedTimeOfLastAction.split(":")[1].toInt()
+        if (isTheFirstAction(position) || !isOrderlyAction(position))
+            return true
+        val seconds = taskActions[position - 1].seconds
+        val minutes = taskActions[position - 1].minutes
         if ((seconds == 0) && (minutes == 0))
             return false
         return true
     }
 
-    private fun isTheFirstAction(position: Int) = position == 0
+    private fun isTheFirstAction(position: Int) = position <= 0
+
+    private fun isOrderlyAction(position: Int) = taskActions[position].order > 0
 
     private fun startStopStopwatch(
         action: TaskActionModel,

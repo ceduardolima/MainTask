@@ -9,6 +9,10 @@ data class TaskActionModel(
 ){
     var stopwatch = Stopwatch()
         private set
+    var seconds = elapsedTime().split(":")[2].toInt()
+        private set
+    var minutes = elapsedTime().split(":")[1].toInt()
+        private set
 
     fun startStopwatch(textView: TextView) = stopwatch.startAndWriteOnTextView(textView)
 
