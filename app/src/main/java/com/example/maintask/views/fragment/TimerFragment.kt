@@ -47,8 +47,8 @@ class TimerFragment : Fragment() {
         timerRecyclerView = fragment.findViewById(R.id.timer_action_recycler_view)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
-        val mutableListOfActions = timerViewModel.stringToMutableTaskActionModel(selectedTask.actions)
-        val timerAdapter = TimerAdapter(requireContext(), mutableListOfActions)
+
+        val timerAdapter = TimerAdapter(requireContext(), selectedTask.actions)
         timerRecyclerView.adapter = timerAdapter
     }
 

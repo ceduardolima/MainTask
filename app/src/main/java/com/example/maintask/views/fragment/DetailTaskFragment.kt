@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
+import com.example.maintask.model.task.TaskActionModel
 import java.time.LocalDate
 
 class DetailTaskFragment : Fragment() {
@@ -27,6 +28,7 @@ class DetailTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val task = callbacks?.selectedTask
+        val stringOfActions = task?.actions?.let { listOfActionsToString(it) }
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
         val taskTitle = view.findViewById<TextView>(R.id.details_task_title)
         val deadline = view.findViewById<TextView>(R.id.details_task_days)
@@ -40,7 +42,7 @@ class DetailTaskFragment : Fragment() {
         deadline.text = daysLeft(task?.date?.dayOfYear ?: 0)
         taskAuthor.text = "Autor: ${task?.author}"
         taskDescription.text = "Descrição: ${task?.description}"
-        taskActions.text = "Ações: ${task?.actions}"
+        taskActions.text = "Ações: ${stringOfActions}"
         taskTools.text = "Ferramentas: ${task?.tools}"
 
         goToTimerFragmentButton.setOnClickListener { findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment) }
@@ -48,6 +50,18 @@ class DetailTaskFragment : Fragment() {
         return view
     }
 
+    private fun listOfActionsToString(actions: MutableList<TaskActionModel>): String{
+        var str = ""
+        for(action in actions){
+            if(str.isEmpty())
+                str = action.action
+            else
+                str = "$str, ${action.action}"
+        }
+        str += "."
+
+        return str
+    }
     private fun daysLeft(days: Int): String {
         val today = LocalDate.now().dayOfYear
         val daysLeft = days - today

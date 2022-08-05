@@ -6,13 +6,5 @@ import com.example.maintask.model.repository.CreateAccountRepository
 import com.example.maintask.model.task.TaskActionModel
 
 class TimerViewModel(application: Application) : AndroidViewModel(application) {
-    fun stringToMutableTaskActionModel(string: String): MutableList<TaskActionModel> {
-        val mutableStr = string.split(", ").toMutableList()
-        val mutableTaskActionModel: MutableList<TaskActionModel> = mutableListOf()
-        for(str in mutableStr)
-            mutableTaskActionModel.add(
-                TaskActionModel(str)
-            )
-        return mutableTaskActionModel
-    }
+
 }

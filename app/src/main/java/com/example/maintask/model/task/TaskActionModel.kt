@@ -5,6 +5,7 @@ import com.example.maintask.model.stopwatch.Stopwatch
 
 data class TaskActionModel(
     val action: String,
+    val order: Int
 ){
     var stopwatch = Stopwatch()
         private set

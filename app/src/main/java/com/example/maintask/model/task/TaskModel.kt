@@ -13,5 +13,5 @@ data class TaskModel(
     val author: String,
     val description: String,
     val tools: String,
-    val actions: String
+    val actions: MutableList<TaskActionModel>
 )
