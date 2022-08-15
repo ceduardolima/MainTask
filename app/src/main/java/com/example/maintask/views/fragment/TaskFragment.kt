@@ -54,7 +54,6 @@ class TaskFragment() : Fragment(){
 
         lateButton.setOnClickListener {changeListVisibility(arrowLate, recyclerView)}
 
-
         return view
     }
 

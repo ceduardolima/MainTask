@@ -1,9 +1,7 @@
 package com.example.maintask.model.task
 
-import java.io.Serializable
-import java.text.DateFormat
 import java.time.LocalDate
-import java.util.*
+
 
 data class TaskModel(
     val title: String,
