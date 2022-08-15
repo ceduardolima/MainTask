@@ -3,10 +3,13 @@ buildscript {
     repositories {
         // Check that you have the following line (if not, add it):
         google()
+        mavenCentral()
+        //noinspection JcenterRepositoryObsolete
     }
+
     dependencies {
         // Add this line
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.13'
     }
 }
 

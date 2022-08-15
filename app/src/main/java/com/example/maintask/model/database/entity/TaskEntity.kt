@@ -9,7 +9,7 @@ import java.time.LocalDate
 data class TaskEntity(
     @PrimaryKey(autoGenerate = false) val id: Int,
     val title: String,
-    val date: LocalDate,
+    val date: String,
     val status: Boolean,
     @ColumnInfo(name = "is_emergency") val isEmergency: Boolean,
     val author: String,
