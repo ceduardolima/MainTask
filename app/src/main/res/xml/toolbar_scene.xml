@@ -28,14 +28,6 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/toolbar_menu_title"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_editor_absoluteX="85dp"
-            android:layout_marginEnd="90dp" />
-        <Constraint
             android:layout_height="40dp"
             android:layout_width="40dp"
             android:id="@+id/toolbar_menu_bt"
