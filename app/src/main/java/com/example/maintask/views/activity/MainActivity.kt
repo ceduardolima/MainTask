@@ -19,23 +19,9 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
-
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        // Define o navController a partir do navHost
         navController = navHostFragment.navController
-
         toolbarTitle = findViewById(R.id.toolbar_menu_title)
-    }
-
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.fragments[0];
-        if (fragment.isVisible) {
-            super.onBackPressed()
-            finishAffinity()
-            
-        } else {
-            supportFragmentManager.popBackStack();
-        }
     }
 }

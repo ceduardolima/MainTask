@@ -10,8 +10,8 @@
         app:destination="@id/perfil2"
         app:enterAnim="@anim/from_right"
         app:exitAnim="@anim/to_left"
-        app:popEnterAnim="@anim/from_left"
-        app:popExitAnim="@anim/to_right" />
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
 
     <action
         android:id="@+id/action_global_home"
@@ -43,6 +43,10 @@
         <action
             android:id="@+id/action_detailTaskFragment_to_timerFragment"
             app:destination="@id/timerFragment" />
+        <argument
+            android:name="task_id"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/timerFragment"

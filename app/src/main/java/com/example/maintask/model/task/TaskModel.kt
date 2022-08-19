@@ -12,4 +12,9 @@ data class TaskModel(
     val description: String,
     val tools: String,
     val actions: MutableList<TaskActionModel>
-)
+){
+    companion object {
+        const val LATE = 0
+        const val FINISHED = 1
+    }
+}

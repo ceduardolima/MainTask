@@ -20,18 +20,20 @@ import com.example.maintask.viewmodel.NavbarViewModel
 
 class NavbarFragment : Fragment() {
     private lateinit var callbacks: MainActivityCallbacks
+    private var lastNavigation = R.id.action_global_home;
+
+    companion object {
+        const val TASK_FRAGMENT = 0
+        const val CONFIG_FRAGMENT = 1
+        const val PERFIL_FRAGMENT = 2
+        const val HELP_FRAGMENT = 3
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as MainActivityCallbacks
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,22 +48,35 @@ class NavbarFragment : Fragment() {
 
         // Faz a navegação global para as determinadas telas
         perfilBt.setOnClickListener {
-            findNavController().navigate(R.id.action_global_perfil)
-            callbacks.toolbarTitle.text = "Perfil"
+            if (lastNavigation != R.id.action_global_perfil) {
+                lastNavigation = R.id.action_global_perfil
+                findNavController().navigate(R.id.action_global_perfil)
+                callbacks.toolbarTitle.text = "Perfil"
+            }
         }
         hometBt.setOnClickListener {
-            findNavController().navigate(R.id.action_global_home)
-            callbacks.toolbarTitle.text = "Sua Agenda"
+            if(lastNavigation != R.id.action_global_home) {
+                lastNavigation = R.id.action_global_home
+                findNavController().navigate(R.id.action_global_home)
+                callbacks.toolbarTitle.text = "Sua Agenda"
+            }
         }
 
         helpBt.setOnClickListener {
-            findNavController().navigate(R.id.action_global_ajuda)
-            callbacks.toolbarTitle.text = "Ajuda"
+            if (lastNavigation != R.id.action_global_ajuda) {
+                lastNavigation = R.id.action_global_ajuda
+                findNavController().navigate(R.id.action_global_ajuda)
+                callbacks.toolbarTitle.text = "Ajuda"
+            }
         }
 
         settingsBt.setOnClickListener {
-            findNavController().navigate(R.id.action_global_config)
-            callbacks.toolbarTitle.text = "Configurações"
+            if(lastNavigation != R.id.action_global_config) {
+                lastNavigation = R.id.action_global_config
+                findNavController().navigate(R.id.action_global_config)
+                callbacks.toolbarTitle.text = "Configurações"
+
+            }
         }
         return view
     }

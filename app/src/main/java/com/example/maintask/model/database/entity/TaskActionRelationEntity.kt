@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "task_action_relation")
 data class TaskActionRelationEntity(
-    @PrimaryKey val id: Int,
     @ColumnInfo(name = "task_id") val taskId: Int,
     @ColumnInfo(name = "action_id") val actionIn: Int
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

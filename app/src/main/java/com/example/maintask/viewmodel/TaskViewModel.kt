@@ -1,23 +1,35 @@
 package com.example.maintask.viewmodel
 
 import android.app.Application
+import android.os.Build
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import com.example.maintask.model.database.TaskRoomDatabase
+import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.model.database.entity.ActionEntity
+import com.example.maintask.model.database.entity.TaskActionRelationEntity
+import com.example.maintask.model.database.entity.TaskEntity
+import com.example.maintask.model.repository.ActionRepository
+import com.example.maintask.model.repository.TaskActionRelationRepository
+import com.example.maintask.model.repository.TaskRepository
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
-class TaskViewModel(application: Application) : AndroidViewModel(application) {
-
+class TaskViewModel() : ViewModel() {
 
     fun getTaskList(): MutableList<TaskModel> {
         // Simulando retorno do servidor
         return mutableListOf(
             TaskModel(
                 "Trocar o pneu do carro",
-                LocalDate.parse("2022-09-02", DateTimeFormatter.ISO_DATE),
-                0,
-                true,
+                LocalDate.parse("2020-01-01"),
+                status = TaskModel.LATE,
+                isEmergency = true,
                 "Carlos Eduardo",
                 "O carro passou por um buraco e fucrou o pneu. Há urgência nessa solicitação pois precisamos do quanto antes que ele eteja em boas condições para que possamos executar as tarefas do dia",
                 "Estepe, macaco, chave L",
@@ -25,9 +37,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             )
         )
     }
-    private fun generateActionList(): MutableList<TaskActionModel>{
+
+    private fun generateActionList(): MutableList<TaskActionModel> {
         val mutableList: MutableList<TaskActionModel> = mutableListOf()
-        for(n in 1..11) {
+        for (n in 1..11) {
             val action = TaskActionModel(
                 "Acao $n",
                 n
@@ -35,5 +48,54 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             mutableList.add(action)
         }
         return mutableList
+    }
+
+    fun getTaskEntity(taskModelList: List<TaskModel>): MutableList<TaskEntity> {
+        val taskEntityList = mutableListOf<TaskEntity>()
+        for (task in taskModelList) {
+            val taskEntity = TaskEntity(
+                1,
+                title = task.title,
+                author = task.author,
+                date = task.date.toString(),
+                status = TaskModel.LATE,
+                description = task.description,
+                tools = task.tools,
+                isEmergency = task.isEmergency
+            )
+            taskEntityList.add(taskEntity)
+        }
+        return taskEntityList
+    }
+
+
+    fun getActionEntity(actions: List<TaskActionModel>): MutableList<ActionEntity> {
+        val actionsEntityList = mutableListOf<ActionEntity>()
+        for (action in actions) {
+            val actionEntity = ActionEntity(
+                action.action,
+                action.order,
+                action.elapsedTime()
+            )
+            actionsEntityList.add(actionEntity)
+        }
+        return actionsEntityList
+    }
+
+    fun getTaskActionRelationEntity(
+        taskEntityList: List<TaskEntity>,
+        actionsEntityList: MutableList<ActionEntity>
+    ): MutableList<TaskActionRelationEntity> {
+        val relationList = mutableListOf<TaskActionRelationEntity>()
+        for (task in taskEntityList) {
+            for (action in actionsEntityList) {
+                val relationEntity = TaskActionRelationEntity(
+                    task.id,
+                    action.id
+                )
+                relationList.add(relationEntity)
+            }
+        }
+        return relationList
     }
 }

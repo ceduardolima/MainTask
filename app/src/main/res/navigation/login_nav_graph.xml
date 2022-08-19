@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
+    <action
+        android:id="@+id/action_global_login"
+        app:destination="@id/loginFragment"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.maintask.views.fragment.LoginFragment"

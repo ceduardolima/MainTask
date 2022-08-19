@@ -4,42 +4,37 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
+import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
 
-class TaskAdapter(context: Context, tasks: MutableList<TaskModel>): TaskAdapterAbstract(context, tasks){
+class TaskAdapter(private val navController: NavController)
+    : ListAdapter<TaskEntity, TaskViewHolder>(TaskComparator()) {
 
-    private var callbacks: MainActivityCallbacks? = null
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        callbacks = context as MainActivityCallbacks
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val current = getItem(position)
+        holder.bind(current, navController)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAbstractViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.task_item, parent, false)
-        return TaskAbstractViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        return TaskViewHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: TaskAbstractViewHolder, position: Int) {
-        holder.titleTextView.text = tasks[position].title
-        holder.dateTextView.text = daysLeft(tasks[position].date.dayOfYear - LocalDate.now().dayOfYear)
-        holder.descriptionTextView.text = tasks[position].description
-        holder.auhtorTextView.text = tasks[position].author
-
-        holder.itemContainer.setOnClickListener { constraintLayout ->
-            changeDetailLayoutVisibility(holder.containerDetails)
-            resizeLayout(constraintLayout, holder.containerDetails.isVisible)
+    class TaskComparator: DiffUtil.ItemCallback<TaskEntity>() {
+        override fun areItemsTheSame(oldItem: TaskEntity, newItem: TaskEntity): Boolean {
+            return oldItem == newItem
         }
 
-        holder.buttonOS.setOnClickListener {
-            val destinationId = R.id.action_taskFragment_to_detailTaskFragment
-            callbacks?.selectedTask = tasks[position]
-            changeFragment(destinationId)
+        override fun areContentsTheSame(oldItem: TaskEntity, newItem: TaskEntity): Boolean {
+            return oldItem.id == newItem.id
         }
+
     }
 
 }

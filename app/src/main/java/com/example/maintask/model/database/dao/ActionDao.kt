@@ -16,7 +16,7 @@ interface ActionDao {
     fun getAllActions(): Flow<List<ActionEntity>>
 
     @Query("SELECT * FROM task_action WHERE id = :actionId")
-    fun getActionById(actionId: Int): ActionEntity
+    fun getActionById(actionId: Int): Flow<ActionEntity>
 
     @Query("DELETE FROM task_action")
     suspend fun deleteAll()

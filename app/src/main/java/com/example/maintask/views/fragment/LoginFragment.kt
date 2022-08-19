@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         // Faz o login automático para o caso do usuário ja estar logado
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         loginViewModel.keepLogin {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)

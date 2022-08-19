@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "task_action")
 data class ActionEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
     val action: String,
     val order: Int,
     @ColumnInfo(name = "elapsed_time") val elapsedTime: String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

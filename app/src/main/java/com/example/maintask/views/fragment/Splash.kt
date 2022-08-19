@@ -9,7 +9,12 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import com.example.maintask.R
+import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.viewmodel.RoomViewModel
+import com.example.maintask.viewmodel.RoomViewModelFactory
 import com.example.maintask.views.activity.LoginActivity
 
 class Splash : AppCompatActivity() {
@@ -22,11 +27,19 @@ class Splash : AppCompatActivity() {
     private lateinit var imagemView: ImageView
     private lateinit var title_txt: TextView
 
+    private val roomViewModel: RoomViewModel by viewModels {
+        val roomApplication = (application as RoomApplication)
+        RoomViewModelFactory(
+            roomApplication.taskRepository,
+            roomApplication.actionRepository,
+            roomApplication.taskActionRepository
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
-
 
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation)
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation)

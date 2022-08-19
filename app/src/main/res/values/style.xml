@@ -102,7 +102,7 @@
         <item name="android:layout_width">60dp</item>
         <item name="android:background">@drawable/navbar_button_shape</item>
         <item name="android:backgroundTint">@color/navbar_item</item>
-        <item name="android:tint">#E6000000</item>
+        <item name="android:tint">#ffffff</item>
     </style>
 
 
