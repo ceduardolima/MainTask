@@ -2,6 +2,7 @@ package com.example.maintask.views.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,4 +96,6 @@ class TaskFragment : Fragment(){
             recyclerView.visibility = View.VISIBLE
             arrow.rotation = 90f
         }
+
+
 }

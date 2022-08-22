@@ -1,34 +1,24 @@
 package com.example.maintask.views.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
-import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.database.application.RoomApplication
-import com.example.maintask.model.database.entity.ActionEntity
-import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
-import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 import java.time.LocalDate
-import kotlin.properties.Delegates
 
 class DetailTaskFragment : Fragment() {
-    private var callbacks: MainActivityCallbacks? = null
     private lateinit var taskTitle: TextView
     private lateinit var deadline: TextView
     private lateinit var taskAuthor: TextView
@@ -51,13 +41,19 @@ class DetailTaskFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        taskId = requireArguments().getInt("task_id")
+        val newTaskId = requireArguments().getInt("task_id")
+        Log.i("vida", newTaskId.toString())
+        if(newTaskId == taskId){
+            taskId = -1
+        } else taskId = newTaskId
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
         initializeVariables(view)
         setFragmentInformation()
@@ -106,6 +102,7 @@ class DetailTaskFragment : Fragment() {
 
     private fun setCurrentTask(block: () -> Unit) =
         roomViewModel.allTasks.observe(requireActivity()) { taskList ->
+            Log.i("vida", taskList.toString())
             for (task in taskList) {
                 if (taskId == task.id) {
                     currentTask = task
@@ -117,10 +114,11 @@ class DetailTaskFragment : Fragment() {
 
     private fun setActionIdList(block: () -> Unit) =
         roomViewModel.allTasActionRelations.observe(requireActivity()) { relationList ->
-
-            for (relation in relationList) {
-                if (relation.taskId == taskId && !actionIdList.contains(relation.actionIn)) {
-                    actionIdList.add(relation.actionIn)
+            if(actionIdList.isEmpty()) {
+                for (relation in relationList) {
+                    if (relation.taskId == taskId && !actionIdList.contains(relation.actionIn)) {
+                        actionIdList.add(relation.actionIn)
+                    }
                 }
             }
             block()
@@ -128,6 +126,7 @@ class DetailTaskFragment : Fragment() {
 
     private fun setStringActionList(block: () -> Unit) =
         roomViewModel.allActions.observe(requireActivity()) { actionsList ->
+            Log.i("vida", actionsList.toString())
             for(action in actionsList){
                 if (actionIdList.contains(action.id)){
                     stringOfActions.add(action.action)
@@ -136,13 +135,22 @@ class DetailTaskFragment : Fragment() {
             block()
         }
 
-    private fun setFragmentInformation(){
-        setCurrentTask(){
-            setActionIdList(){
-                setStringActionList(){
-                    setAllText(currentTask, stringOfActions.joinToString(", "))
+    private fun setFragmentInformation() {
+        if (taskId != -1) {
+            setCurrentTask() {
+                setActionIdList() {
+                    setStringActionList() {
+                        setAllText(currentTask, stringOfActions.joinToString(", "))
+                    }
                 }
             }
         }
+        else setAllText(currentTask, stringOfActions.joinToString(", "))
+    }
+
+    override fun onDestroyView() {
+        stringOfActions = mutableListOf()
+        actionIdList = mutableListOf()
+        super.onDestroyView()
     }
 }

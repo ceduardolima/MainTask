@@ -47,6 +47,9 @@
             android:name="task_id"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_detailTaskFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
     </fragment>
     <fragment
         android:id="@+id/timerFragment"
@@ -56,6 +59,9 @@
         <argument
             android:name="actions_id"
             app:argType="integer[]" />
+        <action
+            android:id="@+id/action_timerFragment_to_detailTaskFragment"
+            app:destination="@id/detailTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/ajudaFragment"

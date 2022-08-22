@@ -2,8 +2,10 @@ package com.example.maintask.model.repository
 
 import android.app.Application
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.maintask.model.user.UserModel
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +20,7 @@ class CreateAccountRepository(private val application: Application) {
     private val emptyString = ""
 
     // Funcao que realiza o registro no firebase
+    @RequiresApi(Build.VERSION_CODES.P)
     fun register(name: String, email: String, password: String, path: Uri?) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
