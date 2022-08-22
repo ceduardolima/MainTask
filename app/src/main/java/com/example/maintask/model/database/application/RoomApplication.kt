@@ -2,9 +2,7 @@ package com.example.maintask.model.database.application
 
 import android.app.Application
 import com.example.maintask.model.database.TaskRoomDatabase
-import com.example.maintask.model.repository.ActionRepository
-import com.example.maintask.model.repository.TaskActionRelationRepository
-import com.example.maintask.model.repository.TaskRepository
+import com.example.maintask.model.repository.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
@@ -14,4 +12,6 @@ class RoomApplication: Application() {
     val taskRepository by lazy { TaskRepository(database.taskDao())}
     val actionRepository by lazy { ActionRepository(database.actionDao())}
     val taskActionRepository by lazy { TaskActionRelationRepository(database.taskActionRelationDao())}
+    val currentTaskRepository by lazy { CurrentTaskRepository(database.currentTaskDao()) }
+    val currentActionRepository by lazy { CurrentActionRepository(database.currentActionDao()) }
 }

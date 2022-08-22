@@ -34,7 +34,9 @@ class TimerFragment : Fragment() {
         RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository
+            roomApplication.taskActionRepository,
+            roomApplication.currentTaskRepository,
+            roomApplication.currentActionRepository
         )
     }
 

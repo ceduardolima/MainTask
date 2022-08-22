@@ -1,6 +1,8 @@
 package com.example.maintask.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
@@ -10,6 +12,30 @@ import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
 
 class TaskViewModel() : ViewModel() {
+
+    private val _taskId = MutableLiveData<Int?>()
+    val taskId: LiveData<Int?>
+        get() = _taskId
+
+    private val _actionIdList = MutableLiveData<List<Int>>()
+    val actionIdList: LiveData<List<Int>>
+        get() = _actionIdList
+
+    private val _buttonClick = MutableLiveData<Boolean>()
+    val buttonClick: LiveData<Boolean>
+        get() = _buttonClick
+
+    fun setTaskId(taskId: Int){
+        this._taskId.value = taskId
+    }
+
+    fun setActionIdList(actionIdList: List<Int>) {
+        this._actionIdList.value = actionIdList
+    }
+
+    fun setButtonClick(click: Boolean){
+        this._buttonClick.value = click
+    }
 
     fun getTaskList(): MutableList<TaskModel> {
         // Simulando retorno do servidor

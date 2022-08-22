@@ -13,6 +13,9 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.database.entity.TaskEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -35,7 +38,7 @@ class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(task: TaskEntity, navigationController: NavController){
+    fun bind(task: TaskEntity, navigationController: NavController, block: (taskId: Int) -> Unit){
         titleTextView.text = task.title
         dateTextView.text = daysLeft(LocalDate.parse(task.date).dayOfYear - LocalDate.now().dayOfYear)
         descriptionTextView.text = task.description
@@ -47,17 +50,14 @@ class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
 
         buttonOS.setOnClickListener {
-            val destinationId = R.id.action_taskFragment_to_detailTaskFragment
-            val bundle = Bundle()
-            bundle.putInt("task_id", task.id)
-            navigationController.navigate(destinationId, bundle)
+            block(task.id)
         }
     }
     private fun daysLeft(days: Int) =
         when {
             days == 0 -> "Hoje"
             days > 0 -> "Faltam ${days} dias"
-            else -> "atrasado à ${days * (-1)} dia(s)"
+            else -> "atrasado há ${days * (-1)} dia(s)"
         }
 
     private fun changeDetailLayoutVisibility(layout: ConstraintLayout) {

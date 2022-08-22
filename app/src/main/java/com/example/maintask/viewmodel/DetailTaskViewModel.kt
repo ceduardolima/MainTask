@@ -3,27 +3,41 @@ package com.example.maintask.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.maintask.model.database.entity.CurrentTaskEntity
 import com.example.maintask.model.database.entity.TaskEntity
-import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DetailTaskViewModel: ViewModel() {
-    private val _currentTask = MutableLiveData<TaskEntity>()
-    val currentTask: LiveData<TaskEntity> = _currentTask
-    private val _actionStringList = MutableLiveData<List<String>>()
-    val actionStringList: LiveData<List<String>> = _actionStringList
-    private val _actionIdList = MutableLiveData<List<Int>>()
-    val actionIdList: LiveData<List<Int>> = _actionIdList
+    private val _currentTask = MutableLiveData<CurrentTaskEntity>()
+    val currentTask: LiveData<CurrentTaskEntity>
+        get() = _currentTask
 
-    fun setCurrentTask(taskEntity: TaskEntity) {
-        this._currentTask.value = taskEntity
+    private val _actionStringList = MutableLiveData<List<String>>()
+    val actionStringList: LiveData<List<String>>
+        get() = _actionStringList
+
+    private val _progressBar = MutableLiveData<Boolean>()
+    val progressBar: LiveData<Boolean>
+        get() = _progressBar
+
+    fun setCurrentTask(currentTask: CurrentTaskEntity) {
+        this._currentTask.value = currentTask
     }
 
     fun setActionStringList(actionStringList: List<String>) {
         this._actionStringList.value = actionStringList
     }
 
-    fun setActionIdList(actionIdList: List<Int>) {
-        this._actionIdList.value = actionIdList
+
+    fun loadData(block: () -> Unit){
+        viewModelScope.launch {
+            _progressBar.value = true
+            delay(500)
+            block()
+            _progressBar.value = false
+        }
     }
 
 }
