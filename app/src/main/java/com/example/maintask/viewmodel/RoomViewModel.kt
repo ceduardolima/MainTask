@@ -1,5 +1,6 @@
 package com.example.maintask.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
@@ -7,6 +8,8 @@ import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.repository.ActionRepository
 import com.example.maintask.model.repository.TaskActionRelationRepository
 import com.example.maintask.model.repository.TaskRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -20,20 +23,9 @@ class RoomViewModel(
     val allTasActionRelations: LiveData<List<TaskActionRelationEntity>> =
         taskActionRelationRepository.taskActionRelationList.asLiveData()
 
-    fun getActionsByRelationList(relationList: List<TaskActionRelationEntity>): List<ActionEntity> =
-        runBlocking {
-                actionRepository.getActionByRelations(relationList)
-        }
-
-    suspend fun getTaskById(id: Int): TaskEntity {
-        return taskRepository.getTaskById(id)
-    }
-
-    fun getRelationByTaskId(taskId: Int): List<TaskActionRelationEntity> {
-        return runBlocking { taskActionRelationRepository.getRelationByTaskId(taskId) }
-    }
 
     fun insertActionList(actionList: List<ActionEntity>) {
+        Log.i("teste", "${actionList.size}")
         for (action in actionList)
             insertAction(action)
     }
@@ -62,12 +54,25 @@ class RoomViewModel(
             taskActionRelationRepository.insert(taskActionRelationEntity)
         }
 
-    fun deleteTaskTable() {
+    fun deleteAll() {
         viewModelScope.launch {
             taskRepository.deleteAll()
+            actionRepository.deleteAll()
+            taskActionRelationRepository.deleteAll()
         }
     }
 
+    fun populateDatabase(task: List<TaskEntity>, action: List<ActionEntity>, relation: List<TaskActionRelationEntity>){
+        viewModelScope.launch {
+            taskRepository.deleteAll()
+            actionRepository.deleteAll()
+            taskActionRelationRepository.deleteAll()
+
+            insertTaskList(task)
+            insertActionList(action)
+            insertRelationList(relation)
+        }
+    }
 }
 
 class RoomViewModelFactory(

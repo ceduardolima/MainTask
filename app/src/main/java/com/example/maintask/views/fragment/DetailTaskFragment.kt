@@ -1,67 +1,98 @@
 package com.example.maintask.views.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
+import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.model.database.entity.ActionEntity
+import com.example.maintask.model.database.entity.TaskActionRelationEntity
+import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.task.TaskActionModel
+import com.example.maintask.viewmodel.RoomViewModel
+import com.example.maintask.viewmodel.RoomViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import kotlin.properties.Delegates
 
 class DetailTaskFragment : Fragment() {
     private var callbacks: MainActivityCallbacks? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as MainActivityCallbacks
+    private lateinit var taskTitle: TextView
+    private lateinit var deadline: TextView
+    private lateinit var taskAuthor: TextView
+    private lateinit var taskDescription: TextView
+    private lateinit var taskActions: TextView
+    private lateinit var taskTools: TextView
+    private lateinit var goToTimerFragmentButton: Button
+    private lateinit var currentTask: TaskEntity
+    private var stringOfActions = mutableListOf<String>()
+    private var actionIdList = mutableListOf<Int>()
+    private var taskId: Int = -1
+    private val roomViewModel: RoomViewModel by viewModels {
+        val roomApplication = (requireActivity().application as RoomApplication)
+        RoomViewModelFactory(
+            roomApplication.taskRepository,
+            roomApplication.actionRepository,
+            roomApplication.taskActionRepository
+        )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        taskId = requireArguments().getInt("task_id")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val task = callbacks?.selectedTask
-        val stringOfActions = task?.actions?.let { listOfActionsToString(it) }
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
-        val taskTitle = view.findViewById<TextView>(R.id.details_task_title)
-        val deadline = view.findViewById<TextView>(R.id.details_task_days)
-        val taskAuthor = view.findViewById<TextView>(R.id.details_task_author)
-        val taskDescription = view.findViewById<TextView>(R.id.details_task_description)
-        val taskActions = view.findViewById<TextView>(R.id.details_task_actions)
-        val taskTools = view.findViewById<TextView>(R.id.details_task_tools)
-        val goToTimerFragmentButton = view.findViewById<Button>(R.id.details_task_start_os)
+        initializeVariables(view)
+        setFragmentInformation()
 
-        taskTitle.text = task?.title
-        deadline.text = daysLeft(task?.date?.dayOfYear ?: 0)
-        taskAuthor.text = "Autor: ${task?.author}"
-        taskDescription.text = "Descrição: ${task?.description}"
-        taskActions.text = "Ações: ${stringOfActions}"
-        taskTools.text = "Ferramentas: ${task?.tools}"
-
-        goToTimerFragmentButton.setOnClickListener { findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment) }
+        goToTimerFragmentButton.setOnClickListener {
+            val bundle = Bundle()
+            val actionsIdArray = actionIdList.toIntArray()
+            bundle.putIntArray("actions_id", actionsIdArray)
+            findNavController()
+                .navigate(R.id.action_detailTaskFragment_to_timerFragment, bundle)
+        }
 
         return view
     }
 
-    private fun listOfActionsToString(actions: MutableList<TaskActionModel>): String{
-        var str = ""
-        for(action in actions){
-            if(str.isEmpty())
-                str = action.action
-            else
-                str = "$str, ${action.action}"
-        }
-        str += "."
-
-        return str
+    private fun initializeVariables(view: View) {
+        taskTitle = view.findViewById(R.id.details_task_title)
+        deadline = view.findViewById(R.id.details_task_days)
+        taskAuthor = view.findViewById(R.id.details_task_author)
+        taskDescription = view.findViewById(R.id.details_task_description)
+        taskActions = view.findViewById(R.id.details_task_actions)
+        taskTools = view.findViewById(R.id.details_task_tools)
+        goToTimerFragmentButton = view.findViewById(R.id.details_task_start_os)
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setAllText(currentTask: TaskEntity, actionsString: String){
+        taskTitle.text = currentTask.title
+        deadline.text = daysLeft(LocalDate.parse(currentTask.date).dayOfYear )
+        taskAuthor.text = "Autor: ${currentTask.author}"
+        taskDescription.text = "Descrição: ${currentTask.description}"
+        taskActions.text = "Ações: $actionsString"
+        taskTools.text = "Ferramentas: ${currentTask.tools}"
+    }
+
     private fun daysLeft(days: Int): String {
         val today = LocalDate.now().dayOfYear
         val daysLeft = days - today
@@ -73,4 +104,45 @@ class DetailTaskFragment : Fragment() {
         }
     }
 
+    private fun setCurrentTask(block: () -> Unit) =
+        roomViewModel.allTasks.observe(requireActivity()) { taskList ->
+            for (task in taskList) {
+                if (taskId == task.id) {
+                    currentTask = task
+                    block()
+                    break
+                }
+            }
+        }
+
+    private fun setActionIdList(block: () -> Unit) =
+        roomViewModel.allTasActionRelations.observe(requireActivity()) { relationList ->
+
+            for (relation in relationList) {
+                if (relation.taskId == taskId && !actionIdList.contains(relation.actionIn)) {
+                    actionIdList.add(relation.actionIn)
+                }
+            }
+            block()
+        }
+
+    private fun setStringActionList(block: () -> Unit) =
+        roomViewModel.allActions.observe(requireActivity()) { actionsList ->
+            for(action in actionsList){
+                if (actionIdList.contains(action.id)){
+                    stringOfActions.add(action.action)
+                }
+            }
+            block()
+        }
+
+    private fun setFragmentInformation(){
+        setCurrentTask(){
+            setActionIdList(){
+                setStringActionList(){
+                    setAllText(currentTask, stringOfActions.joinToString(", "))
+                }
+            }
+        }
+    }
 }

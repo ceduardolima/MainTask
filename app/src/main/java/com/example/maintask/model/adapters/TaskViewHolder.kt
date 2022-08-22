@@ -57,7 +57,7 @@ class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         when {
             days == 0 -> "Hoje"
             days > 0 -> "Faltam ${days} dias"
-            else -> "${days * (-1)} atrasado"
+            else -> "atrasado à ${days * (-1)} dia(s)"
         }
 
     private fun changeDetailLayoutVisibility(layout: ConstraintLayout) {
