@@ -17,6 +17,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.maintask.R
 import com.example.maintask.viewmodel.CreateAccountViewModel
+import com.example.maintask.views.fragment.DetailTaskFragment
+import com.example.maintask.views.fragment.LoginFragment
 import de.hdodenhof.circleimageview.CircleImageView
 
 class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks{
@@ -128,5 +130,17 @@ class LoginActivity : AppCompatActivity(), CreateAccountViewModel.Callbacks{
             }
         dialog = builder.create()
         dialog.show()
+    }
+
+    override fun onBackPressed() {
+        val navHost = supportFragmentManager.findFragmentById(R.id.activity_login_navHostFragment)
+        navHost?.let { navHostFragment ->
+            navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                when(fragment){
+                    is LoginFragment -> finish()
+                    else -> super.onBackPressed()
+                }
+            }
+        }
     }
 }

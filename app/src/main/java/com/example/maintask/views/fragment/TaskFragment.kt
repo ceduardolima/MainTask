@@ -27,7 +27,6 @@ import com.example.maintask.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment(){
     private val taskViewModel = TaskViewModel()
-    private var callbacks: MainActivityCallbacks? = null
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
@@ -37,15 +36,9 @@ class TaskFragment : Fragment(){
         )
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as MainActivityCallbacks
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val tasks = taskViewModel.getTaskList()
-        callbacks?.selectedTask = tasks[0]
         initializeDatabase(tasks[0])
     }
 

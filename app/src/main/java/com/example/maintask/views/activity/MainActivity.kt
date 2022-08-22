@@ -1,17 +1,15 @@
 package com.example.maintask.views.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.task.TaskModel
 import com.example.maintask.views.fragment.DetailTaskFragment
-import com.example.maintask.views.fragment.TimerFragment
+import com.example.maintask.views.fragment.TaskFragment
 
 class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
     private lateinit var navController: NavController
@@ -34,9 +32,9 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
         navHost?.let { navHostFragment ->
             navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
                 when(fragment){
-                    is DetailTaskFragment -> {
+                    is TaskFragment -> finish()
+                    is DetailTaskFragment ->
                         navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
-                    }
                     else -> super.onBackPressed()
                 }
             }

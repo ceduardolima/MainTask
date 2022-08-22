@@ -29,7 +29,7 @@ class TaskViewModel() : ViewModel() {
 
     private fun generateActionList(): MutableList<TaskActionModel> {
         val mutableList: MutableList<TaskActionModel> = mutableListOf()
-        for (n in 1..11) {
+        for (n in 0..11) {
             val action = TaskActionModel(
                 "Acao $n",
                 n
@@ -79,7 +79,6 @@ class TaskViewModel() : ViewModel() {
         val relationList = mutableListOf<TaskActionRelationEntity>()
         for (task in taskEntityList) {
             for (action in actionsEntityList) {
-                Log.i("teste-for", "task: ${task.id}; acao: ${action.id}")
                 val relationEntity = TaskActionRelationEntity(
                     task.id,
                     action.id,
@@ -88,7 +87,6 @@ class TaskViewModel() : ViewModel() {
                 relationList.add(relationEntity)
             }
         }
-        Log.i("teste-db", "reacao lista: $relationList")
         return relationList
     }
 }
