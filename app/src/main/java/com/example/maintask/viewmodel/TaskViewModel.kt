@@ -1,24 +1,13 @@
 package com.example.maintask.viewmodel
 
-import android.app.Application
-import android.os.Build
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.maintask.model.database.TaskRoomDatabase
-import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
-import com.example.maintask.model.repository.ActionRepository
-import com.example.maintask.model.repository.TaskActionRelationRepository
-import com.example.maintask.model.repository.TaskRepository
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.model.task.TaskModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class TaskViewModel() : ViewModel() {
 
@@ -27,11 +16,11 @@ class TaskViewModel() : ViewModel() {
         return mutableListOf(
             TaskModel(
                 "Trocar o pneu do carro",
-                LocalDate.parse("2020-01-01"),
+                LocalDate.parse("2022-08-19"),
                 status = TaskModel.LATE,
                 isEmergency = true,
                 "Carlos Eduardo",
-                "O carro passou por um buraco e fucrou o pneu. Há urgência nessa solicitação pois precisamos do quanto antes que ele eteja em boas condições para que possamos executar as tarefas do dia",
+                "O carro passou por um buraco e furou o pneu. Há urgência nessa solicitação pois precisamos do quanto antes que ele esteja em boas condições para que possamos executar as tarefas do dia",
                 "Estepe, macaco, chave L",
                 generateActionList()
             )
@@ -75,7 +64,8 @@ class TaskViewModel() : ViewModel() {
             val actionEntity = ActionEntity(
                 action.action,
                 action.order,
-                action.elapsedTime()
+                action.elapsedTime(),
+                action.order
             )
             actionsEntityList.add(actionEntity)
         }
@@ -89,13 +79,16 @@ class TaskViewModel() : ViewModel() {
         val relationList = mutableListOf<TaskActionRelationEntity>()
         for (task in taskEntityList) {
             for (action in actionsEntityList) {
+                Log.i("teste-for", "task: ${task.id}; acao: ${action.id}")
                 val relationEntity = TaskActionRelationEntity(
                     task.id,
+                    action.id,
                     action.id
                 )
                 relationList.add(relationEntity)
             }
         }
+        Log.i("teste-db", "reacao lista: $relationList")
         return relationList
     }
 }

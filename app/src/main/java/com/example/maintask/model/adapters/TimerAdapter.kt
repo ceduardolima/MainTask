@@ -1,6 +1,7 @@
 package com.example.maintask.model.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,8 +57,9 @@ class TimerAdapter(
     private fun verifyAvailableToStart(position: Int): Boolean {
         if (isTheFirstAction(position) || !isOrderlyAction(position))
             return true
-        val seconds = taskActions[position - 1].seconds
-        val minutes = taskActions[position - 1].minutes
+        val seconds = taskActions[position - 1].elapsedTime().split(":")[2].toInt()
+        val minutes = taskActions[position - 1].elapsedTime().split(":")[1].toInt()
+
         if ((seconds == 0) && (minutes == 0))
             return false
         return true

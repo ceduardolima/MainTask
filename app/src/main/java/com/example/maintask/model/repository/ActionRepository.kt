@@ -12,18 +12,22 @@ import kotlinx.coroutines.flow.single
 class ActionRepository(private val actionDao: ActionDao) {
     val actionList: Flow<List<ActionEntity>> = actionDao.getAllActions()
 
-    suspend fun getActionByRelations(relationList: List<TaskActionRelationEntity>): List<ActionEntity> {
+    suspend fun getActionByRelations(relationList: List<TaskActionRelationEntity>): List<ActionEntity>{
         val actionList = mutableListOf<ActionEntity>()
         for (relation in relationList){
             val action = actionDao.getActionById(relation.actionIn).single()
             actionList.add(action)
         }
-
         return actionList
     }
 
     @WorkerThread
     suspend fun insert(action: ActionEntity) {
         actionDao.insert(action)
+    }
+
+    @WorkerThread
+    suspend fun deleteAll(){
+        actionDao.deleteAll()
     }
 }

@@ -16,7 +16,8 @@ class TaskActionRelationRepository(private val taskActionDao: TaskActionRelation
         taskActionDao.insert(taskActionRelation)
     }
 
-    suspend fun getRelationByTaskId(taskId: Int): List<TaskActionRelationEntity> {
-        return taskActionDao.getRelationsByTaskId(taskId).single()
+    @WorkerThread
+    suspend fun deleteAll() {
+        taskActionDao.deleteAll()
     }
 }

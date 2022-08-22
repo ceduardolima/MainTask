@@ -8,8 +8,7 @@ import androidx.room.PrimaryKey
 data class ActionEntity(
     val action: String,
     val order: Int,
-    @ColumnInfo(name = "elapsed_time") val elapsedTime: String
-){
+    @ColumnInfo(name = "elapsed_time") val elapsedTime: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-}
+)
