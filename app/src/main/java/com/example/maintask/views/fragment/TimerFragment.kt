@@ -1,34 +1,27 @@
 package com.example.maintask.views.fragment
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
-import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.adapters.TimerAdapter
 import com.example.maintask.model.database.application.RoomApplication
-import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.task.TaskActionModel
-import com.example.maintask.model.task.TaskModel
-import com.example.maintask.viewmodel.LoginViewModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
 import com.example.maintask.viewmodel.TimerViewModel
-import kotlin.concurrent.timer
-
 
 class TimerFragment : Fragment() {
     private lateinit var timerRecyclerView: RecyclerView
-    private lateinit var actionsId: IntArray
     private lateinit var timerViewModel: TimerViewModel
+    private lateinit var progressBar: ProgressBar
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
@@ -42,18 +35,16 @@ class TimerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionsId = requireArguments().getIntArray("actions_id")!!
         timerViewModel = ViewModelProvider(this)[TimerViewModel::class.java]
-        setupRoomActionObserver()
+        timerViewModel.loadData {
+            getCurrentActionList()
+        }
     }
 
-    private fun setupRoomActionObserver(){
-        roomViewModel.allActions.observe(requireActivity()) { actions ->
-            val actionsEntityList = mutableListOf<ActionEntity>()
-            for(action in actions)
-                if(actionsId.contains(action.id))
-                    actionsEntityList.add(action)
-            timerViewModel.setActionEntityList(actionsEntityList)
+    private fun getCurrentActionList() {
+        roomViewModel.currentAction.observe(requireActivity()) { actionList ->
+            if (actionList.isNotEmpty())
+                timerViewModel.setActionList(actionList)
         }
     }
 
@@ -62,22 +53,39 @@ class TimerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val timerFragment = inflater.inflate(R.layout.fragment_timer, container, false)
-        setupTimerViewModelObserver(timerFragment)
+        initView(timerFragment)
+        setupTimerViewModelObserver()
+        progressBarObserver()
         return timerFragment
     }
 
-    private fun setupTimerViewModelObserver(view: View){
-        timerViewModel.actionModel.observe(viewLifecycleOwner){ actionModelList ->
-            createTheRecyclerViewAndSetAdapter(view, actionModelList.toMutableList())
+    private fun initView(view: View) {
+        progressBar = view.findViewById(R.id.timer_progress_bar)
+        timerRecyclerView = view.findViewById(R.id.timer_action_recycler_view)
+    }
+
+    private fun setupTimerViewModelObserver(){
+        timerViewModel.actionList.observe(viewLifecycleOwner){ actionList ->
+            createTheRecyclerViewAndSetAdapter(actionList.toMutableList())
         }
     }
 
-    private fun createTheRecyclerViewAndSetAdapter(fragment: View, actionModel: MutableList<TaskActionModel>){
+    private fun createTheRecyclerViewAndSetAdapter(actionModel: MutableList<TaskActionModel>){
         val timerAdapter = TimerAdapter(requireContext(), actionModel)
-        timerRecyclerView = fragment.findViewById(R.id.timer_action_recycler_view)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
         timerRecyclerView.adapter = timerAdapter
     }
 
+    private fun progressBarObserver() {
+        timerViewModel.progressBar.observe(requireActivity()) { isLoadingData ->
+            if (!isLoadingData)
+                ableToShowView()
+        }
+    }
+
+    private fun ableToShowView() {
+        progressBar.visibility = View.GONE
+        timerRecyclerView.visibility = View.VISIBLE
+    }
 }

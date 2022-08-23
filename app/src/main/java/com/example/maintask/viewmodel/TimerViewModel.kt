@@ -1,32 +1,46 @@
 package com.example.maintask.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.*
-import com.example.maintask.model.database.entity.ActionEntity
-import com.example.maintask.model.repository.CreateAccountRepository
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.maintask.model.database.entity.CurrentActionEntity
 import com.example.maintask.model.task.TaskActionModel
-import kotlinx.coroutines.Dispatchers.Main
-import java.time.Duration
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class TimerViewModel() : ViewModel() {
-    private val actionModelList = mutableListOf<TaskActionModel>()
-    private val _actionModel = MutableLiveData<List<TaskActionModel>>()
-    val actionModel: LiveData<List<TaskActionModel>> = _actionModel
+class TimerViewModel : ViewModel() {
+    private val _actionList = MutableLiveData<List<TaskActionModel>>()
+    val actionList: LiveData<List<TaskActionModel>> = _actionList
 
-    private fun setActionModel(){
-        _actionModel.value = actionModelList
+    private val _progressBar = MutableLiveData<Boolean>()
+    val progressBar: LiveData<Boolean>
+        get() = _progressBar
+
+    fun setActionList(actionList: List<CurrentActionEntity>){
+        this._actionList.value = toActionModel(actionList)
     }
 
-    fun setActionEntityList(actionEntityList: List<ActionEntity>) {
-        for(action in actionEntityList){
-            this.actionModelList.add(
+    private fun toActionModel(actionList: List<CurrentActionEntity>): List<TaskActionModel> {
+        val actionModel = mutableListOf<TaskActionModel>()
+        for (action in actionList){
+            actionModel.add(
                 TaskActionModel(
                     action.action,
-                    action.order
+                    action.order,
                 )
             )
         }
-        setActionModel()
+        return actionModel
+    }
+
+    fun loadData(block: () -> Unit) {
+        viewModelScope.launch {
+            _progressBar.value = true
+            delay(500)
+            block()
+            _progressBar.value = false
+        }
     }
 
 }

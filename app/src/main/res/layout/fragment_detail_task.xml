@@ -9,6 +9,8 @@
         android:id="@+id/detail_fragment_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progressbar_background"
         android:layout_gravity="center"
         />
 

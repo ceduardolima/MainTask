@@ -2,7 +2,6 @@ package com.example.maintask.views.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.CurrentTaskEntity
-import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.viewmodel.DetailTaskViewModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
@@ -34,7 +32,6 @@ class DetailTaskFragment : Fragment() {
     private lateinit var taskTools: TextView
     private lateinit var goToTimerFragmentButton: Button
     private lateinit var detailTaskViewModel: DetailTaskViewModel
-    private var bundleExtra: IntArray = emptyArray<Int>().toIntArray()
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
@@ -53,7 +50,6 @@ class DetailTaskFragment : Fragment() {
             getCurrentTask()
             getCurrentActionList()
         }
-        Log.i("teste", "onCreate")
     }
 
     private fun getCurrentTask() {
@@ -78,7 +74,6 @@ class DetailTaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i("teste", "onCreateView")
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
         initializeVariables(view)
         detailTaskViewModel.progressBar.observe(requireActivity()) { isLoadingData ->
@@ -93,10 +88,8 @@ class DetailTaskFragment : Fragment() {
 
     private fun changeToTimerFragment() {
         goToTimerFragmentButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putIntArray("actions_id", bundleExtra)
             findNavController()
-                .navigate(R.id.action_detailTaskFragment_to_timerFragment, bundle)
+                .navigate(R.id.action_detailTaskFragment_to_timerFragment)
         }
     }
 
