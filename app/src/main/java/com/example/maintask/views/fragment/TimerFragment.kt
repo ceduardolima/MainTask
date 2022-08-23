@@ -1,10 +1,13 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +25,7 @@ class TimerFragment : Fragment() {
     private lateinit var timerRecyclerView: RecyclerView
     private lateinit var timerViewModel: TimerViewModel
     private lateinit var progressBar: ProgressBar
+    private lateinit var finishButton: Button
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
@@ -43,8 +47,10 @@ class TimerFragment : Fragment() {
 
     private fun getCurrentActionList() {
         roomViewModel.currentAction.observe(requireActivity()) { actionList ->
-            if (actionList.isNotEmpty())
+            if (actionList.isNotEmpty()) {
                 timerViewModel.setActionList(actionList)
+                roomViewModel.currentAction.removeObservers(requireActivity())
+            }
         }
     }
 
@@ -56,12 +62,18 @@ class TimerFragment : Fragment() {
         initView(timerFragment)
         setupTimerViewModelObserver()
         progressBarObserver()
+        completedActionsObserver()
+
+        timerViewModel.currentAction.observe(requireActivity()) { pair ->
+            roomViewModel.updateElapsedTime(pair.first, pair.second)
+        }
         return timerFragment
     }
 
     private fun initView(view: View) {
         progressBar = view.findViewById(R.id.timer_progress_bar)
         timerRecyclerView = view.findViewById(R.id.timer_action_recycler_view)
+        finishButton = view.findViewById(R.id.timer_finish_actions)
     }
 
     private fun setupTimerViewModelObserver(){
@@ -71,7 +83,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun createTheRecyclerViewAndSetAdapter(actionModel: MutableList<TaskActionModel>){
-        val timerAdapter = TimerAdapter(requireContext(), actionModel)
+        val timerAdapter = TimerAdapter(requireContext(), actionModel, timerViewModel)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
         timerRecyclerView.adapter = timerAdapter
@@ -87,5 +99,21 @@ class TimerFragment : Fragment() {
     private fun ableToShowView() {
         progressBar.visibility = View.GONE
         timerRecyclerView.visibility = View.VISIBLE
+        finishButton.visibility = View.VISIBLE
+    }
+
+    private fun completedActionsObserver() {
+        timerViewModel.completedActions.observe(requireActivity()) { wasCompleted ->
+            if (wasCompleted) {
+                val drawable = ResourcesCompat.getDrawable(resources, R.drawable.default_button_shape, null)
+                finishButton.background = drawable
+                finishButton.isEnabled = true
+            }
+            else {
+                val drawable = ResourcesCompat.getDrawable(resources, R.drawable.button_color_grey, null)
+                finishButton.background = drawable
+                finishButton.isEnabled = false
+            }
+        }
     }
 }

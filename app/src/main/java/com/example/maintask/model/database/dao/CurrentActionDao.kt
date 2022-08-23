@@ -19,6 +19,9 @@ interface CurrentActionDao {
     @Query("SELECT * FROM current_action WHERE id = :actionId")
     fun getActionById(actionId: Int): Flow<CurrentActionEntity>
 
+    @Query("UPDATE current_action SET elapsed_time = :elapsedTime WHERE id = :id")
+    suspend fun updateElapsedTime(id: Int, elapsedTime: String)
+
     @Query("DELETE FROM current_action")
     suspend fun deleteAll()
 }

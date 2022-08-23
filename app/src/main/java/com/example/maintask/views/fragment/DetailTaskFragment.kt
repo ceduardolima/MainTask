@@ -118,6 +118,11 @@ class DetailTaskFragment : Fragment() {
         scrollView.visibility = View.VISIBLE
     }
 
+    private fun disableVisibility() {
+        progressBar.visibility = View.VISIBLE
+        scrollView.visibility = View.INVISIBLE
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setAllText(currentTask: CurrentTaskEntity, actionsString: String){
         taskTitle.text = currentTask.title
@@ -137,5 +142,11 @@ class DetailTaskFragment : Fragment() {
             daysLeft > 0 -> "Faltam ${daysLeft} dias"
             else -> "Esta à ${daysLeft * (-1)} dia(s) atrasado"
         }
+    }
+
+    override fun onDestroyView() {
+        disableVisibility()
+
+        super.onDestroyView()
     }
 }

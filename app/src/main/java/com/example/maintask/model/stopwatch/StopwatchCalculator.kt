@@ -1,7 +1,7 @@
 package com.example.maintask.model.stopwatch
 
-abstract class StopwatchCalculator {
-    var currentState: StopwatchState = StopwatchState.Paused(INIT_TIME)
+abstract class StopwatchCalculator(private val initTimeLong: Long) {
+    var currentState: StopwatchState = StopwatchState.Paused(initTimeLong)
 
     companion object {
         const val INIT_TIME: Long = 0

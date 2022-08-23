@@ -1,8 +1,6 @@
 package com.example.maintask.views.fragment
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,16 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.example.maintask.R
-import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.adapters.TaskAdapter
 import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
-import com.example.maintask.model.task.TaskModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
 import com.example.maintask.viewmodel.TaskViewModel
 
-class TaskFragment : Fragment(){
+class TaskFragment : Fragment() {
     private val taskViewModel = TaskViewModel()
     private lateinit var lateButton: Button
     private lateinit var arrowLate: ImageView
@@ -44,8 +40,7 @@ class TaskFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tasks = taskViewModel.getTaskList()
-        initializeDatabase(tasks[0])
+        setupObserveTaskId()
     }
 
     override fun onCreateView(
@@ -55,12 +50,11 @@ class TaskFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_task, container, false)
         initWidgets(view)
         initRecycleView()
-        setupObserveTaskId()
-        lateButton.setOnClickListener {changeListVisibility(arrowLate, recyclerView)}
+        lateButton.setOnClickListener { changeListVisibility(arrowLate, recyclerView) }
         return view
     }
 
-    private fun initWidgets(view: View){
+    private fun initWidgets(view: View) {
         lateButton = view.findViewById(R.id.task_late_bt)
         arrowLate = view.findViewById(R.id.task_late_arrow)
         recyclerView = view.findViewById(R.id.task_late_recycler)
@@ -68,7 +62,7 @@ class TaskFragment : Fragment(){
 
     private fun initRecycleView() {
         val adapter = TaskAdapter(findNavController(), taskViewModel)
-        roomViewModel.allTasks.observe(viewLifecycleOwner){task ->
+        roomViewModel.allTasks.observe(viewLifecycleOwner) { task ->
             task.let { adapter.submitList(task) }
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = adapter
@@ -77,7 +71,7 @@ class TaskFragment : Fragment(){
 
     private fun setupObserveTaskId() {
         taskViewModel.taskId.observe(requireActivity()) { taskId ->
-            if(taskId != null) {
+            if (taskId != null) {
                 setCurrentTask(taskId)
                 setupActionIdList(taskId)
                 setupActionListAndChangeFragment()
@@ -86,9 +80,9 @@ class TaskFragment : Fragment(){
     }
 
     private fun setCurrentTask(taskId: Int) {
-        roomViewModel.allTasks.observe(requireActivity()){ taskList ->
-            for(task in taskList)
-                if(taskId == task.id){
+        roomViewModel.allTasks.observe(requireActivity()) { taskList ->
+            for (task in taskList)
+                if (taskId == task.id) {
                     roomViewModel.setCurrentTask(task)
                     break
                 }
@@ -105,8 +99,8 @@ class TaskFragment : Fragment(){
         }
     }
 
-    private fun setupActionListAndChangeFragment(){
-        taskViewModel.actionIdList.observe(requireActivity()){ idList ->
+    private fun setupActionListAndChangeFragment() {
+        taskViewModel.actionIdList.observe(requireActivity()) { idList ->
             setupRoomObserverActions(idList)
             navigateToDetailTask()
         }
@@ -115,7 +109,7 @@ class TaskFragment : Fragment(){
     private fun setupRoomObserverActions(actionIdList: List<Int>) =
         roomViewModel.allActions.observe(requireActivity()) { actionsList ->
             val actionList = mutableListOf<ActionEntity>()
-            for(action in actionsList)
+            for (action in actionsList)
                 if (actionIdList.contains(action.id))
                     actionList.add(action)
             roomViewModel.setCurrentAction(actionList)
@@ -130,18 +124,9 @@ class TaskFragment : Fragment(){
         }
     }
 
-
-    private fun initializeDatabase(task: TaskModel){
-        val taskEntity = taskViewModel.getTaskEntity(listOf(task))
-        val actionEntity = taskViewModel.getActionEntity(task.actions)
-        val relationEntity = taskViewModel.getTaskActionRelationEntity(taskEntity, actionEntity)
-
-        roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity)
-    }
-
     private fun changeLayoutParams(recyclerView: RecyclerView) =
         // Muda o tamanho do recycler view de acordo com a quantidade de task. Maximo 3 tasks
-        if(recyclerView.size < 300) {
+        if (recyclerView.size < 300) {
             val params = recyclerView.layoutParams
             params.height = LayoutParams.WRAP_CONTENT
             recyclerView.layoutParams = params

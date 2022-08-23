@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.maintask.model.database.entity.CurrentTaskEntity
-import com.example.maintask.model.database.entity.TaskEntity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DetailTaskViewModel: ViewModel() {
+    private val scope = viewModelScope
     private val _currentTask = MutableLiveData<CurrentTaskEntity>()
     val currentTask: LiveData<CurrentTaskEntity>
         get() = _currentTask
@@ -30,12 +30,11 @@ class DetailTaskViewModel: ViewModel() {
         this._actionStringList.value = actionStringList
     }
 
-
     fun loadData(block: () -> Unit){
-        viewModelScope.launch {
+        scope.launch {
             _progressBar.value = true
-            delay(500)
             block()
+            delay(500)
             _progressBar.value = false
         }
     }

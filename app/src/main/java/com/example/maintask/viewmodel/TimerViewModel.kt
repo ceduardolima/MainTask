@@ -9,13 +9,21 @@ import com.example.maintask.model.task.TaskActionModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class TimerViewModel : ViewModel() {
+class TimerViewModel() : ViewModel() {
     private val _actionList = MutableLiveData<List<TaskActionModel>>()
     val actionList: LiveData<List<TaskActionModel>> = _actionList
 
     private val _progressBar = MutableLiveData<Boolean>()
     val progressBar: LiveData<Boolean>
         get() = _progressBar
+
+    private val _completedActions = MutableLiveData<Boolean>()
+    val completedActions: LiveData<Boolean>
+        get() = _completedActions
+
+    private val _currentAction = MutableLiveData<Pair<Int, String>>()
+    val currentAction: LiveData<Pair<Int, String>>
+        get() = _currentAction
 
     fun setActionList(actionList: List<CurrentActionEntity>){
         this._actionList.value = toActionModel(actionList)
@@ -26,12 +34,22 @@ class TimerViewModel : ViewModel() {
         for (action in actionList){
             actionModel.add(
                 TaskActionModel(
+                    action.id,
                     action.action,
                     action.order,
+                    action.elapsedTime
                 )
             )
         }
         return actionModel
+    }
+
+    fun setCompletedActions(wasFinished: Boolean) {
+        this._completedActions.value = wasFinished
+    }
+
+    fun setCurrentAction(id: Int, elapsedTime: String) {
+        this._currentAction.value = Pair(id, elapsedTime)
     }
 
     fun loadData(block: () -> Unit) {

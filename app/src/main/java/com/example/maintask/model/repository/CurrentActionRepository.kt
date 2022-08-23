@@ -14,6 +14,11 @@ class CurrentActionRepository(private val currentActionDao: CurrentActionDao) {
     }
 
     @WorkerThread
+    suspend fun updateElapsedTime(id: Int, elapsedTime: String) {
+        currentActionDao.updateElapsedTime(id, elapsedTime)
+    }
+
+    @WorkerThread
     suspend fun deleteAll(){
         currentActionDao.deleteAll()
     }

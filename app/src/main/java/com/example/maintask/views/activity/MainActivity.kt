@@ -33,8 +33,10 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
             navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
                 when(fragment){
                     is TaskFragment -> finish()
-                    is DetailTaskFragment ->
+                    is DetailTaskFragment -> {
+                        fragment.onDestroy()
                         navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
+                    }
                     else -> super.onBackPressed()
                 }
             }

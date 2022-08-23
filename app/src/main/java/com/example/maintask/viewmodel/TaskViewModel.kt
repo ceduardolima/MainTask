@@ -57,6 +57,7 @@ class TaskViewModel() : ViewModel() {
         val mutableList: MutableList<TaskActionModel> = mutableListOf()
         for (n in 0..11) {
             val action = TaskActionModel(
+                n,
                 "Acao $n",
                 n
             )

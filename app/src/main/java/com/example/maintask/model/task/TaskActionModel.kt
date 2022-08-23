@@ -4,10 +4,13 @@ import android.widget.TextView
 import com.example.maintask.model.stopwatch.Stopwatch
 
 data class TaskActionModel(
+    val id: Int,
     val action: String,
-    val order: Int
+    val order: Int,
+    var time: String = "00:00:00"
 ){
-    var stopwatch = Stopwatch()
+
+    var stopwatch = Stopwatch(time)
         private set
 
     fun startStopwatch(textView: TextView) = stopwatch.startAndWriteOnTextView(textView)

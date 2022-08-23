@@ -1,7 +1,6 @@
 package com.example.maintask.views.fragment
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
@@ -10,11 +9,14 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.maintask.R
 import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.model.task.TaskModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
+import com.example.maintask.viewmodel.TaskViewModel
 import com.example.maintask.views.activity.LoginActivity
 
 class Splash : AppCompatActivity() {
@@ -23,7 +25,7 @@ class Splash : AppCompatActivity() {
 
     private lateinit var topAnimation: Animation
     private lateinit var bottomAnimation: Animation
-
+    private lateinit var taskViewModel: TaskViewModel
     private lateinit var imagemView: ImageView
     private lateinit var title_txt: TextView
 
@@ -40,6 +42,8 @@ class Splash : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
+
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
 
@@ -51,11 +55,19 @@ class Splash : AppCompatActivity() {
 
         imagemView.animation = topAnimation
         title_txt.animation = bottomAnimation
-
+        initializeDatabase(taskViewModel.getTaskList()[0])
         Handler().postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, SPLASH_SCREEN.toLong())
+    }
+
+    private fun initializeDatabase(task: TaskModel){
+        val taskEntity = taskViewModel.getTaskEntity(listOf(task))
+        val actionEntity = taskViewModel.getActionEntity(task.actions)
+        val relationEntity = taskViewModel.getTaskActionRelationEntity(taskEntity, actionEntity)
+
+        roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity)
     }
 }

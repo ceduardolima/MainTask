@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.maintask.model.database.entity.*
 import com.example.maintask.model.repository.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class RoomViewModel(
     private val taskRepository: TaskRepository,
@@ -24,6 +21,12 @@ class RoomViewModel(
     val currentAction: LiveData<List<CurrentActionEntity>> =
         currentActionRepository.actionList.asLiveData()
 
+    fun updateElapsedTime(id: Int, elapseTime: String) {
+        viewModelScope.launch {
+            currentActionRepository.updateElapsedTime(id, elapseTime)
+        }
+    }
+
     fun setCurrentTask(task: TaskEntity) {
         viewModelScope.launch {
             val currentTask = toCurrentTask(task)
@@ -31,12 +34,6 @@ class RoomViewModel(
             currentTaskRepository.insert(currentTask)
         }
     }
-
-    private fun toCurrentTask(task: TaskEntity): CurrentTaskEntity =
-        CurrentTaskEntity(
-            task.id, task.title, task.date, task.status, task.isEmergency, task.author,
-            task.description, task.tools
-        )
 
     fun setCurrentAction(actionList: List<ActionEntity>){
         viewModelScope.launch {
@@ -46,6 +43,12 @@ class RoomViewModel(
                 currentActionRepository.insert(action)
         }
     }
+
+    private fun toCurrentTask(task: TaskEntity): CurrentTaskEntity =
+        CurrentTaskEntity(
+            task.id, task.title, task.date, task.status, task.isEmergency, task.author,
+            task.description, task.tools
+        )
 
     fun toCurrentActionList(actionList: List<ActionEntity>): List<CurrentActionEntity> {
         val currentActionList = mutableListOf<CurrentActionEntity>()
@@ -135,6 +138,5 @@ class RoomViewModelFactory(
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
-
     }
 }

@@ -11,12 +11,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.task.TaskActionModel
+import com.example.maintask.viewmodel.TimerViewModel
 
 class TimerAdapter(
     private val context: Context,
-    private val taskActions: MutableList<TaskActionModel>
+    private val taskActions: MutableList<TaskActionModel>,
+    private val timerViewModel: TimerViewModel
 ) : RecyclerView.Adapter<TimerAdapter.TimerViewHolder>() {
 
+    private val completedActions = Array(itemCount) { _ -> false }
     companion object {
         private const val ACTION_IS_NOT_AVAILABLE_TO_START = "Essa ação não pode ser iniciada " +
                 "antes da anterior ser finalizada"
@@ -39,6 +42,7 @@ class TimerAdapter(
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
         holder.action.text = "${taskActions[position].order} - ${taskActions[position].action}"
+        holder.elapsedTime.text = taskActions[position].time
         holder.playButton.setOnClickListener {
             if (verifyAvailableToStart(position)) {
                 startStopStopwatch(
@@ -48,18 +52,28 @@ class TimerAdapter(
                 )
             }
             else errorMessage(ACTION_IS_NOT_AVAILABLE_TO_START)
+            verifyIfActionsWasCompleted(position)
+            allTaskWasCompleted()
         }
         holder.resetButton.setOnClickListener {
             resetStopwatch(taskActions[position], holder.playButton, holder.elapsedTime)
         }
     }
 
+    private fun verifyIfActionsWasCompleted(position: Int) {
+        val wasCompleted = verifyAvailableToStart(position)
+        completedActions[position] = wasCompleted
+    }
+
     private fun verifyAvailableToStart(position: Int): Boolean {
         if (isTheFirstAction(position) || !isOrderlyAction(position))
             return true
-        val seconds = taskActions[position - 1].elapsedTime().split(":")[2].toInt()
-        val minutes = taskActions[position - 1].elapsedTime().split(":")[1].toInt()
+        return wasCompleted(position)
+    }
 
+    private fun wasCompleted(position: Int): Boolean {
+        val seconds = taskActions[position - 1].time.split(":")[2].toInt()
+        val minutes = taskActions[position - 1].time.split(":")[1].toInt()
         if ((seconds == 0) && (minutes == 0))
             return false
         return true
@@ -69,6 +83,13 @@ class TimerAdapter(
 
     private fun isOrderlyAction(position: Int) = taskActions[position].order > 0
 
+    private fun allTaskWasCompleted() {
+        if (completedActions.contains(false))
+            timerViewModel.setCompletedActions(false)
+        else
+            timerViewModel.setCompletedActions(true)
+    }
+
     private fun startStopStopwatch(
         action: TaskActionModel,
         button: ImageButton,
@@ -77,6 +98,8 @@ class TimerAdapter(
         if (action.isStopwatchRunning()) {
             action.pauseStopwatch()
             button.setImageResource(R.drawable.ic_play)
+            timerViewModel.setCurrentAction(action.id, action.elapsedTime())
+            action.time = elapsedTime.text.toString()
         } else {
             action.startStopwatch(elapsedTime)
             button.setImageResource(R.drawable.ic_pause)
@@ -95,8 +118,8 @@ class TimerAdapter(
         action.resetStopwatch()
         elapsedTime.text = action.elapsedTime()
         button.setImageResource(R.drawable.ic_play)
+        timerViewModel.setCurrentAction(action.id, action.elapsedTime())
     }
 
     override fun getItemCount() = taskActions.size
-
 }
