@@ -49,6 +49,7 @@ class TimerFragment : Fragment() {
         roomViewModel.currentAction.observe(requireActivity()) { actionList ->
             if (actionList.isNotEmpty()) {
                 timerViewModel.setActionList(actionList)
+                Log.i("splash", "current actions: $actionList")
                 roomViewModel.currentAction.removeObservers(requireActivity())
             }
         }

@@ -55,11 +55,12 @@ class TaskViewModel() : ViewModel() {
 
     private fun generateActionList(): MutableList<TaskActionModel> {
         val mutableList: MutableList<TaskActionModel> = mutableListOf()
-        for (n in 0..11) {
+        val t = arrayOf(0, 0, 0, 1, 2, 3)
+        for (n in 0..5) {
             val action = TaskActionModel(
                 n,
                 "Acao $n",
-                n
+                t[n]
             )
             mutableList.add(action)
         }
@@ -91,8 +92,8 @@ class TaskViewModel() : ViewModel() {
             val actionEntity = ActionEntity(
                 action.action,
                 action.order,
-                action.elapsedTime(),
-                action.order
+                action.time,
+                action.id
             )
             actionsEntityList.add(actionEntity)
         }

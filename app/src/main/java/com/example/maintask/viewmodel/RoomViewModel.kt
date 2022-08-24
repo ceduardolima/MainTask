@@ -115,6 +115,7 @@ class RoomViewModel(
             insertTaskList(task)
             insertActionList(action)
             insertRelationList(relation)
+            Log.i("açoes", "populate: ${allActions.value}")
         }
     }
 }

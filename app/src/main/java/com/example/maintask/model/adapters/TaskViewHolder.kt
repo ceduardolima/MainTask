@@ -38,7 +38,7 @@ class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(task: TaskEntity, navigationController: NavController, block: (taskId: Int) -> Unit){
+    fun bind(task: TaskEntity, block: (taskId: Int) -> Unit){
         titleTextView.text = task.title
         dateTextView.text = daysLeft(LocalDate.parse(task.date).dayOfYear - LocalDate.now().dayOfYear)
         descriptionTextView.text = task.description

@@ -12,7 +12,7 @@ class TaskAdapter(private val navController: NavController, private val taskView
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current, navController){
+        holder.bind(current){
             taskId ->
                 taskViewModel.setTaskId(taskId)
                 taskViewModel.setButtonClick(true)

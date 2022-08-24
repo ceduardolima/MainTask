@@ -15,9 +15,15 @@ data class TaskActionModel(
 
     fun startStopwatch(textView: TextView) = stopwatch.startAndWriteOnTextView(textView)
 
-    fun pauseStopwatch() = stopwatch.pause()
+    fun pauseStopwatch(){
+        stopwatch.pause()
+        time = elapsedTime()
+    }
 
-    fun resetStopwatch() = stopwatch.stop()
+    fun resetStopwatch() {
+        stopwatch.stop()
+        time = elapsedTime()
+    }
 
     fun elapsedTime() = stopwatch.getElapsedTime()
 

@@ -3,6 +3,7 @@ package com.example.maintask.views.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -66,6 +67,9 @@ class Splash : AppCompatActivity() {
     private fun initializeDatabase(task: TaskModel){
         val taskEntity = taskViewModel.getTaskEntity(listOf(task))
         val actionEntity = taskViewModel.getActionEntity(task.actions)
+        Log.i("splashTeste", "ações: ${task.actions}")
+        Log.i("splashTeste", "ações entity: ${actionEntity}")
+
         val relationEntity = taskViewModel.getTaskActionRelationEntity(taskEntity, actionEntity)
 
         roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity)
