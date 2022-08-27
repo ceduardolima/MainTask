@@ -58,7 +58,7 @@ class TaskViewModel() : ViewModel() {
         val t = arrayOf(0, 0, 0, 1, 2, 3)
         for (n in 0..5) {
             val action = TaskActionModel(
-                n,
+                n + 1,
                 "Acao $n",
                 t[n]
             )

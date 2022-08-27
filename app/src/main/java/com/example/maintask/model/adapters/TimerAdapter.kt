@@ -3,46 +3,86 @@ package com.example.maintask.model.adapters
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.viewmodel.TimerViewModel
 
 class TimerAdapter(
     private val context: Context,
+    private val lifecycleOwner: LifecycleOwner,
     private val taskActions: MutableList<TaskActionModel>,
     private val timerViewModel: TimerViewModel
 ) : RecyclerView.Adapter<TimerViewHolder>() {
 
-    private val completedActions = Array(itemCount) { _ -> false }
+    private val completedActions = Array(itemCount) { false }
 
     companion object {
         private const val FIRST: Int = 1
         private const val ORDERLESS: Int = 0
-        private const val SECONDS_POS: Int = 2;
+        private const val SECONDS_POS: Int = 2
         private const val MINUTE_POS: Int = 1
+        private const val ACTION_IS_NOT_AVAILABLE_TO_START = "Essa ação não pode ser iniciada " +
+                "antes da anterior ser finalizada"
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerViewHolder {
-        return TimerViewHolder.create(parent)
+        return TimerViewHolder.create(parent, timerViewModel)
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
         val currentAction = taskActions[position]
-        holder.bind(context, currentAction, timerViewModel){
-                isAbleToStart(position)
+        val text = "${currentAction.order} - ${currentAction.action}"
+        holder.setText(text, currentAction.time)
+        runStopwatch(holder, position)
+        resetStopwatch(holder, position)
+        setActionStatus(position)
+        verifyCompletedTasks()
+    }
+
+    private fun runStopwatch(holder: TimerViewHolder, position: Int){
+        holder.playButton.setOnClickListener {
+            if (isAbleToStart(position)) {
+                holder.startStop(taskActions[position])
+                setActionStatus(position)
+                verifyCompletedTasks()
             }
-        verifyIfActionsWasCompleted(position)
-        allTaskWasCompleted()
+            else
+                Toast.makeText(
+                    context,
+                    ACTION_IS_NOT_AVAILABLE_TO_START,
+                    Toast.LENGTH_LONG
+                ).show()
+        }
     }
 
-    private fun allTaskWasCompleted() {
-        if (completedActions.contains(false)) timerViewModel.setCompletedActions(false)
-        else timerViewModel.setCompletedActions(true)
+    private fun resetStopwatch(holder: TimerViewHolder, position: Int){
+        holder.resetButton.setOnClickListener {
+            holder.reset(taskActions[position])
+            setActionStatus(position)
+            verifyCompletedTasks()
+        }
     }
 
-    private fun verifyIfActionsWasCompleted(position: Int) {
-        val wasCompleted = isAbleToStart(position)
+    private fun verifyCompletedTasks() {
+        if (completedActions.contains(false))
+            timerViewModel.setCompletedActions(false)
+        else
+            timerViewModel.setCompletedActions(true)
+    }
+
+    private fun setActionStatus(position: Int) {
+        val wasCompleted = wasCompleted(position)
         completedActions[position] = wasCompleted
+    }
+
+    private fun wasCompleted(position: Int): Boolean {
+        val seconds = taskActions[position].time.split(":")[SECONDS_POS].toInt()
+        val minutes = taskActions[position].time.split(":")[MINUTE_POS].toInt()
+        if ((seconds == 0) && (minutes == 0))
+            return false
+        return true
     }
 
     private fun isAbleToStart(position: Int): Boolean {
@@ -56,11 +96,7 @@ class TimerAdapter(
 
     private fun previousActionWasCompleted(position: Int): Boolean {
         val lastPosition = position - 1
-        val seconds = taskActions[lastPosition].time.split(":")[SECONDS_POS].toInt()
-        val minutes = taskActions[lastPosition].time.split(":")[MINUTE_POS].toInt()
-        if ((seconds == 0) && (minutes == 0))
-            return false
-        return true
+        return wasCompleted(lastPosition)
     }
 
     override fun getItemCount() = taskActions.size

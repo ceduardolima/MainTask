@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
@@ -49,7 +51,6 @@ class TimerFragment : Fragment() {
         roomViewModel.currentAction.observe(requireActivity()) { actionList ->
             if (actionList.isNotEmpty()) {
                 timerViewModel.setActionList(actionList)
-                Log.i("splash", "current actions: $actionList")
                 roomViewModel.currentAction.removeObservers(requireActivity())
             }
         }
@@ -68,6 +69,7 @@ class TimerFragment : Fragment() {
         timerViewModel.currentAction.observe(requireActivity()) { pair ->
             roomViewModel.updateElapsedTime(pair.first, pair.second)
         }
+        changeToCompletedActionsFragment()
         return timerFragment
     }
 
@@ -84,7 +86,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun createTheRecyclerViewAndSetAdapter(actionModel: MutableList<TaskActionModel>){
-        val timerAdapter = TimerAdapter(requireContext(), actionModel, timerViewModel)
+        val timerAdapter = TimerAdapter(requireContext(), requireActivity(), actionModel, timerViewModel)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
         timerRecyclerView.adapter = timerAdapter
@@ -105,6 +107,7 @@ class TimerFragment : Fragment() {
 
     private fun completedActionsObserver() {
         timerViewModel.completedActions.observe(requireActivity()) { wasCompleted ->
+            Log.i("completa", "foi completa? $wasCompleted")
             if (wasCompleted) {
                 val drawable = ResourcesCompat.getDrawable(resources, R.drawable.default_button_shape, null)
                 finishButton.background = drawable
@@ -117,4 +120,13 @@ class TimerFragment : Fragment() {
             }
         }
     }
+
+    private fun changeToCompletedActionsFragment(){
+        finishButton.setOnClickListener {
+            if(finishButton.isEnabled && (timerViewModel.completedActions.value == true)){
+                findNavController().navigate(R.id.action_timerFragment_to_completedActionsFragment)
+            }
+        }
+    }
+
 }

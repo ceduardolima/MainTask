@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.fragment.TimerFragment">
 
@@ -21,23 +22,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:paddingBottom="70dp"
+        android:paddingBottom="75dp"
         android:clipToPadding="false"
         />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/timer_finish_actions"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         style="@style/default_button_style"
         android:background="@drawable/button_color_grey"
         android:visibility="invisible"
         android:text="Finalizar"
         android:textSize="10pt"
         android:textStyle="bold"
-        android:layout_margin="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_gravity="bottom"
-
         />
 
 </FrameLayout>

@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_timerFragment_to_detailTaskFragment"
             app:destination="@id/detailTaskFragment" />
+        <action
+            android:id="@+id/action_timerFragment_to_completedActionsFragment"
+            app:destination="@id/completedActionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ajudaFragment"
@@ -87,4 +90,15 @@
         app:exitAnim="@anim/to_left"
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />
+    <fragment
+        android:id="@+id/completedActionsFragment"
+        android:name="com.example.maintask.views.fragment.CompletedActionsFragment"
+        android:label="CompletedActionsFragment" >
+        <action
+            android:id="@+id/action_completedActionsFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+        <action
+            android:id="@+id/action_completedActionsFragment_to_timerFragment"
+            app:destination="@id/timerFragment" />
+    </fragment>
 </navigation>

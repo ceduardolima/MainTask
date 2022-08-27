@@ -67,11 +67,7 @@ class Splash : AppCompatActivity() {
     private fun initializeDatabase(task: TaskModel){
         val taskEntity = taskViewModel.getTaskEntity(listOf(task))
         val actionEntity = taskViewModel.getActionEntity(task.actions)
-        Log.i("splashTeste", "ações: ${task.actions}")
-        Log.i("splashTeste", "ações entity: ${actionEntity}")
-
         val relationEntity = taskViewModel.getTaskActionRelationEntity(taskEntity, actionEntity)
-
         roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity)
     }
 }

@@ -27,4 +27,6 @@
     <color name="colorPrimaryDark">#D81B60</color>
     <color name="colorAccent">#E040FB</color>
 
+    <color name="grey">#939393</color>
+
 </resources>

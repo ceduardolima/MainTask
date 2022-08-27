@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.maintask.R
 import com.example.maintask.callbacks.MainActivityCallbacks
 import com.example.maintask.model.task.TaskModel
+import com.example.maintask.views.fragment.CompletedActionsFragment
 import com.example.maintask.views.fragment.DetailTaskFragment
 import com.example.maintask.views.fragment.TaskFragment
 
@@ -36,6 +37,10 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
                     is DetailTaskFragment -> {
                         fragment.onDestroy()
                         navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
+                    }
+                    is CompletedActionsFragment -> {
+                        fragment.onDestroy()
+                        navController.navigate(R.id.action_completedActionsFragment_to_timerFragment)
                     }
                     else -> super.onBackPressed()
                 }

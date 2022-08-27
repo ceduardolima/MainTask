@@ -1,6 +1,7 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,6 +109,7 @@ class TaskFragment : Fragment() {
 
     private fun setupRoomObserverActions(actionIdList: List<Int>) =
         roomViewModel.allActions.observe(requireActivity()) { actionsList ->
+            Log.i("taskSetup", "current actions: $actionsList")
             val actionList = mutableListOf<ActionEntity>()
             for (action in actionsList)
                 if (actionIdList.contains(action.id))
