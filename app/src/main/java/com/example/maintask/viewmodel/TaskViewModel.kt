@@ -1,9 +1,13 @@
 package com.example.maintask.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Activity
+import android.app.Application
+import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
+import com.example.maintask.R
+import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
@@ -13,33 +17,50 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class TaskViewModel() : ViewModel() {
+class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _taskId = MutableLiveData<Int>()
-    val taskId: LiveData<Int>
+    private var roomViewModel: RoomViewModel
+
+    private var _taskId: Int = -1
+    val taskId: Int
         get() = _taskId
 
-    private val _actionIdList = MutableLiveData<List<Int>>()
-    val actionIdList: LiveData<List<Int>>
-        get() = _actionIdList
-
     private val _buttonClick = MutableLiveData<Boolean>()
-    val buttonClick: LiveData<Boolean>
-        get() = _buttonClick
 
     private val _loadDataStatus = MutableLiveData<Boolean>()
     val loadDataStatus: LiveData<Boolean>
         get() = _loadDataStatus
 
-    fun setTaskId(taskId: Int){
-        this._taskId.value = taskId
+    init {
+        val roomApplication = (application as RoomApplication)
+        roomViewModel = RoomViewModelFactory(
+            roomApplication.taskRepository,
+            roomApplication.actionRepository,
+            roomApplication.taskActionRepository
+        ).create(RoomViewModel::class.java)
     }
 
-    fun setActionIdList(actionIdList: List<Int>) {
-        this._actionIdList.value = actionIdList
+    fun observerTaskListAndCreateRecyclerView(
+        fragmentActivity: FragmentActivity,
+        createRecyclerView: (taskList: List<TaskEntity>) -> Unit) {
+        roomViewModel.allTasks.observe(fragmentActivity, Observer {
+            taskList -> createRecyclerView(taskList)
+        })
     }
 
-    fun setButtonClick(click: Boolean){
+    fun observerButtonClickAndNavigate(fragmentActivity: FragmentActivity, navigate: (id: Int) -> Unit) {
+        _buttonClick.observe(fragmentActivity, Observer { click ->
+            if (click && (taskId != -1)) {
+                navigate(taskId)
+            }
+        })
+    }
+
+    fun setTaskId(taskId: Int) {
+        this._taskId = taskId
+    }
+
+    fun setButtonClick(click: Boolean) {
         this._buttonClick.value = click
     }
 
