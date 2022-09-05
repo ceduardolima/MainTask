@@ -20,6 +20,10 @@ class RoomViewModel(
         return actionRepository.getActionByTaskId(taskId).asLiveData()
     }
 
+    fun getTaskById(taskId: Int): LiveData<TaskEntity> {
+        return taskRepository.getTaskById(taskId).asLiveData()
+    }
+
     fun resetElapsedTime(actionList: List<ActionEntity>) {
         viewModelScope.launch {
             for(action in actionList)
