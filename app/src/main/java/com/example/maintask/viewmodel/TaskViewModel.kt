@@ -1,6 +1,5 @@
 package com.example.maintask.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,8 +12,8 @@ import java.time.LocalDate
 
 class TaskViewModel() : ViewModel() {
 
-    private val _taskId = MutableLiveData<Int?>()
-    val taskId: LiveData<Int?>
+    private val _taskId = MutableLiveData<Int>()
+    val taskId: LiveData<Int>
         get() = _taskId
 
     private val _actionIdList = MutableLiveData<List<Int>>()
@@ -93,7 +92,8 @@ class TaskViewModel() : ViewModel() {
                 action.action,
                 action.order,
                 action.time,
-                action.id
+                id = action.id,
+                executor = "${action.id}"
             )
             actionsEntityList.add(actionEntity)
         }

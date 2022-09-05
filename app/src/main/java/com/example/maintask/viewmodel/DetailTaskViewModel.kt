@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.maintask.model.database.entity.CurrentTaskEntity
+import com.example.maintask.model.database.entity.ActionEntity
+import com.example.maintask.model.database.entity.TaskEntity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DetailTaskViewModel: ViewModel() {
     private val scope = viewModelScope
-    private val _currentTask = MutableLiveData<CurrentTaskEntity>()
-    val currentTask: LiveData<CurrentTaskEntity>
+    private val _currentTask = MutableLiveData<TaskEntity>()
+    val currentTask: LiveData<TaskEntity>
         get() = _currentTask
 
     private val _actionStringList = MutableLiveData<List<String>>()
@@ -22,8 +23,12 @@ class DetailTaskViewModel: ViewModel() {
     val progressBar: LiveData<Boolean>
         get() = _progressBar
 
-    fun setCurrentTask(currentTask: CurrentTaskEntity) {
-        this._currentTask.value = currentTask
+    private var _actionList = mutableListOf<ActionEntity>()
+    val actionList: List<ActionEntity>
+        get() = _actionList
+
+    fun setActionList(actionList: List<ActionEntity>) {
+        this._actionList = actionList.toMutableList()
     }
 
     fun setActionStringList(actionStringList: List<String>) {
@@ -37,6 +42,16 @@ class DetailTaskViewModel: ViewModel() {
             delay(500)
             _progressBar.value = false
         }
+    }
+
+    fun findAndSetTask(taskId: Int, taskList: List<TaskEntity>) {
+        for(task in taskList)
+            if(task.id == taskId)
+                setCurrentTask(task)
+    }
+
+    private fun setCurrentTask(currentTask: TaskEntity) {
+        this._currentTask.value = currentTask
     }
 
 }

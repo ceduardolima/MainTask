@@ -11,6 +11,7 @@ import com.example.maintask.model.task.TaskModel
 import com.example.maintask.views.fragment.CompletedActionsFragment
 import com.example.maintask.views.fragment.DetailTaskFragment
 import com.example.maintask.views.fragment.TaskFragment
+import com.example.maintask.views.fragment.TimerFragment
 
 class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
     private lateinit var navController: NavController
@@ -34,14 +35,9 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
             navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
                 when(fragment){
                     is TaskFragment -> finish()
-                    is DetailTaskFragment -> {
-                        fragment.onDestroy()
-                        navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
-                    }
-                    is CompletedActionsFragment -> {
-                        fragment.onDestroy()
-                        navController.navigate(R.id.action_completedActionsFragment_to_timerFragment)
-                    }
+                    is DetailTaskFragment -> fragment.getBackAndResetActionTimer()
+                    is TimerFragment -> fragment.getBack()
+                    is CompletedActionsFragment -> fragment.getBack()
                     else -> super.onBackPressed()
                 }
             }

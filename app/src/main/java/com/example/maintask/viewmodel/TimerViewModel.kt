@@ -1,10 +1,12 @@
 package com.example.maintask.viewmodel
 
+
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.maintask.model.database.entity.CurrentActionEntity
+import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.task.TaskActionModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,11 +27,11 @@ class TimerViewModel() : ViewModel() {
     val currentAction: LiveData<Pair<Int, String>>
         get() = _currentAction
 
-    fun setActionList(actionList: List<CurrentActionEntity>){
+    fun setActionList(actionList: List<ActionEntity>){
         this._actionList.value = toActionModel(actionList)
     }
 
-    private fun toActionModel(actionList: List<CurrentActionEntity>): List<TaskActionModel> {
+    private fun toActionModel(actionList: List<ActionEntity>): List<TaskActionModel> {
         val actionModel = mutableListOf<TaskActionModel>()
         for (action in actionList){
             actionModel.add(
@@ -58,6 +60,15 @@ class TimerViewModel() : ViewModel() {
             delay(500)
             block()
             _progressBar.value = false
+        }
+    }
+
+    fun updateActionList(fragmentActivity: FragmentActivity) {
+        currentAction.observe(fragmentActivity) { pair ->
+            _actionList.value?.forEach { action ->
+                if(action.id == pair.first)
+                    action.time = pair.second
+            }
         }
     }
 

@@ -1,17 +1,14 @@
 package com.example.maintask.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.example.maintask.model.database.TaskRoomDatabase
-import com.example.maintask.model.repository.ActionRepository
-import com.example.maintask.model.repository.TaskActionRelationRepository
-import com.example.maintask.model.repository.TaskRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import com.example.maintask.model.database.entity.ActionEntity
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(): ViewModel() {
+    private var _actionList = listOf<ActionEntity>()
+    val actionList: List<ActionEntity>
+        get() = _actionList
 
-
+    private fun setActionList(actionList: List<ActionEntity>) {
+        this._actionList = actionList
+    }
 }

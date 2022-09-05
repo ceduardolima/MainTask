@@ -33,9 +33,7 @@ class TaskFragment : Fragment() {
         RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository,
-            roomApplication.currentTaskRepository,
-            roomApplication.currentActionRepository
+            roomApplication.taskActionRepository
         )
     }
 
@@ -62,7 +60,7 @@ class TaskFragment : Fragment() {
     }
 
     private fun initRecycleView() {
-        val adapter = TaskAdapter(findNavController(), taskViewModel)
+        val adapter = TaskAdapter(taskViewModel)
         roomViewModel.allTasks.observe(viewLifecycleOwner) { task ->
             task.let { adapter.submitList(task) }
             recyclerView.layoutManager = LinearLayoutManager(context)
@@ -73,22 +71,12 @@ class TaskFragment : Fragment() {
     private fun setupObserveTaskId() {
         taskViewModel.taskId.observe(requireActivity()) { taskId ->
             if (taskId != null) {
-                setCurrentTask(taskId)
                 setupActionIdList(taskId)
                 setupActionListAndChangeFragment()
             }
         }
     }
 
-    private fun setCurrentTask(taskId: Int) {
-        roomViewModel.allTasks.observe(requireActivity()) { taskList ->
-            for (task in taskList)
-                if (taskId == task.id) {
-                    roomViewModel.setCurrentTask(task)
-                    break
-                }
-        }
-    }
 
     private fun setupActionIdList(taskId: Int) {
         roomViewModel.allTasActionRelations.observe(requireActivity()) { relationList ->
@@ -109,18 +97,19 @@ class TaskFragment : Fragment() {
 
     private fun setupRoomObserverActions(actionIdList: List<Int>) =
         roomViewModel.allActions.observe(requireActivity()) { actionsList ->
-            Log.i("taskSetup", "current actions: $actionsList")
             val actionList = mutableListOf<ActionEntity>()
             for (action in actionsList)
                 if (actionIdList.contains(action.id))
                     actionList.add(action)
-            roomViewModel.setCurrentAction(actionList)
         }
 
     private fun navigateToDetailTask() {
         taskViewModel.buttonClick.observe(requireActivity()) { click ->
             if (click) {
-                findNavController().navigate(R.id.action_taskFragment_to_detailTaskFragment)
+                val extras = Bundle()
+                taskViewModel.taskId.value?.let { extras.putInt("task_id", it) }
+                findNavController()
+                    .navigate(R.id.action_taskFragment_to_detailTaskFragment, extras)
                 taskViewModel.setButtonClick(false)
             }
         }

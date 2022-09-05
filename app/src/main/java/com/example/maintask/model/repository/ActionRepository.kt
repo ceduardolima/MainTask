@@ -2,12 +2,8 @@ package com.example.maintask.model.repository
 
 import androidx.annotation.WorkerThread
 import com.example.maintask.model.database.dao.ActionDao
-import com.example.maintask.model.database.dao.TaskDao
 import com.example.maintask.model.database.entity.ActionEntity
-import com.example.maintask.model.database.entity.TaskActionRelationEntity
-import com.example.maintask.model.database.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.single
 
 class ActionRepository(private val actionDao: ActionDao) {
     val actionList: Flow<List<ActionEntity>> = actionDao.getAllActions()
@@ -15,6 +11,16 @@ class ActionRepository(private val actionDao: ActionDao) {
     @WorkerThread
     suspend fun insert(action: ActionEntity) {
         actionDao.insert(action)
+    }
+
+    @WorkerThread
+    fun getActionByTaskId(taskId: Int): Flow<List<ActionEntity>> {
+        return actionDao.getActionByTaskId(taskId)
+    }
+
+    @WorkerThread
+    suspend fun updateElapsedTime(id: Int, elapsedTime: String) {
+        actionDao.updateElapsedTime(id, elapsedTime)
     }
 
     @WorkerThread

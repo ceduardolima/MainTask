@@ -18,6 +18,15 @@ interface ActionDao {
     @Query("SELECT * FROM task_action WHERE id = :actionId")
     fun getActionById(actionId: Int): Flow<ActionEntity>
 
+    @Query("SELECT * FROM task_action " +
+            "INNER JOIN task_action_relation ON task_action_relation.action_id = task_action.id " +
+            "WHERE task_action_relation.task_id = :taskId")
+    fun getActionByTaskId(taskId: Int): Flow<List<ActionEntity>>
+
+    @Query("UPDATE task_action SET elapsed_time = :elapsedTime WHERE id = :id")
+    suspend fun updateElapsedTime(id: Int, elapsedTime: String)
+
+
     @Query("DELETE FROM task_action")
     suspend fun deleteAll()
 }

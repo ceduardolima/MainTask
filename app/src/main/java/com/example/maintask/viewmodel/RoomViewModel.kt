@@ -10,62 +10,30 @@ class RoomViewModel(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
-    private val currentTaskRepository: CurrentTaskRepository,
-    private val currentActionRepository: CurrentActionRepository
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskEntity>> = taskRepository.taskList.asLiveData()
     val allActions: LiveData<List<ActionEntity>> = actionRepository.actionList.asLiveData()
     val allTasActionRelations: LiveData<List<TaskActionRelationEntity>> =
         taskActionRelationRepository.taskActionRelationList.asLiveData()
-    val currentTask: LiveData<List<CurrentTaskEntity>> = currentTaskRepository.taskList.asLiveData()
-    val currentAction: LiveData<List<CurrentActionEntity>> =
-        currentActionRepository.actionList.asLiveData()
+
+    fun getActionByTaskId(taskId: Int): LiveData<List<ActionEntity>> {
+        return actionRepository.getActionByTaskId(taskId).asLiveData()
+    }
+
+    fun resetElapsedTime(actionList: List<ActionEntity>) {
+        viewModelScope.launch {
+            for(action in actionList)
+                actionRepository.updateElapsedTime(action.id, "00:00:00")
+        }
+    }
 
     fun updateElapsedTime(id: Int, elapseTime: String) {
         viewModelScope.launch {
-            currentActionRepository.updateElapsedTime(id, elapseTime)
+            actionRepository.updateElapsedTime(id, elapseTime)
         }
-    }
-
-    fun setCurrentTask(task: TaskEntity) {
-        viewModelScope.launch {
-            val currentTask = toCurrentTask(task)
-            currentTaskRepository.deleteAll()
-            currentTaskRepository.insert(currentTask)
-        }
-    }
-
-    fun setCurrentAction(actionList: List<ActionEntity>){
-        viewModelScope.launch {
-            val currentActionList = toCurrentActionList(actionList)
-            currentActionRepository.deleteAll()
-            for (action in currentActionList)
-                currentActionRepository.insert(action)
-        }
-    }
-
-    private fun toCurrentTask(task: TaskEntity): CurrentTaskEntity =
-        CurrentTaskEntity(
-            task.id, task.title, task.date, task.status, task.isEmergency, task.author,
-            task.description, task.tools
-        )
-
-    fun toCurrentActionList(actionList: List<ActionEntity>): List<CurrentActionEntity> {
-        val currentActionList = mutableListOf<CurrentActionEntity>()
-        for (action in actionList)
-            currentActionList.add(
-                CurrentActionEntity(
-                    action.action,
-                    action.order,
-                    action.elapsedTime,
-                    action.id
-                )
-            )
-        return currentActionList
     }
 
     fun insertActionList(actionList: List<ActionEntity>) {
-        Log.i("teste", "${actionList.size}")
         for (action in actionList)
             insertAction(action)
     }
@@ -123,8 +91,6 @@ class RoomViewModelFactory(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
-    private val currentTaskRepository: CurrentTaskRepository,
-    private val currentActionRepository: CurrentActionRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {
@@ -132,9 +98,7 @@ class RoomViewModelFactory(
             return RoomViewModel(
                 taskRepository,
                 actionRepository,
-                taskActionRelationRepository,
-                currentTaskRepository,
-                currentActionRepository
+                taskActionRelationRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

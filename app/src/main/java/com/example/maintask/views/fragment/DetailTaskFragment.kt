@@ -11,17 +11,21 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
 import com.example.maintask.model.database.application.RoomApplication
-import com.example.maintask.model.database.entity.CurrentTaskEntity
+import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.viewmodel.DetailTaskViewModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import kotlin.properties.Delegates
 
 class DetailTaskFragment : Fragment() {
+    private var taskId by Delegates.notNull<Int>()
     private lateinit var scrollView: NestedScrollView
     private lateinit var progressBar: ProgressBar
     private lateinit var taskTitle: TextView
@@ -31,21 +35,19 @@ class DetailTaskFragment : Fragment() {
     private lateinit var taskActions: TextView
     private lateinit var taskTools: TextView
     private lateinit var goToTimerFragmentButton: Button
-    private lateinit var detailTaskViewModel: DetailTaskViewModel
+    private val detailTaskViewModel: DetailTaskViewModel by viewModels()
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository,
-            roomApplication.currentTaskRepository,
-            roomApplication.currentActionRepository
+            roomApplication.taskActionRepository
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        detailTaskViewModel = ViewModelProvider(this)[DetailTaskViewModel::class.java]
+        taskId = requireArguments().getInt("task_id")
         detailTaskViewModel.loadData {
             getCurrentTask()
             getCurrentActionList()
@@ -53,20 +55,18 @@ class DetailTaskFragment : Fragment() {
     }
 
     private fun getCurrentTask() {
-        roomViewModel.currentTask.observe(requireActivity()) { taskList ->
-            if(taskList.isNotEmpty())
-                detailTaskViewModel.setCurrentTask(taskList[0])
+        roomViewModel.allTasks.observe(requireActivity()) { taskList ->
+            detailTaskViewModel.findAndSetTask(taskId, taskList)
         }
     }
 
     private fun getCurrentActionList() {
-        roomViewModel.currentAction.observe(requireActivity()) { actionList ->
-            if (actionList.isNotEmpty()) {
-                val actionStringList = mutableListOf<String>()
-                for (action in actionList)
-                    actionStringList.add(action.action)
-                detailTaskViewModel.setActionStringList(actionStringList)
-            }
+        roomViewModel.getActionByTaskId(taskId).observe(requireActivity()) { actionList ->
+            val actionStringList = mutableListOf<String>()
+            detailTaskViewModel.setActionList(actionList)
+            for (action in actionList)
+                actionStringList.add(action.action)
+            detailTaskViewModel.setActionStringList(actionStringList)
         }
     }
 
@@ -76,21 +76,8 @@ class DetailTaskFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
         initializeVariables(view)
-        detailTaskViewModel.progressBar.observe(requireActivity()) { isLoadingData ->
-            if (!isLoadingData) {
-                setFragmentInformation()
-                changeToTimerFragment()
-                ableVisibility()
-            }
-        }
+        setupFragmentInformation()
         return view
-    }
-
-    private fun changeToTimerFragment() {
-        goToTimerFragmentButton.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_detailTaskFragment_to_timerFragment)
-        }
     }
 
     private fun initializeVariables(view: View) {
@@ -105,11 +92,30 @@ class DetailTaskFragment : Fragment() {
         scrollView = view.findViewById(R.id.detail_fragment_scroll_view)
     }
 
+    private fun setupFragmentInformation() {
+        detailTaskViewModel.progressBar.observe(requireActivity()) { isLoadingData ->
+            if (!isLoadingData) {
+                setFragmentInformation()
+                changeToTimerFragment()
+                ableVisibility()
+            }
+        }
+    }
+
     private fun setFragmentInformation() {
         detailTaskViewModel.currentTask.observe(requireActivity()) { task ->
             detailTaskViewModel.actionStringList.observe(requireActivity()) { stringList ->
                 setAllText(task, stringList.joinToString(", "))
             }
+        }
+    }
+
+    private fun changeToTimerFragment() {
+        goToTimerFragmentButton.setOnClickListener {
+            val extras = Bundle()
+            extras.putInt("task_id", taskId)
+            findNavController()
+                .navigate(R.id.action_detailTaskFragment_to_timerFragment, extras)
         }
     }
 
@@ -124,9 +130,9 @@ class DetailTaskFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setAllText(currentTask: CurrentTaskEntity, actionsString: String){
+    private fun setAllText(currentTask: TaskEntity, actionsString: String) {
         taskTitle.text = currentTask.title
-        deadline.text = daysLeft(LocalDate.parse(currentTask.date).dayOfYear )
+        deadline.text = daysLeft(LocalDate.parse(currentTask.date).dayOfYear)
         taskAuthor.text = "Autor: ${currentTask.author}"
         taskDescription.text = "Descrição: ${currentTask.description}"
         taskActions.text = "Ações: $actionsString"
@@ -146,7 +152,15 @@ class DetailTaskFragment : Fragment() {
 
     override fun onDestroyView() {
         disableVisibility()
-
         super.onDestroyView()
+    }
+
+    fun getBackAndResetActionTimer() {
+        val actionList = detailTaskViewModel.actionList
+        val navController = findNavController()
+        CoroutineScope(Main).launch {
+            roomViewModel.resetElapsedTime(actionList)
+            navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
+        }
     }
 }

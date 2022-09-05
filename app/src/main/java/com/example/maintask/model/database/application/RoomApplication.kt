@@ -12,6 +12,4 @@ class RoomApplication: Application() {
     val taskRepository by lazy { TaskRepository(database.taskDao())}
     val actionRepository by lazy { ActionRepository(database.actionDao())}
     val taskActionRepository by lazy { TaskActionRelationRepository(database.taskActionRelationDao())}
-    val currentTaskRepository by lazy { CurrentTaskRepository(database.currentTaskDao()) }
-    val currentActionRepository by lazy { CurrentActionRepository(database.currentActionDao()) }
 }

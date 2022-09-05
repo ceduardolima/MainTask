@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.viewmodel.TaskViewModel
 
-class TaskAdapter(private val navController: NavController, private val taskViewModel: TaskViewModel)
+class TaskAdapter(private val taskViewModel: TaskViewModel)
     : ListAdapter<TaskEntity, TaskViewHolder>(TaskComparator()) {
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {

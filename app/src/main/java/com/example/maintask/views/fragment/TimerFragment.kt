@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,8 +22,9 @@ import com.example.maintask.viewmodel.RoomViewModelFactory
 import com.example.maintask.viewmodel.TimerViewModel
 
 class TimerFragment : Fragment() {
+    private var taskId: Int = 0
     private lateinit var timerRecyclerView: RecyclerView
-    private lateinit var timerViewModel: TimerViewModel
+    private val timerViewModel: TimerViewModel by viewModels()
     private lateinit var progressBar: ProgressBar
     private lateinit var finishButton: Button
     private val roomViewModel: RoomViewModel by viewModels {
@@ -33,25 +32,22 @@ class TimerFragment : Fragment() {
         RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository,
-            roomApplication.currentTaskRepository,
-            roomApplication.currentActionRepository
+            roomApplication.taskActionRepository
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timerViewModel = ViewModelProvider(this)[TimerViewModel::class.java]
+        taskId = requireArguments().getInt("task_id")
         timerViewModel.loadData {
             getCurrentActionList()
         }
     }
 
     private fun getCurrentActionList() {
-        roomViewModel.currentAction.observe(requireActivity()) { actionList ->
+        roomViewModel.getActionByTaskId(taskId).observe(requireActivity()) { actionList ->
             if (actionList.isNotEmpty()) {
                 timerViewModel.setActionList(actionList)
-                roomViewModel.currentAction.removeObservers(requireActivity())
             }
         }
     }
@@ -65,10 +61,8 @@ class TimerFragment : Fragment() {
         setupTimerViewModelObserver()
         progressBarObserver()
         completedActionsObserver()
-
-        timerViewModel.currentAction.observe(requireActivity()) { pair ->
-            roomViewModel.updateElapsedTime(pair.first, pair.second)
-        }
+        timerViewModel.updateActionList(requireActivity())
+        updateElapsedTime()
         changeToCompletedActionsFragment()
         return timerFragment
     }
@@ -86,7 +80,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun createTheRecyclerViewAndSetAdapter(actionModel: MutableList<TaskActionModel>){
-        val timerAdapter = TimerAdapter(requireContext(), requireActivity(), actionModel, timerViewModel)
+        val timerAdapter = TimerAdapter(requireContext(), actionModel, timerViewModel)
         timerRecyclerView.layoutManager = LinearLayoutManager(context)
         timerRecyclerView.hasFixedSize()
         timerRecyclerView.adapter = timerAdapter
@@ -107,7 +101,6 @@ class TimerFragment : Fragment() {
 
     private fun completedActionsObserver() {
         timerViewModel.completedActions.observe(requireActivity()) { wasCompleted ->
-            Log.i("completa", "foi completa? $wasCompleted")
             if (wasCompleted) {
                 val drawable = ResourcesCompat.getDrawable(resources, R.drawable.default_button_shape, null)
                 finishButton.background = drawable
@@ -121,12 +114,27 @@ class TimerFragment : Fragment() {
         }
     }
 
+    private fun updateElapsedTime() {
+        timerViewModel.currentAction.observe(requireActivity()) { pair ->
+            roomViewModel.updateElapsedTime(pair.first, pair.second)
+        }
+    }
+
     private fun changeToCompletedActionsFragment(){
         finishButton.setOnClickListener {
             if(finishButton.isEnabled && (timerViewModel.completedActions.value == true)){
-                findNavController().navigate(R.id.action_timerFragment_to_completedActionsFragment)
+                val extras = Bundle()
+                extras.putInt("task_id", taskId)
+                findNavController()
+                    .navigate(R.id.action_timerFragment_to_completedActionsFragment, extras)
             }
         }
     }
 
+    fun getBack() {
+        val extras = Bundle()
+        extras.putInt("task_id", taskId)
+        findNavController()
+            .navigate(R.id.action_timerFragment_to_detailTaskFragment, extras)
+    }
 }

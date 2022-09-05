@@ -10,7 +10,6 @@ import com.example.maintask.viewmodel.TimerViewModel
 
 class TimerAdapter(
     private val context: Context,
-    private val lifecycleOwner: LifecycleOwner,
     private val taskActions: MutableList<TaskActionModel>,
     private val timerViewModel: TimerViewModel
 ) : RecyclerView.Adapter<TimerViewHolder>() {

@@ -56,15 +56,16 @@
         android:name="com.example.maintask.views.fragment.TimerFragment"
         android:label="fragment_timer"
         tools:layout="@layout/fragment_timer" >
-        <argument
-            android:name="actions_id"
-            app:argType="integer[]" />
         <action
             android:id="@+id/action_timerFragment_to_detailTaskFragment"
             app:destination="@id/detailTaskFragment" />
         <action
             android:id="@+id/action_timerFragment_to_completedActionsFragment"
             app:destination="@id/completedActionsFragment" />
+        <argument
+            android:name="task_id"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/ajudaFragment"
@@ -100,5 +101,9 @@
         <action
             android:id="@+id/action_completedActionsFragment_to_timerFragment"
             app:destination="@id/timerFragment" />
+        <argument
+            android:name="task_id"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
