@@ -3,11 +3,14 @@ package com.example.maintask.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.model.task.TaskModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TaskViewModel() : ViewModel() {
@@ -24,6 +27,10 @@ class TaskViewModel() : ViewModel() {
     val buttonClick: LiveData<Boolean>
         get() = _buttonClick
 
+    private val _loadDataStatus = MutableLiveData<Boolean>()
+    val loadDataStatus: LiveData<Boolean>
+        get() = _loadDataStatus
+
     fun setTaskId(taskId: Int){
         this._taskId.value = taskId
     }
@@ -34,6 +41,14 @@ class TaskViewModel() : ViewModel() {
 
     fun setButtonClick(click: Boolean){
         this._buttonClick.value = click
+    }
+
+    fun loadData(block: () -> Unit) {
+        viewModelScope.launch {
+            _loadDataStatus.value = false
+            block()
+            _loadDataStatus.value = true
+        }
     }
 
     fun getTaskList(): MutableList<TaskModel> {

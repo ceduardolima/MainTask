@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
@@ -24,10 +26,12 @@ import com.example.maintask.viewmodel.RoomViewModelFactory
 import com.example.maintask.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment() {
-    private val taskViewModel = TaskViewModel()
+    private val taskViewModel: TaskViewModel by viewModels()
+    private lateinit var container: ConstraintLayout
     private lateinit var lateButton: Button
     private lateinit var arrowLate: ImageView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private val roomViewModel: RoomViewModel by viewModels {
         val roomApplication = (requireActivity().application as RoomApplication)
         RoomViewModelFactory(
@@ -39,32 +43,8 @@ class TaskFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupObserveTaskId()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_task, container, false)
-        initWidgets(view)
-        initRecycleView()
-        lateButton.setOnClickListener { changeListVisibility(arrowLate, recyclerView) }
-        return view
-    }
-
-    private fun initWidgets(view: View) {
-        lateButton = view.findViewById(R.id.task_late_bt)
-        arrowLate = view.findViewById(R.id.task_late_arrow)
-        recyclerView = view.findViewById(R.id.task_late_recycler)
-    }
-
-    private fun initRecycleView() {
-        val adapter = TaskAdapter(taskViewModel)
-        roomViewModel.allTasks.observe(viewLifecycleOwner) { task ->
-            task.let { adapter.submitList(task) }
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = adapter
+        taskViewModel.loadData {
+            setupObserveTaskId()
         }
     }
 
@@ -77,6 +57,52 @@ class TaskFragment : Fragment() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_task, container, false)
+        initWidgets(view)
+        setVisibility()
+        initRecycleView()
+        lateButton.setOnClickListener { changeListVisibility(arrowLate, recyclerView) }
+        return view
+    }
+
+    private fun initWidgets(view: View) {
+        lateButton = view.findViewById(R.id.task_late_bt)
+        arrowLate = view.findViewById(R.id.task_late_arrow)
+        recyclerView = view.findViewById(R.id.task_late_recycler)
+        progressBar = view.findViewById(R.id.task_progress_bar)
+        container = view.findViewById(R.id.task_view_container)
+    }
+
+    private fun setVisibility() {
+        taskViewModel.loadDataStatus.observe(requireActivity()) { wasLoaded ->
+            if(wasLoaded){
+                ableViewVisibility()
+            }
+        }
+    }
+
+    private fun ableViewVisibility() {
+        container.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+    }
+
+    private fun disableViewVisibility() {
+        container.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun initRecycleView() {
+        val adapter = TaskAdapter(taskViewModel)
+        roomViewModel.allTasks.observe(viewLifecycleOwner) { task ->
+            task.let { adapter.submitList(task) }
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = adapter
+        }
+    }
 
     private fun setupActionIdList(taskId: Int) {
         roomViewModel.allTasActionRelations.observe(requireActivity()) { relationList ->
@@ -137,5 +163,8 @@ class TaskFragment : Fragment() {
             arrow.rotation = 90f
         }
 
-
+    override fun onDestroyView() {
+        disableViewVisibility()
+        super.onDestroyView()
+    }
 }
