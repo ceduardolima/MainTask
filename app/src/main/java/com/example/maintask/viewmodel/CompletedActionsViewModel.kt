@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.maintask.model.database.entity.ActionEntity
+import com.example.maintask.model.task.TaskActionModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -13,25 +14,17 @@ class CompletedActionsViewModel : ViewModel() {
     val progressBar: LiveData<Boolean>
         get() = _progressBar
 
-    private val _actions = MutableLiveData<List<ActionEntity>>()
-    val actions: LiveData<List<ActionEntity>>
-        get() = _actions
-
     private val _elapsedTime = MutableLiveData<Int>()
     val elapsedTime: LiveData<Int>
         get() = _elapsedTime
 
-    fun loadDatabase(block: suspend () -> Unit) {
+    fun loadData(block: suspend () -> Unit) {
         viewModelScope.launch {
             _progressBar.value = false
             delay(500)
             block()
             _progressBar.value = true
         }
-    }
-
-    fun setActions(actions: List<ActionEntity>) {
-        this._actions.value = actions
     }
 
     fun restartElapsedTime() {
@@ -50,9 +43,4 @@ class CompletedActionsViewModel : ViewModel() {
         val hours = (minutes?.div(60))
         return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
-
-    fun resetElapsedTime() {
-        _elapsedTime.value = 0
-    }
-
 }

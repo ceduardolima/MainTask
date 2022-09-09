@@ -50,8 +50,8 @@ class TimerViewHolder(
         if (action.isStopwatchRunning()) {
             action.pauseStopwatch()
             button.setImageResource(R.drawable.ic_play)
-            timerViewModel.setCurrentAction(action.id, action.elapsedTime())
             action.time = elapsedTime.text.toString()
+            timerViewModel.updateTaskAction(action.id, action.time)
         } else {
             action.startStopwatch(elapsedTime)
             button.setImageResource(R.drawable.ic_pause)
@@ -66,7 +66,7 @@ class TimerViewHolder(
         action.resetStopwatch()
         elapsedTime.text = action.elapsedTime()
         button.setImageResource(R.drawable.ic_play)
-        timerViewModel.setCurrentAction(action.id, action.elapsedTime())
+        timerViewModel.updateTaskAction(action.id, action.time)
     }
 
 }

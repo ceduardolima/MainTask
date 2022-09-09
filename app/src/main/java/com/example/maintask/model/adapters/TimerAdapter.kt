@@ -3,7 +3,6 @@ package com.example.maintask.model.adapters
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.viewmodel.TimerViewModel
@@ -41,11 +40,10 @@ class TimerAdapter(
     }
 
     private fun runStopwatch(holder: TimerViewHolder, position: Int){
+        val currentAction = taskActions[position]
         holder.playButton.setOnClickListener {
             if (isAbleToStart(position)) {
-                holder.startStop(taskActions[position])
-                setActionStatus(position)
-                verifyCompletedTasks()
+                holder.startStop(currentAction)
             }
             else
                 Toast.makeText(
@@ -59,16 +57,16 @@ class TimerAdapter(
     private fun resetStopwatch(holder: TimerViewHolder, position: Int){
         holder.resetButton.setOnClickListener {
             holder.reset(taskActions[position])
-            setActionStatus(position)
-            verifyCompletedTasks()
+            //setActionStatus(position)
+            //verifyCompletedTasks()
         }
     }
 
     private fun verifyCompletedTasks() {
         if (completedActions.contains(false))
-            timerViewModel.setCompletedActions(false)
+            timerViewModel.hasFinishedAllActions(false)
         else
-            timerViewModel.setCompletedActions(true)
+            timerViewModel.hasFinishedAllActions(true)
     }
 
     private fun setActionStatus(position: Int) {

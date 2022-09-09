@@ -62,10 +62,6 @@
         <action
             android:id="@+id/action_timerFragment_to_completedActionsFragment"
             app:destination="@id/completedActionsFragment" />
-        <argument
-            android:name="task_id"
-            app:argType="integer"
-            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/ajudaFragment"
@@ -101,9 +97,5 @@
         <action
             android:id="@+id/action_completedActionsFragment_to_timerFragment"
             app:destination="@id/timerFragment" />
-        <argument
-            android:name="task_id"
-            app:argType="integer"
-            android:defaultValue="-1" />
     </fragment>
 </navigation>

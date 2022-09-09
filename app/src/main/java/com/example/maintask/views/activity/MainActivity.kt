@@ -35,7 +35,7 @@ class MainActivity() : AppCompatActivity(), MainActivityCallbacks{
             navHostFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
                 when(fragment){
                     is TaskFragment -> finish()
-                    is DetailTaskFragment -> fragment.getBackAndResetActionTimer()
+                    is DetailTaskFragment -> fragment.getBack()
                     is TimerFragment -> fragment.getBack()
                     is CompletedActionsFragment -> fragment.getBack()
                     else -> super.onBackPressed()

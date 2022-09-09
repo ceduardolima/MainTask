@@ -1,7 +1,6 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,74 +8,53 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.adapters.ExecutorAdapter
-import com.example.maintask.model.database.application.RoomApplication
-import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.executor.Executor
+import com.example.maintask.model.task.TaskActionModel
+import com.example.maintask.model.time.ElapsedTimeHelper
 import com.example.maintask.viewmodel.CompletedActionsViewModel
-import com.example.maintask.viewmodel.RoomViewModel
-import com.example.maintask.viewmodel.RoomViewModelFactory
+import com.example.maintask.viewmodel.SharedDataViewModel
 
 class CompletedActionsFragment : Fragment() {
-    private var taskId: Int = 0
-    private lateinit var completedActionsViewModel: CompletedActionsViewModel
+    private val completedActionsViewModel: CompletedActionsViewModel by viewModels()
     private lateinit var progressBar: ProgressBar
     private lateinit var scrollView: NestedScrollView
     private lateinit var elapsedTime: TextView
     private lateinit var executorRecyclerView: RecyclerView
-    private val roomViewModel: RoomViewModel by viewModels {
-        val roomApplication = (requireActivity().application as RoomApplication)
-        RoomViewModelFactory(
-            roomApplication.taskRepository,
-            roomApplication.actionRepository,
-            roomApplication.taskActionRepository
-        )
-    }
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        taskId = requireArguments().getInt("task_id")
-        completedActionsViewModel =
-            ViewModelProvider(requireActivity())[CompletedActionsViewModel::class.java]
         completedActionsViewModel.restartElapsedTime()
-        completedActionsViewModel.loadDatabase {
-            loadActions()
+        completedActionsViewModel.loadData {
+            observerSetElapsedTime()
         }
     }
 
-    private fun loadActions() {
-        val listOfAction = roomViewModel.getActionByTaskId(taskId)
-        listOfAction.observe(requireActivity()) { actions ->
-            if(actions.isNotEmpty()){
-                completedActionsViewModel.setActions(actions)
-                calculateElapsedTime(actions, 0)
-            }
+    private fun observerSetElapsedTime() {
+        sharedDataViewModel.actionList.observe(requireActivity()) { taskActionList ->
+            calculateElapsedTime(taskActionList, 0)
         }
     }
 
-    private fun calculateElapsedTime(actions: List<ActionEntity>, index: Int) {
+    private fun calculateElapsedTime(actions: List<TaskActionModel>, index: Int) {
         if(index >= actions.size)
             return
-        val seconds = getSeconds(actions[index].elapsedTime)
-        val minutes = getMinutes(actions[index].elapsedTime)
-        val hours = getHours(actions[index].elapsedTime)
+        val timeHelper = ElapsedTimeHelper(actions[index].time)
+        val seconds = timeHelper.getSeconds()
+        val minutes = timeHelper.getMinutes()
+        val hours = timeHelper.getHours()
         val timeList = mutableListOf(hours, minutes, seconds)
         val newIndex = index + 1
         completedActionsViewModel.addElapsedTime(timeList)
         calculateElapsedTime(actions, newIndex)
     }
-
-    private fun getSeconds(time: String) = time.split(":")[2].toInt()
-
-    private fun getMinutes(time: String) = time.split(":")[1].toInt()
-
-    private fun getHours(time: String) = time.split(":")[0].toInt()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,14 +113,13 @@ class CompletedActionsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        completedActionsViewModel.resetElapsedTime()
+        completedActionsViewModel.restartElapsedTime()
         super.onDestroyView()
     }
 
     fun getBack() {
         val extras = Bundle()
-        extras.putInt("task_id", taskId)
         findNavController()
-            .navigate(R.id.action_completedActionsFragment_to_timerFragment, extras)
+            .navigate(R.id.action_completedActionsFragment_to_timerFragment)
     }
 }

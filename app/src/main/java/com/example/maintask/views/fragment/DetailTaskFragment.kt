@@ -11,11 +11,14 @@ import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.maintask.R
+import com.example.maintask.model.converter.TaskActionConverter
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.daysLeft.DaysLeft
-import com.example.maintask.viewmodel.TimerCounterProcessViewModel
+import com.example.maintask.viewmodel.DetailViewModel
+import com.example.maintask.viewmodel.SharedDataViewModel
 import java.time.LocalDate
 
 class DetailTaskFragment : Fragment() {
@@ -28,15 +31,24 @@ class DetailTaskFragment : Fragment() {
     private lateinit var taskActions: TextView
     private lateinit var taskTools: TextView
     private lateinit var goToTimerFragmentButton: Button
-    private val timerCounterProcessViewModel: TimerCounterProcessViewModel by activityViewModels()
-
+    private val detailViewModel: DetailViewModel by viewModels()
+    private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val taskId = requireArguments().getInt("task_id")
-        timerCounterProcessViewModel.loadData {
-            timerCounterProcessViewModel.loadTaskAndActions(requireActivity(), taskId)
+        val taskId = arguments?.getInt("task_id")
+        if(taskId == null){
+            getBack()
+        } else {
+            detailViewModel.loadData {
+                loadTaskAndActionList(taskId)
+            }
         }
+    }
+
+    private fun loadTaskAndActionList(taskId: Int) {
+        sharedDataViewModel.loadTask(requireActivity(), taskId)
+        sharedDataViewModel.loadActionList(requireActivity(), taskId)
     }
 
     override fun onCreateView(
@@ -45,9 +57,9 @@ class DetailTaskFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail_task, container, false)
         initializeViews(view)
-        setInformationWhenDataLoad()
+        observerIfDataWasLoaded()
         getButtonClick()
-        changeToTimerFragment()
+        observerChangeActivityButtonClick()
         return view
     }
 
@@ -63,20 +75,21 @@ class DetailTaskFragment : Fragment() {
         scrollView = view.findViewById(R.id.detail_fragment_scroll_view)
     }
 
-    private fun setInformationWhenDataLoad() {
-        timerCounterProcessViewModel.observeIfWasDataLoaded(requireActivity()) {
-            setFragmentInformation()
-            ableVisibility()
+    private fun observerIfDataWasLoaded() {
+        detailViewModel.dataWasLoaded.observe(requireActivity()) { wasLoaded ->
+            if (wasLoaded) {
+                setFragmentInformation()
+                ableVisibility()
+            }
         }
     }
 
     private fun setFragmentInformation() {
-        val actionTitleList = timerCounterProcessViewModel.actionTitleList
-        val currentTask = timerCounterProcessViewModel.currentTask
-        currentTask.observe(requireActivity()) { task ->
-            if(task != null) {
-                actionTitleList.observe(requireActivity()) { titleList ->
-                    setAllText(task, titleList.joinToString(", "))
+        sharedDataViewModel.currentTask.observe(requireActivity()) { task ->
+            sharedDataViewModel.actionList.observe(requireActivity()) { actionList ->
+                if (task != null) {
+                    val actionTitleList = TaskActionConverter().toActionTitleList(actionList)
+                    setAllText(task, actionTitleList.joinToString(", "))
                 }
             }
         }
@@ -93,23 +106,24 @@ class DetailTaskFragment : Fragment() {
         taskTools.text = "Ferramentas: ${currentTask.tools}"
     }
 
-    private fun getButtonClick() {
-        goToTimerFragmentButton.setOnClickListener {
-            timerCounterProcessViewModel.setButtonClick(true)
-        }
-    }
-
-    private fun changeToTimerFragment() {
-        timerCounterProcessViewModel
-            .observerDetailFragmentButtonClickAndNavigate(requireActivity()) {
-                findNavController()
-                    .navigate(R.id.action_detailTaskFragment_to_timerFragment)
-            }
-    }
-
     private fun ableVisibility() {
         progressBar.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
+    }
+
+    private fun getButtonClick() {
+        goToTimerFragmentButton.setOnClickListener {
+            detailViewModel.setButtonClick(true)
+        }
+    }
+
+    private fun observerChangeActivityButtonClick() {
+        detailViewModel.buttonClick.observe(requireActivity()) { click ->
+            if(click) {
+                findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment)
+                detailViewModel.setButtonClick(false)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -122,7 +136,7 @@ class DetailTaskFragment : Fragment() {
         scrollView.visibility = View.INVISIBLE
     }
 
-    fun getBackAndResetActionTimer() {
+    fun getBack() {
         val navController = findNavController()
         navController.navigate(R.id.action_detailTaskFragment_to_taskFragment)
     }
