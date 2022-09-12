@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.fragment.TeamFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/default_font_subtitle"
+        android:textSize="10pt"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="Adicione ou exclua membros: " />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/team_textedit_id"
+        style="@style/login_edit_text"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        app:startIconDrawable="@drawable/ic_login_user"
+        app:endIconMode="clear_text"
+        android:hint="ID">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="textEmailAddress"
+            android:textCursorDrawable="@drawable/login_texcursor_shape"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/team_add_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_save"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="right"
+        style="@style/default_button_style"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/team_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginHorizontal="10dp"/>
+
+</FrameLayout>

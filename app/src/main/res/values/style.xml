@@ -71,8 +71,8 @@
         <item name="hintTextColor">@color/default_orange</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeColor">@color/login_textedit_border_color</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
     </style>
 
     <style name="task_arrow">
