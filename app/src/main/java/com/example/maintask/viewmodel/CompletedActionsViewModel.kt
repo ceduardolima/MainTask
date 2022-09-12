@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.maintask.model.database.entity.ActionEntity
-import com.example.maintask.model.task.TaskActionModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -44,6 +44,8 @@ class TimerAdapter(
         holder.playButton.setOnClickListener {
             if (isAbleToStart(position)) {
                 holder.startStop(currentAction)
+                setActionStatus(position)
+                verifyCompletedTasks()
             }
             else
                 Toast.makeText(
@@ -57,8 +59,8 @@ class TimerAdapter(
     private fun resetStopwatch(holder: TimerViewHolder, position: Int){
         holder.resetButton.setOnClickListener {
             holder.reset(taskActions[position])
-            //setActionStatus(position)
-            //verifyCompletedTasks()
+            setActionStatus(position)
+            verifyCompletedTasks()
         }
     }
 

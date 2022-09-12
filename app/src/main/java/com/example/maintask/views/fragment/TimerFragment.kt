@@ -33,9 +33,9 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun observerSetTaskActionList(){
+    private fun observerSetTaskActionList() {
         sharedDataViewModel.actionList.observe(requireActivity()) { actionList ->
-            if(actionList.isNotEmpty()) {
+            if (actionList.isNotEmpty()) {
                 timerViewModel.setTaskActionList(actionList)
                 sharedDataViewModel.actionList.removeObservers(requireActivity())
             }
@@ -63,23 +63,20 @@ class TimerFragment : Fragment() {
     }
 
     private fun createTheRecyclerViewAndSetAdapter() {
-        timerViewModel.taskActionList.observe(requireActivity()) { taskActionList ->
-            if (taskActionList.isNotEmpty()) {
-                val timerAdapter = TimerAdapter(
-                    requireContext(),
-                    taskActionList.toMutableList(),
-                    timerViewModel
-                )
-                timerRecyclerView.layoutManager = LinearLayoutManager(context)
-                timerRecyclerView.hasFixedSize()
-                timerRecyclerView.adapter = timerAdapter
-            }
-        }
+        val taskActionList = timerViewModel.taskActionList.value!!
+        val timerAdapter = TimerAdapter(
+            requireContext(),
+            taskActionList.toMutableList(),
+            timerViewModel
+        )
+        timerRecyclerView.layoutManager = LinearLayoutManager(context)
+        timerRecyclerView.hasFixedSize()
+        timerRecyclerView.adapter = timerAdapter
     }
 
     private fun observerDataWasLoaded() {
         timerViewModel.dataWasLoaded.observe(requireActivity()) { wasLoaded ->
-            if(wasLoaded)
+            if (wasLoaded)
                 ableViewVisibility()
         }
     }
@@ -91,32 +88,33 @@ class TimerFragment : Fragment() {
     }
 
     private fun observerCompletedActions() {
-        timerViewModel.completedActions.observe(requireActivity()) {
-                wasCompleted -> changeButtonDrawable(wasCompleted)
+        timerViewModel.completedActions.observe(requireActivity()) { wasCompleted ->
+            changeButtonDrawable(wasCompleted)
         }
     }
 
     private fun observerUpdateTaskActionFromSharedViewModel() {
         timerViewModel.taskActionList.observe(requireActivity()) { taskActionList ->
-            if(taskActionList.isNotEmpty())
+            if (taskActionList.isNotEmpty())
                 sharedDataViewModel.setTaskActionList(taskActionList)
         }
     }
 
-    private fun changeButtonDrawable(wasCompleted: Boolean){
+    private fun changeButtonDrawable(wasCompleted: Boolean) {
         if (wasCompleted) {
-            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.default_button_shape, null)
+            val drawable =
+                ResourcesCompat.getDrawable(resources, R.drawable.default_button_shape, null)
             finishButton.background = drawable
             finishButton.isEnabled = true
-        }
-        else {
-            val drawable = ResourcesCompat.getDrawable(resources, R.drawable.button_color_grey, null)
+        } else {
+            val drawable =
+                ResourcesCompat.getDrawable(resources, R.drawable.button_color_grey, null)
             finishButton.background = drawable
             finishButton.isEnabled = false
         }
     }
 
-    private fun changeActivity(){
+    private fun changeActivity() {
         finishButton.setOnClickListener {
             findNavController().navigate(R.id.action_timerFragment_to_completedActionsFragment)
         }
