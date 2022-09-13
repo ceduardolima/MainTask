@@ -26,10 +26,10 @@
         />
 
     <ImageButton
-        android:id="@+id/navbar_settings"
+        android:id="@+id/navbar_team"
         style="@style/navbar_button_style"
         android:layout_marginStart="30dp"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/ic_group"
         />
 
     <ImageButton

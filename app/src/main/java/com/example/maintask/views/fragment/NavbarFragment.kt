@@ -43,7 +43,7 @@ class NavbarFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_navbar, container, false)
         val hometBt = view.findViewById<ImageButton>(R.id.navbar_home)
         val perfilBt = view.findViewById<ImageButton>(R.id.navbar_perfil)
-        val settingsBt = view.findViewById<ImageButton>(R.id.navbar_settings)
+        val teamBt = view.findViewById<ImageButton>(R.id.navbar_team)
         val helpBt = view.findViewById<ImageButton>(R.id.navbar_help)
 
         // Faz a navegação global para as determinadas telas
@@ -70,7 +70,7 @@ class NavbarFragment : Fragment() {
             }
         }
 
-        settingsBt.setOnClickListener {
+        teamBt.setOnClickListener {
             if(lastNavigation != R.id.action_global_config) {
                 lastNavigation = R.id.action_global_config
                 findNavController().navigate(R.id.action_global_config)
