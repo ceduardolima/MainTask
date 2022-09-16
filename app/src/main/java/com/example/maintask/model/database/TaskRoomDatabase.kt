@@ -7,15 +7,19 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.maintask.model.database.dao.*
 import com.example.maintask.model.database.entity.*
+import com.example.maintask.model.database.migration.ManualMigration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [TaskEntity::class, ActionEntity::class, TaskActionRelationEntity::class],
-version = 1, exportSchema = true)
+@Database(
+    entities = [TaskEntity::class, ActionEntity::class,
+        TaskActionRelationEntity::class, TeamMemberEntity::class],
+    version = 2, exportSchema = true)
 abstract class TaskRoomDatabase: RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun actionDao(): ActionDao
     abstract fun taskActionRelationDao(): TaskActionRelationDao
+    abstract fun teamMemberDao(): TeamMemberDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope
@@ -28,7 +32,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                     populateDatabase(
                         database.taskDao(),
                         database.actionDao(),
-                        database.taskActionRelationDao(),
+                        database.taskActionRelationDao()
                     )
                 }
             }
@@ -77,7 +81,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                     "task_database"
                 )
                     .addCallback(TaskDatabaseCallback(scope))
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(ManualMigration.MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 instance

@@ -10,11 +10,41 @@ class RoomViewModel(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
+    private val teamMemberRepository: TeamMemberRepository
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskEntity>> = taskRepository.taskList.asLiveData()
     val allActions: LiveData<List<ActionEntity>> = actionRepository.actionList.asLiveData()
     val allTasActionRelations: LiveData<List<TaskActionRelationEntity>> =
         taskActionRelationRepository.taskActionRelationList.asLiveData()
+    val team: LiveData<List<TeamMemberEntity>> = teamMemberRepository.team.asLiveData()
+
+    fun insertTeamMember(teamMemberEntity: TeamMemberEntity) {
+        viewModelScope.launch {
+            teamMemberRepository.insert(teamMemberEntity)
+        }
+    }
+
+    fun deleteTeamMemberTable(teamMemberEntity: TeamMemberEntity) {
+        viewModelScope.launch {
+            teamMemberRepository.deleteAll()
+        }
+    }
+
+    fun deleteTeamMemberById(id: Int) {
+        viewModelScope.launch {
+            teamMemberRepository.deleteMemberById(id)
+        }
+    }
+
+    fun getTeamMemberById(id: Int): LiveData<TeamMemberEntity> {
+        return teamMemberRepository.getMemberById(id).asLiveData()
+    }
+
+    fun setWorkTime(id: Int, elapseTime: Long) {
+        viewModelScope.launch {
+            teamMemberRepository.setWorkTime(id, elapseTime)
+        }
+    }
 
     fun getActionByTaskId(taskId: Int): LiveData<List<ActionEntity>> {
         return actionRepository.getActionByTaskId(taskId).asLiveData()
@@ -95,6 +125,7 @@ class RoomViewModelFactory(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
+    private val teamMemberRepository: TeamMemberRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {
@@ -102,7 +133,8 @@ class RoomViewModelFactory(
             return RoomViewModel(
                 taskRepository,
                 actionRepository,
-                taskActionRelationRepository
+                taskActionRelationRepository,
+                teamMemberRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

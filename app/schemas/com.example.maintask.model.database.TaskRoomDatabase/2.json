@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "538a29f0b5be2636c737c923c7478303",
+    "identityHash": "2ab103d07f11d0a1c304c98479e771d0",
     "entities": [
       {
         "tableName": "task",
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "task_action",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`action` TEXT NOT NULL, `order` INTEGER NOT NULL, `elapsed_time` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`action` TEXT NOT NULL, `order` INTEGER NOT NULL, `elapsed_time` TEXT NOT NULL, `executor` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
           {
             "fieldPath": "action",
@@ -85,6 +85,12 @@
           {
             "fieldPath": "elapsedTime",
             "columnName": "elapsed_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "executor",
+            "columnName": "executor",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -137,8 +143,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "current_task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `date` TEXT NOT NULL, `status` INTEGER NOT NULL, `is_emergency` INTEGER NOT NULL, `author` TEXT NOT NULL, `description` TEXT NOT NULL, `tools` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "team_member",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `photoPath` TEXT NOT NULL, `workTime` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -147,45 +153,21 @@
             "notNull": true
           },
           {
-            "fieldPath": "title",
-            "columnName": "title",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "date",
-            "columnName": "date",
+            "fieldPath": "photoPath",
+            "columnName": "photoPath",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "status",
-            "columnName": "status",
+            "fieldPath": "workTime",
+            "columnName": "workTime",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isEmergency",
-            "columnName": "is_emergency",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "author",
-            "columnName": "author",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "description",
-            "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tools",
-            "columnName": "tools",
-            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -197,50 +179,12 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "current_action",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`action` TEXT NOT NULL, `order` INTEGER NOT NULL, `elapsed_time` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "action",
-            "columnName": "action",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "order",
-            "columnName": "order",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "elapsedTime",
-            "columnName": "elapsed_time",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '538a29f0b5be2636c737c923c7478303')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2ab103d07f11d0a1c304c98479e771d0')"
     ]
   }
 }

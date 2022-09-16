@@ -75,6 +75,20 @@
         <item name="android:layout_marginEnd">10dp</item>
     </style>
 
+    <style name="add_member_edit_text" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorPrimary">@color/default_orange</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">8pt</item>
+        <item name="hintTextColor">@color/default_orange</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeColor">@color/textedit_add_member_border_color</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+
     <style name="task_arrow">
         <item name="android:src">@drawable/ic_arrow</item>
         <item name="android:layout_height">30dp</item>

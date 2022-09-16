@@ -35,7 +35,8 @@ class Splash : AppCompatActivity() {
         RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository
+            roomApplication.taskActionRepository,
+            roomApplication.teamMemberRepository
         )
     }
 

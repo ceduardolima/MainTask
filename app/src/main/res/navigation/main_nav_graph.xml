@@ -14,6 +14,14 @@
         app:popExitAnim="@anim/to_left" />
 
     <action
+        android:id="@+id/action_global_team"
+        app:destination="@id/teamFragment"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_right"
+        app:popExitAnim="@anim/to_left" />
+
+    <action
         android:id="@+id/action_global_home"
         app:destination="@+id/taskFragment"
         app:enterAnim="@anim/from_left"
@@ -76,18 +84,6 @@
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />
     <fragment
-        android:id="@+id/configFragments"
-        android:name="com.example.maintask.views.fragment.ConfigFragments"
-        android:label="fragment_config_fragments"
-        tools:layout="@layout/fragment_config_fragments" />
-    <action
-        android:id="@+id/action_global_config"
-        app:destination="@id/configFragments"
-        app:enterAnim="@anim/from_right"
-        app:exitAnim="@anim/to_left"
-        app:popEnterAnim="@anim/from_left"
-        app:popExitAnim="@anim/to_right" />
-    <fragment
         android:id="@+id/completedActionsFragment"
         android:name="com.example.maintask.views.fragment.CompletedActionsFragment"
         android:label="CompletedActionsFragment" >
@@ -98,4 +94,9 @@
             android:id="@+id/action_completedActionsFragment_to_timerFragment"
             app:destination="@id/timerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/teamFragment"
+        android:name="com.example.maintask.views.fragment.TeamFragment"
+        android:label="fragment_team"
+        tools:layout="@layout/fragment_team" />
 </navigation>

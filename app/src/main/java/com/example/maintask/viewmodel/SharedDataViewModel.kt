@@ -31,7 +31,8 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
         roomViewModel = RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository
+            roomApplication.taskActionRepository,
+            roomApplication.teamMemberRepository
         ).create(RoomViewModel::class.java)
     }
 

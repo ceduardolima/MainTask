@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
-
     private var roomViewModel: RoomViewModel
 
     private var _taskId: Int = -1
@@ -36,7 +35,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         roomViewModel = RoomViewModelFactory(
             roomApplication.taskRepository,
             roomApplication.actionRepository,
-            roomApplication.taskActionRepository
+            roomApplication.taskActionRepository,
+            roomApplication.teamMemberRepository
         ).create(RoomViewModel::class.java)
     }
 

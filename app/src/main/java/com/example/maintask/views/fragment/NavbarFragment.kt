@@ -71,11 +71,10 @@ class NavbarFragment : Fragment() {
         }
 
         teamBt.setOnClickListener {
-            if(lastNavigation != R.id.action_global_config) {
-                lastNavigation = R.id.action_global_config
-                findNavController().navigate(R.id.action_global_config)
-                callbacks.toolbarTitle.text = "Configurações"
-
+            if(lastNavigation != R.id.action_global_team) {
+                lastNavigation = R.id.action_global_team
+                findNavController().navigate(R.id.action_global_team)
+                callbacks.toolbarTitle.text = "Time"
             }
         }
         return view
