@@ -15,12 +15,23 @@
         android:textSize="8pt"
         android:maxLines="2"
         android:text="Ação"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="160dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecionar responsável"
+        android:textAllCaps="false"
+        android:background="@color/transparent"
+        android:drawableEnd="@drawable/ic_arrow_down"
+        android:textSize="6pt"
+        style="@style/default_font_body"
+        app:layout_constraintStart_toStartOf="@id/timer_item_action"
+        app:layout_constraintTop_toBottomOf="@id/timer_item_action"/>
     <TextView
         android:id="@+id/timer_item_elapsedTime"
         android:layout_width="wrap_content"
