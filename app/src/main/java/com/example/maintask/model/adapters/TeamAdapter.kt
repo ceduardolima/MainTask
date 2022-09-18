@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.maintask.model.database.entity.TeamMemberEntity
+import com.example.maintask.model.viewHolder.TeamViewHolder
 import com.example.maintask.viewmodel.TeamViewModel
 
 class TeamAdapter(

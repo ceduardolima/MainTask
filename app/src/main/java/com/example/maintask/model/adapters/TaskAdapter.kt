@@ -1,10 +1,10 @@
 package com.example.maintask.model.adapters
 
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.maintask.model.database.entity.TaskEntity
+import com.example.maintask.model.viewHolder.TaskViewHolder
 import com.example.maintask.viewmodel.TaskViewModel
 
 class TaskAdapter(private val taskViewModel: TaskViewModel)

@@ -1,6 +1,5 @@
-package com.example.maintask.model.adapters
+package com.example.maintask.model.viewHolder
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.database.entity.TaskEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

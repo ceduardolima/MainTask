@@ -1,4 +1,4 @@
-package com.example.maintask.model.adapters
+package com.example.maintask.model.viewHolder
 
 import android.view.LayoutInflater
 import android.view.View

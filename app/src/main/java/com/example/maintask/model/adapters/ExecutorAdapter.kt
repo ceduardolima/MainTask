@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.maintask.model.executor.Executor
+import com.example.maintask.model.viewHolder.ExecutorViewHolder
 
 class ExecutorAdapter: ListAdapter<Executor, ExecutorViewHolder>(ExecutorComparator()) {
     class ExecutorComparator: DiffUtil.ItemCallback<Executor>() {

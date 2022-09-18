@@ -1,6 +1,5 @@
-package com.example.maintask.model.adapters
+package com.example.maintask.model.viewHolder
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
