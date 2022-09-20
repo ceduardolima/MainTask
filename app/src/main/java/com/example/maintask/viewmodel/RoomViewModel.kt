@@ -10,13 +10,28 @@ class RoomViewModel(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val employeeRepository: EmployeeRepository
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskEntity>> = taskRepository.taskList.asLiveData()
     val allActions: LiveData<List<ActionEntity>> = actionRepository.actionList.asLiveData()
     val allTasActionRelations: LiveData<List<TaskActionRelationEntity>> =
         taskActionRelationRepository.taskActionRelationList.asLiveData()
     val team: LiveData<List<TeamMemberEntity>> = teamMemberRepository.team.asLiveData()
+    val employees: LiveData<List<EmployeeEntity>> = employeeRepository.employees.asLiveData()
+
+
+    fun insertEmployee(employeeEntity: EmployeeEntity) {
+        viewModelScope.launch {
+            employeeRepository.insert(employeeEntity)
+        }
+    }
+
+    fun getEmployeeById(id: Int) {
+        viewModelScope.launch {
+            employeeRepository.getEmployeeById(id)
+        }
+    }
 
     fun insertTeamMember(teamMemberEntity: TeamMemberEntity) {
         viewModelScope.launch {
@@ -125,7 +140,8 @@ class RoomViewModelFactory(
     private val taskRepository: TaskRepository,
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
-    private val teamMemberRepository: TeamMemberRepository
+    private val teamMemberRepository: TeamMemberRepository,
+    private val employeeRepository: EmployeeRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {
@@ -134,7 +150,8 @@ class RoomViewModelFactory(
                 taskRepository,
                 actionRepository,
                 taskActionRelationRepository,
-                teamMemberRepository
+                teamMemberRepository,
+                employeeRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

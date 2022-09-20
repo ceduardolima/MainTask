@@ -15,5 +15,15 @@ class ManualMigration {
             }
 
         }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE employee (" +
+                        "id INTEGER PRIMARY KEY NOT NULL," +
+                        "name TEXT NOT NULL," +
+                        "photoPath TEXT NOT NULL)")
+            }
+
+        }
     }
 }
