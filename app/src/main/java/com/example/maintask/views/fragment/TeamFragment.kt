@@ -1,7 +1,6 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +8,16 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.adapters.TeamAdapter
-import com.example.maintask.model.viewHolder.TeamViewHolder
+import com.example.maintask.model.database.entity.EmployeeEntity
 import com.example.maintask.model.database.entity.TeamMemberEntity
+import com.example.maintask.model.viewHolder.TeamViewHolder
 import com.example.maintask.viewmodel.TeamViewModel
 import com.google.android.material.textfield.TextInputLayout
 
@@ -32,7 +33,28 @@ class TeamFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         teamViewModel.loadData()
+        teamViewModel.observerAddNewTeamMember(requireActivity()) {
+                employee -> verifyEmployee(employee)
+        }
     }
+
+    private fun verifyEmployee(employee: EmployeeEntity?): Boolean =
+        when {
+            employee == null -> {
+                Toast.makeText(requireContext(), "ID não existe.", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+            teamViewModel.isDuplicated(employee.id) -> {
+                Toast.makeText(
+                    requireContext(),
+                    "O ID já foi previamente adicionado.",
+                    Toast.LENGTH_LONG
+                ).show()
+                false
+            }
+            else -> true
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +62,9 @@ class TeamFragment : Fragment() {
     ): View? {
         val teamFragment = inflater.inflate(R.layout.fragment_team, container, false)
         initializeView(teamFragment)
-        setEmployeeListObserver()
-        addNewEmployee()
         createRecyclerView()
+        observeUpdateRecyclerView()
+        listenerSearchForNewEmployee()
         observerShowDataIfWasLoaded()
 
         return teamFragment
@@ -56,7 +78,13 @@ class TeamFragment : Fragment() {
         container = view.findViewById(R.id.team_fragment_container)
     }
 
-    private fun setEmployeeListObserver() {
+    private fun createRecyclerView() {
+        adapter = TeamAdapter(teamViewModel)
+        teamList.layoutManager = LinearLayoutManager(context)
+        teamList.adapter = adapter
+    }
+
+    private fun observeUpdateRecyclerView() {
         teamViewModel.team.observe(requireActivity()) { team ->
             if (team != null) {
                 adapter.submitList(team)
@@ -64,44 +92,32 @@ class TeamFragment : Fragment() {
         }
     }
 
-    private fun createRecyclerView() {
-        adapter = TeamAdapter(teamViewModel)
-        teamList.layoutManager = LinearLayoutManager(context)
-        teamList.adapter = adapter
-    }
-
-    private fun addNewEmployee() {
+    private fun listenerSearchForNewEmployee() {
         addEmployeeButton.setOnClickListener {
             val idString = idTextEdit.editText?.text.toString().trim()
-            val id = verifyId(idString)
-            if (id != TeamViewModel.DONT_EXIST)
-                setNewTeamMember(id)
+            val success = verifyId(idString)
+            if (success) {
+                val id = idString.toInt()
+                searchTeamMember(id)
+            }
         }
     }
 
-    private fun setNewTeamMember(id: Int) {
-        val e = TeamMemberEntity(id, "nome", "-", 1000)
-        val result = teamViewModel.setNewTeamMember(e)
-        if (result == TeamViewModel.DUPLICATED)
-            Toast.makeText(
-                requireContext(),
-                "Membro ja foi inserido anteriormente.",
-                Toast.LENGTH_LONG
-            ).show()
-    }
-
-    private fun verifyId(id: String): Int {
+    private fun verifyId(id: String): Boolean {
         return if(id.isNotEmpty()) {
-            id.toInt()
+            true
         } else {
             Toast.makeText(
                 requireContext(),
                 "Insira um ID válido.",
                 Toast.LENGTH_LONG
             ).show()
-
-            TeamViewModel.DONT_EXIST
+            false
         }
+    }
+
+    private fun searchTeamMember(id: Int) {
+        teamViewModel.searchEmployeeById(id)
     }
 
     private fun observerShowDataIfWasLoaded() {

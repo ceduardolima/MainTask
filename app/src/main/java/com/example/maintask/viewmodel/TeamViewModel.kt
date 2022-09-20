@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.model.database.entity.EmployeeEntity
 import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.search.TeamMemberSearch
 import kotlinx.coroutines.delay
@@ -21,11 +22,10 @@ class TeamViewModel(application: Application) : AndroidViewModel(application) {
     val dataWasLoaded: LiveData<Boolean>
         get() = _dataWasLoaded
 
+    private val _currentEmployee = MutableLiveData<EmployeeEntity?>()
+
     companion object {
-        const val SUCCESS = 1
-        const val DONT_EXIST = -1
-        const val IS_NULL = -2
-        const val DUPLICATED = -3
+        const val DOES_NOT_EXIST = -1
     }
 
     init {
@@ -34,7 +34,8 @@ class TeamViewModel(application: Application) : AndroidViewModel(application) {
             roomApplication.taskRepository,
             roomApplication.actionRepository,
             roomApplication.taskActionRepository,
-            roomApplication.teamMemberRepository
+            roomApplication.teamMemberRepository,
+            roomApplication.employeeRepository
         ).create(RoomViewModel::class.java)
     }
 
@@ -46,37 +47,38 @@ class TeamViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setNewTeamMember(teamMember: TeamMemberEntity): Int =
-        when {
-            isTeamNull() -> {
-                val list = listOf(teamMember)
-                _team.value = list
-                insertNewMemberOnDatabase(teamMember)
-                SUCCESS
-            }
-            isDuplicated(teamMember.id) -> DUPLICATED
-            else -> {
-                val list = _team.value!!.toMutableList()
-                list.add(teamMember)
-                _team.value = list
-                insertNewMemberOnDatabase(teamMember)
-                SUCCESS
-            }
+    fun searchEmployeeById(id: Int) {
+        viewModelScope.launch {
+            val employee = roomViewModel.getEmployeeById(id)
+            _currentEmployee.value = employee
         }
+    }
 
-    private fun insertNewMemberOnDatabase(newTeamMemberEntity: TeamMemberEntity) {
+    fun observerAddNewTeamMember(
+        fragmentActivity: FragmentActivity,
+        verifyEmployee: (employee: EmployeeEntity?) -> Boolean) {
+        _currentEmployee.observe(fragmentActivity, Observer { employee ->
+            val success = verifyEmployee(employee)
+            if (success) {
+                val (id, name, photoPath) = employee!!
+                val teamMember = TeamMemberEntity(id, name, photoPath)
+                insertNewMemberOnTeamMemberTable(teamMember)
+            }
+        })
+    }
+
+    private fun insertNewMemberOnTeamMemberTable(newTeamMemberEntity: TeamMemberEntity) {
         roomViewModel.insertTeamMember(newTeamMemberEntity)
     }
 
-    private fun isDuplicated(id: Int): Boolean {
+    fun isDuplicated(id: Int): Boolean {
         val index = getTeamMemberIndexById(id)
-        return (index != DONT_EXIST)
+        return (index != DOES_NOT_EXIST)
     }
 
     fun deleteTeamMemberById(id: Int) {
         if (isTeamNull()) return
         val index = getTeamMemberIndexById(id)
-
         if (index >= 0) {
             val teamMember = _team.value!!.toMutableList()
             val member = teamMember.removeAt(index)
