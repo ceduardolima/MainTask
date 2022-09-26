@@ -1,19 +1,14 @@
 package com.example.maintask.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.annotation.WorkerThread
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import com.example.maintask.model.converter.ActionEntityConverter
 import com.example.maintask.model.database.application.RoomApplication
-import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.task.TaskActionModel
+import kotlinx.coroutines.launch
 
 class SharedDataViewModel(application: Application) : AndroidViewModel(application) {
     private var roomViewModel: RoomViewModel
@@ -30,6 +25,10 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
     val actionList: LiveData<List<TaskActionModel>>
         get() = _actionList
 
+    private var _taskWasUpdated = MutableLiveData<Boolean>()
+    val taskWasUpdated: LiveData<Boolean>
+        get() = _taskWasUpdated
+
     init {
         val roomApplication = (application as RoomApplication)
         roomViewModel = RoomViewModelFactory(
@@ -43,23 +42,23 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
 
     fun loadTask(fragmentActivity: FragmentActivity, taskId: Int) {
         val getTask = roomViewModel.getTaskById(taskId)
-        getTask.observe(fragmentActivity) { task ->
+        getTask.observe(fragmentActivity, Observer { task ->
             if (task != null) {
                 _currentTask.value = task
                 getTask.removeObservers(fragmentActivity)
             }
-        }
+        })
     }
 
     fun loadActionList(
         fragmentActivity: FragmentActivity, taskId: Int) {
         val getActionsByTaskId = roomViewModel.getActionByTaskId(taskId)
-        getActionsByTaskId.observe(fragmentActivity) { actionList ->
+        getActionsByTaskId.observe(fragmentActivity, Observer { actionList ->
             if (actionList.isNotEmpty()) {
                 this._actionList.value = ActionEntityConverter().toTaskActionModelList(actionList)
                 getActionsByTaskId.removeObservers(fragmentActivity)
             }
-        }
+        })
     }
 
     fun setTaskActionList(taskActionList: List<TaskActionModel>) {
@@ -69,9 +68,35 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
     fun loadTeam(fragmentActivity: FragmentActivity, block: (List<TeamMemberEntity>) -> Unit) {
         val getTeam = roomViewModel.team
         getTeam.observe(fragmentActivity, Observer { team ->
-            if(!team.isNullOrEmpty()) {
+            if (!team.isNullOrEmpty()) {
                 block(team)
             }
         })
+    }
+
+    fun setTaskAsDone() {
+        viewModelScope.launch {
+            _taskWasUpdated.value = false
+            updateTask()
+            updateActions()
+            _taskWasUpdated.value = true
+        }
+    }
+
+    private fun updateTask() {
+        val currentTask = _currentTask.value!!
+        val (id, title, date, _, isEmergency, author, descriptions, tools) = currentTask
+        val completedTask = TaskEntity(id, title, date, 1, isEmergency, author, descriptions, tools)
+        roomViewModel.setTaskAsComplete(completedTask)
+    }
+
+    private fun updateActions() {
+        val actionList = _actionList.value!!
+        for (action in actionList)
+            roomViewModel.updateElapsedTime(action.id, action.elapsedTime())
+    }
+
+    fun setTaskWasUpdated(wasUpdated: Boolean) {
+        this._taskWasUpdated.value = wasUpdated
     }
 }

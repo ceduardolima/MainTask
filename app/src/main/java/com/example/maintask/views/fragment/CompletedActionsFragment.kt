@@ -1,10 +1,10 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
@@ -29,6 +29,7 @@ class CompletedActionsFragment : Fragment() {
     private lateinit var elapsedTime: TextView
     private lateinit var executorRecyclerView: RecyclerView
     private lateinit var adapter: ExecutorAdapter
+    private lateinit var finishCompletedActionsButton: Button
     private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class CompletedActionsFragment : Fragment() {
         sharedDataViewModel.actionList.observe(requireActivity()) { taskActionList ->
             calculateElapsedTime(taskActionList, 0)
             setTeam(taskActionList)
+            sharedDataViewModel.actionList.removeObservers(requireActivity())
         }
     }
 
@@ -88,6 +90,8 @@ class CompletedActionsFragment : Fragment() {
         setupElapsedTimeObserver()
         createRecyclerView()
         observerUpdateRecyclerView()
+        finishCompletedActionsButton()
+        observerIfTaskWasSetAsDone()
         return completedActionsFragment
     }
 
@@ -96,6 +100,7 @@ class CompletedActionsFragment : Fragment() {
         scrollView = view.findViewById(R.id.completed_actions_scrollview)
         elapsedTime = view.findViewById(R.id.completed_actions_time_spend)
         executorRecyclerView = view.findViewById(R.id.completed_actions_worker_list)
+        finishCompletedActionsButton = view.findViewById(R.id.finish_completed_actions_button)
     }
 
     private fun setupProgressBarObserver() {
@@ -111,7 +116,7 @@ class CompletedActionsFragment : Fragment() {
     }
 
     private fun setupElapsedTimeObserver() {
-        completedActionsViewModel.elapsedTime.observe(requireActivity()) { actions ->
+        completedActionsViewModel.elapsedTime.observe(requireActivity()) {
             elapsedTime.text = completedActionsViewModel.getElapsedTime()
         }
     }
@@ -126,6 +131,21 @@ class CompletedActionsFragment : Fragment() {
     private fun observerUpdateRecyclerView() {
         completedActionsViewModel.team.observe(requireActivity()) {
             team -> adapter.submitList(team)
+        }
+    }
+
+    private fun finishCompletedActionsButton() {
+        finishCompletedActionsButton.setOnClickListener {
+            sharedDataViewModel.setTaskAsDone()
+        }
+    }
+
+    private fun observerIfTaskWasSetAsDone() {
+        sharedDataViewModel.taskWasUpdated.observe(requireActivity()) { wasUpdated ->
+            if (wasUpdated) {
+                findNavController().navigate(R.id.action_completedActionsFragment_to_taskFragment)
+                sharedDataViewModel.setTaskWasUpdated(false)
+            }
         }
     }
 

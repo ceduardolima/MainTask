@@ -65,6 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@id/completed_actions_time_spend" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/finish_completed_actions_button"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 style="@style/default_button_style"

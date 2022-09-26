@@ -1,9 +1,6 @@
 package com.example.maintask.model.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.maintask.model.database.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -17,6 +14,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task WHERE id = :taskId")
     fun getTaskById(taskId: Int): Flow<TaskEntity>
+
+    @Update
+    suspend fun update(task: TaskEntity)
 
     @Query("DELETE FROM task")
     suspend fun deleteAll()

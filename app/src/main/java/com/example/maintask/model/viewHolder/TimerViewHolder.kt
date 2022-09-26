@@ -42,7 +42,6 @@ class TimerViewHolder(
         if (action.worker != null){
             this.selectResponsibleButton.text = "id: %d".format(action.worker!!.id)
         }
-
     }
 
     fun selectResponsible(
@@ -51,14 +50,20 @@ class TimerViewHolder(
         team: List<TeamMemberEntity>) {
         selectResponsibleButton.setOnClickListener {
             val workerIsNull = currentAction.worker == null
-            val workTimeIsZero = currentAction.worker!!.workTime.compareTo(0) == 0
-            if (workerIsNull || workTimeIsZero)
+            if (workerIsNull) {
                 createDialog(context, currentAction, team)
-            else
-                Toast.makeText(
-                    context,
-                    "Não foi permitido mudar o Executor.",
-                Toast.LENGTH_LONG).show()
+            }
+            else {
+                val workTimeIsZero = (currentAction.worker!!.workTime.compareTo(0) == 0)
+                if (workTimeIsZero)
+                    createDialog(context, currentAction, team)
+                else
+                    Toast.makeText(
+                        context,
+                        "Não foi permitido mudar o Executor.",
+                        Toast.LENGTH_LONG
+                    ).show()
+            }
         }
     }
 
@@ -75,7 +80,7 @@ class TimerViewHolder(
         }
         builder.setPositiveButton("Ok") { _, i ->
             if (i != -1)
-                selectResponsibleButton.text = "id: %d".format(teamMembersId[i])
+                selectResponsibleButton.text = "id: %05d".format(teamMembersId[i])
         }
         builder.show()
     }

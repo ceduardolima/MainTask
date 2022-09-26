@@ -26,6 +26,12 @@ class RoomViewModel(
         }
     }
 
+    fun setTaskAsComplete(task: TaskEntity) {
+        viewModelScope.launch {
+            taskRepository.update(task)
+        }
+    }
+
     fun insertEmployeeList(employees: List<EmployeeEntity>) {
         for(employee in employees)
             insertEmployee(employee)
