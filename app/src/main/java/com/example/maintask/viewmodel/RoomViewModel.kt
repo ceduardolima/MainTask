@@ -1,9 +1,9 @@
 package com.example.maintask.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.maintask.model.database.entity.*
 import com.example.maintask.model.repository.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class RoomViewModel(
@@ -11,7 +11,7 @@ class RoomViewModel(
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
     private val teamMemberRepository: TeamMemberRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskEntity>> = taskRepository.taskList.asLiveData()
     val allActions: LiveData<List<ActionEntity>> = actionRepository.actionList.asLiveData()
@@ -20,16 +20,24 @@ class RoomViewModel(
     val team: LiveData<List<TeamMemberEntity>> = teamMemberRepository.team.asLiveData()
     val employees: LiveData<List<EmployeeEntity>> = employeeRepository.employees.asLiveData()
 
-
     fun insertEmployee(employeeEntity: EmployeeEntity) {
         viewModelScope.launch {
             employeeRepository.insert(employeeEntity)
         }
     }
 
-    fun getEmployeeById(id: Int) {
-        viewModelScope.launch {
-            employeeRepository.getEmployeeById(id)
+    fun insertEmployeeList(employees: List<EmployeeEntity>) {
+        for(employee in employees)
+            insertEmployee(employee)
+    }
+
+    suspend fun getEmployeeById(id: Int): EmployeeEntity {
+        return employeeRepository.getEmployeeById(id).first()
+    }
+
+    fun insertTeam(team: List<TeamMemberEntity>) {
+        for (teamMember in team) {
+            insertTeamMember(teamMember)
         }
     }
 
@@ -122,16 +130,19 @@ class RoomViewModel(
     fun populateDatabase(
         task: List<TaskEntity>,
         action: List<ActionEntity>,
-        relation: List<TaskActionRelationEntity>
+        relation: List<TaskActionRelationEntity>,
+        employees: List<EmployeeEntity>
     ) {
         viewModelScope.launch {
             taskRepository.deleteAll()
             actionRepository.deleteAll()
             taskActionRelationRepository.deleteAll()
+            employeeRepository.deleteAll()
 
             insertTaskList(task)
             insertActionList(action)
             insertRelationList(relation)
+            insertEmployeeList(employees)
         }
     }
 }
@@ -141,7 +152,7 @@ class RoomViewModelFactory(
     private val actionRepository: ActionRepository,
     private val taskActionRelationRepository: TaskActionRelationRepository,
     private val teamMemberRepository: TeamMemberRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {

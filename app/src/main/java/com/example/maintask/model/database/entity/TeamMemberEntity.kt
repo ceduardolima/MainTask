@@ -9,5 +9,5 @@ data class TeamMemberEntity(
     val id: Int,
     val name: String,
     val photoPath: String,
-    var workTime: Long = 0
+    var workTime: Long = 0,
 )

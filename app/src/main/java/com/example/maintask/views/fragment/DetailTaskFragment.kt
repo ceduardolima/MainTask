@@ -109,6 +109,7 @@ class DetailTaskFragment : Fragment() {
     private fun ableVisibility() {
         progressBar.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
+        goToTimerFragmentButton.visibility = View.VISIBLE
     }
 
     private fun getButtonClick() {
@@ -134,6 +135,7 @@ class DetailTaskFragment : Fragment() {
     private fun disableVisibility() {
         progressBar.visibility = View.VISIBLE
         scrollView.visibility = View.INVISIBLE
+        goToTimerFragmentButton.visibility = View.INVISIBLE
     }
 
     fun getBack() {

@@ -5,7 +5,9 @@ import com.example.maintask.model.database.entity.TeamMemberEntity
 class TeamMemberSearch {
 
     fun searchById(team: List<TeamMemberEntity>, id: Int): Int {
-        return searchByIdRecursion(team, id, 0)
+        val list = mutableListOf<TeamMemberEntity>()
+        list.addAll(team)
+        return searchByIdRecursion(list, id, 0)
     }
 
     private fun searchByIdRecursion(

@@ -1,12 +1,14 @@
 package com.example.maintask.model.task
 
 import android.widget.TextView
+import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.stopwatch.Stopwatch
 
 data class TaskActionModel(
     val id: Int,
     val action: String,
     val order: Int,
+    var worker: TeamMemberEntity? = null,
     var time: String = "00:00:00"
 ){
 

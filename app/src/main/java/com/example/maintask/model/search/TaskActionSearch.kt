@@ -5,7 +5,9 @@ import com.example.maintask.model.task.TaskActionModel
 class TaskActionSearch {
 
     fun searchById(actionList: List<TaskActionModel>, id: Int): Int {
-        val index = actionList.binarySearch { taskActionModel ->
+        val list = mutableListOf<TaskActionModel>()
+        list.addAll(actionList)
+        val index = list.binarySearch { taskActionModel ->
             compareValues(taskActionModel.id, id)
         }
         return index

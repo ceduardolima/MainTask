@@ -23,7 +23,15 @@ class ManualMigration {
                         "name TEXT NOT NULL," +
                         "photoPath TEXT NOT NULL)")
             }
+        }
 
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE action_worker_relation (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        "worker_id INTEGER NOT NULL," +
+                        "action_id INTEGER NOT NULL)")
+            }
         }
     }
 }

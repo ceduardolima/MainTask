@@ -1,14 +1,18 @@
 package com.example.maintask.viewmodel
 
 import android.app.Application
+import android.util.Log
+import androidx.annotation.WorkerThread
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.maintask.model.converter.ActionEntityConverter
 import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskEntity
+import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.task.TaskActionModel
 
 class SharedDataViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,7 +36,8 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
             roomApplication.taskRepository,
             roomApplication.actionRepository,
             roomApplication.taskActionRepository,
-            roomApplication.teamMemberRepository
+            roomApplication.teamMemberRepository,
+            roomApplication.employeeRepository
         ).create(RoomViewModel::class.java)
     }
 
@@ -59,5 +64,14 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
 
     fun setTaskActionList(taskActionList: List<TaskActionModel>) {
         this._actionList.value = taskActionList
+    }
+
+    fun loadTeam(fragmentActivity: FragmentActivity, block: (List<TeamMemberEntity>) -> Unit) {
+        val getTeam = roomViewModel.team
+        getTeam.observe(fragmentActivity, Observer { team ->
+            if(!team.isNullOrEmpty()) {
+                block(team)
+            }
+        })
     }
 }

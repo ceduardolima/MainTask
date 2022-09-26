@@ -20,7 +20,7 @@ class ActionEntityConverter {
             actionEntity.id,
             actionEntity.action,
             actionEntity.order,
-            actionEntity.elapsedTime
+            time = actionEntity.elapsedTime
         )
     }
 }

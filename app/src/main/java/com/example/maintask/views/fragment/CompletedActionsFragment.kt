@@ -1,6 +1,7 @@
 package com.example.maintask.views.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.R
 import com.example.maintask.model.adapters.ExecutorAdapter
-import com.example.maintask.model.executor.Executor
+import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.model.time.ElapsedTimeHelper
 import com.example.maintask.viewmodel.CompletedActionsViewModel
@@ -27,6 +28,7 @@ class CompletedActionsFragment : Fragment() {
     private lateinit var scrollView: NestedScrollView
     private lateinit var elapsedTime: TextView
     private lateinit var executorRecyclerView: RecyclerView
+    private lateinit var adapter: ExecutorAdapter
     private val sharedDataViewModel: SharedDataViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +42,7 @@ class CompletedActionsFragment : Fragment() {
     private fun observerSetElapsedTime() {
         sharedDataViewModel.actionList.observe(requireActivity()) { taskActionList ->
             calculateElapsedTime(taskActionList, 0)
+            setTeam(taskActionList)
         }
     }
 
@@ -56,6 +59,21 @@ class CompletedActionsFragment : Fragment() {
         calculateElapsedTime(actions, newIndex)
     }
 
+    private fun setTeam(taskActionList: List<TaskActionModel>) {
+        val team = hashMapOf<Int, TeamMemberEntity>()
+        for(action in taskActionList) {
+            val worker = action.worker!!.copy()
+            val workerId = action.worker!!.id
+            if (team[workerId] == null)
+                team[workerId] = worker
+            else {
+                val workTime = worker.workTime + team[workerId]!!.workTime
+                team[workerId]!!.workTime = workTime
+            }
+        }
+        completedActionsViewModel.setTeam(team.values.toList())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +87,7 @@ class CompletedActionsFragment : Fragment() {
         setupProgressBarObserver()
         setupElapsedTimeObserver()
         createRecyclerView()
+        observerUpdateRecyclerView()
         return completedActionsFragment
     }
 
@@ -98,27 +117,25 @@ class CompletedActionsFragment : Fragment() {
     }
 
     private fun createRecyclerView() {
-        val adapter = ExecutorAdapter()
-        val executores = listOf<Executor>(
-            Executor(0, "nome", "00:00:00"),
-            Executor(1, "nome", "00:00:00"),
-            Executor(2, "nome", "00:00:00"),
-            Executor(3, "nome", "00:00:00"),
-            Executor(4, "nome", "00:00:00")
-        )
-        adapter.submitList(executores)
+        adapter = ExecutorAdapter()
         executorRecyclerView.layoutManager = LinearLayoutManager(context)
         executorRecyclerView.hasFixedSize()
         executorRecyclerView.adapter = adapter
     }
 
+    private fun observerUpdateRecyclerView() {
+        completedActionsViewModel.team.observe(requireActivity()) {
+            team -> adapter.submitList(team)
+        }
+    }
+
     override fun onDestroyView() {
         completedActionsViewModel.restartElapsedTime()
+        completedActionsViewModel.setEmptyTeam()
         super.onDestroyView()
     }
 
     fun getBack() {
-        val extras = Bundle()
         findNavController()
             .navigate(R.id.action_completedActionsFragment_to_timerFragment)
     }

@@ -1,6 +1,8 @@
 package com.example.maintask.views.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,20 +27,26 @@ class TimerFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var finishButton: Button
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         timerViewModel.loadData {
             observerSetTaskActionList()
+            setTeam()
         }
     }
 
     private fun observerSetTaskActionList() {
         sharedDataViewModel.actionList.observe(requireActivity()) { actionList ->
-            if (actionList.isNotEmpty()) {
+            if (actionList.isNotEmpty() && timerViewModel.taskActionList.value == null) {
                 timerViewModel.setTaskActionList(actionList)
                 sharedDataViewModel.actionList.removeObservers(requireActivity())
             }
+        }
+    }
+
+    private fun setTeam() {
+        sharedDataViewModel.loadTeam(requireActivity()) { team ->
+            timerViewModel.setTeam(team)
         }
     }
 
@@ -48,7 +56,7 @@ class TimerFragment : Fragment() {
     ): View? {
         val timerFragment = inflater.inflate(R.layout.fragment_timer, container, false)
         initializeViews(timerFragment)
-        createTheRecyclerViewAndSetAdapter()
+        createRecyclerView()
         observerDataWasLoaded()
         observerCompletedActions()
         observerUpdateTaskActionFromSharedViewModel()
@@ -62,16 +70,21 @@ class TimerFragment : Fragment() {
         finishButton = view.findViewById(R.id.timer_finish_actions)
     }
 
-    private fun createTheRecyclerViewAndSetAdapter() {
-        val taskActionList = timerViewModel.taskActionList.value!!
-        val timerAdapter = TimerAdapter(
-            requireContext(),
-            taskActionList.toMutableList(),
-            timerViewModel
-        )
-        timerRecyclerView.layoutManager = LinearLayoutManager(context)
-        timerRecyclerView.hasFixedSize()
-        timerRecyclerView.adapter = timerAdapter
+    private fun createRecyclerView() {
+        timerViewModel.taskActionList.observe(requireActivity()) { actionList ->
+            timerViewModel.team.observe(requireActivity()) {
+                if (actionList != null) {
+                    val timerAdapter = TimerAdapter(
+                        requireContext(),
+                        actionList.toMutableList(),
+                        timerViewModel
+                    )
+                    timerRecyclerView.layoutManager = LinearLayoutManager(context)
+                    timerRecyclerView.hasFixedSize()
+                    timerRecyclerView.adapter = timerAdapter
+                }
+            }
+        }
     }
 
     private fun observerDataWasLoaded() {
@@ -122,5 +135,10 @@ class TimerFragment : Fragment() {
 
     fun getBack() {
         findNavController().navigate(R.id.action_timerFragment_to_detailTaskFragment)
+    }
+
+    override fun onDestroy() {
+        timerViewModel.setEmptyActionList()
+        super.onDestroy()
     }
 }

@@ -1,19 +1,14 @@
 package com.example.maintask.viewmodel
 
-import android.app.Activity
 import android.app.Application
-import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import androidx.navigation.fragment.findNavController
-import com.example.maintask.R
 import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.task.TaskActionModel
 import com.example.maintask.model.task.TaskModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -36,7 +31,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             roomApplication.taskRepository,
             roomApplication.actionRepository,
             roomApplication.taskActionRepository,
-            roomApplication.teamMemberRepository
+            roomApplication.teamMemberRepository,
+            roomApplication.employeeRepository
         ).create(RoomViewModel::class.java)
     }
 
@@ -76,13 +72,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         // Simulando retorno do servidor
         return mutableListOf(
             TaskModel(
-                "Trocar o pneu do carro",
+                "Titulo da O.S",
                 LocalDate.parse("2022-08-19"),
                 status = TaskModel.LATE,
                 isEmergency = true,
                 "Carlos Eduardo",
-                "O carro passou por um buraco e furou o pneu. Há urgência nessa solicitação pois precisamos do quanto antes que ele esteja em boas condições para que possamos executar as tarefas do dia",
-                "Estepe, macaco, chave L",
+                "Descrição detalhada da O.S.",
+                "Lista de ferramentas que serão usadas na O.S",
                 generateActionList()
             )
         )
@@ -90,7 +86,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun generateActionList(): MutableList<TaskActionModel> {
         val mutableList: MutableList<TaskActionModel> = mutableListOf()
-        val t = arrayOf(0, 0, 0, 1, 2, 3)
+        val t = arrayOf(0, 1, 2, 3)
         for (n in 0..2) {
             val action = TaskActionModel(
                 n + 1,

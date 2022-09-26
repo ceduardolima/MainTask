@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maintask.model.task.TaskActionModel
+import com.example.maintask.model.time.ElapsedTimeHelper
 import com.example.maintask.model.viewHolder.TimerViewHolder
 import com.example.maintask.viewmodel.TimerViewModel
 
@@ -19,10 +20,7 @@ class TimerAdapter(
     companion object {
         private const val FIRST: Int = 1
         private const val ORDERLESS: Int = 0
-        private const val SECONDS_POS: Int = 2
-        private const val MINUTE_POS: Int = 1
-        private const val ACTION_IS_NOT_AVAILABLE_TO_START = "Essa ação não pode ser iniciada " +
-                "antes da anterior ser finalizada"
+        private const val ACTION_IS_NOT_AVAILABLE_TO_START = "Não foi possível iniciar a Ação."
 
     }
 
@@ -31,13 +29,27 @@ class TimerAdapter(
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
-        val currentAction = taskActions[position]
-        val text = "${currentAction.order} - ${currentAction.action}"
-        holder.setText(text, currentAction.time)
-        runStopwatch(holder, position)
-        resetStopwatch(holder, position)
+        setText(holder, position)
+        selectActionResponsible(holder, position)
+        initStopwatch(holder, position)
         setActionStatus(position)
         verifyCompletedTasks()
+    }
+
+    private fun setText(holder:TimerViewHolder, position: Int) {
+        val action = taskActions[position]
+        holder.setText(action)
+    }
+
+    private fun selectActionResponsible(holder: TimerViewHolder, position: Int) {
+        val action = taskActions[position]
+        val teamList = timerViewModel.getTeamList()
+        holder.selectResponsible(context, action, teamList)
+    }
+
+    private fun initStopwatch(holder: TimerViewHolder, position: Int) {
+        runStopwatch(holder, position)
+        resetStopwatch(holder, position)
     }
 
     private fun runStopwatch(holder: TimerViewHolder, position: Int){
@@ -45,7 +57,6 @@ class TimerAdapter(
         holder.playButton.setOnClickListener {
             if (isAbleToStart(position)) {
                 holder.startStop(currentAction)
-                setActionStatus(position)
                 verifyCompletedTasks()
             }
             else
@@ -60,7 +71,6 @@ class TimerAdapter(
     private fun resetStopwatch(holder: TimerViewHolder, position: Int){
         holder.resetButton.setOnClickListener {
             holder.reset(taskActions[position])
-            setActionStatus(position)
             verifyCompletedTasks()
         }
     }
@@ -78,8 +88,9 @@ class TimerAdapter(
     }
 
     private fun wasCompleted(position: Int): Boolean {
-        val seconds = taskActions[position].time.split(":")[SECONDS_POS].toInt()
-        val minutes = taskActions[position].time.split(":")[MINUTE_POS].toInt()
+        val elapsedTimeHelper = ElapsedTimeHelper(taskActions[position].time)
+        val seconds = elapsedTimeHelper.getSeconds()
+        val minutes = elapsedTimeHelper.getMinutes()
         if ((seconds == 0) && (minutes == 0))
             return false
         return true
@@ -87,9 +98,10 @@ class TimerAdapter(
 
     private fun isAbleToStart(position: Int): Boolean {
         val currentAction = taskActions[position]
-        return when (currentAction.order) {
-            FIRST -> true
-            ORDERLESS -> true
+        return when {
+            currentAction.worker == null -> false
+            currentAction.order == FIRST -> true
+            currentAction.order == ORDERLESS -> true
             else -> previousActionWasCompleted(position)
         }
     }

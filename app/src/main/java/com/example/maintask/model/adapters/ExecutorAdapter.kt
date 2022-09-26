@@ -3,16 +3,17 @@ package com.example.maintask.model.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.executor.Executor
 import com.example.maintask.model.viewHolder.ExecutorViewHolder
 
-class ExecutorAdapter: ListAdapter<Executor, ExecutorViewHolder>(ExecutorComparator()) {
-    class ExecutorComparator: DiffUtil.ItemCallback<Executor>() {
-        override fun areItemsTheSame(oldItem: Executor, newItem: Executor): Boolean {
+class ExecutorAdapter: ListAdapter<TeamMemberEntity, ExecutorViewHolder>(ExecutorComparator()) {
+    class ExecutorComparator: DiffUtil.ItemCallback<TeamMemberEntity>() {
+        override fun areItemsTheSame(oldItem: TeamMemberEntity, newItem: TeamMemberEntity): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Executor, newItem: Executor): Boolean {
+        override fun areContentsTheSame(oldItem: TeamMemberEntity, newItem: TeamMemberEntity): Boolean {
             return oldItem.id == newItem.id
         }
     }

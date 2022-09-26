@@ -12,14 +12,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [TaskEntity::class, ActionEntity::class,
-        TaskActionRelationEntity::class, TeamMemberEntity::class],
-    version = 2, exportSchema = true)
+    entities = [TaskEntity::class, ActionEntity::class, TaskActionRelationEntity::class,
+        TeamMemberEntity::class, EmployeeEntity::class],
+    version = 3, exportSchema = true)
 abstract class TaskRoomDatabase: RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun actionDao(): ActionDao
     abstract fun taskActionRelationDao(): TaskActionRelationDao
     abstract fun teamMemberDao(): TeamMemberDao
+    abstract fun employeeDao(): EmployeeDao
 
     private class TaskDatabaseCallback(
         private val scope: CoroutineScope
@@ -81,13 +82,11 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                     "task_database"
                 )
                     .addCallback(TaskDatabaseCallback(scope))
-                    .addMigrations(ManualMigration.MIGRATION_1_2)
+                    .addMigrations(ManualMigration.MIGRATION_1_2, ManualMigration.MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
-
-
 }

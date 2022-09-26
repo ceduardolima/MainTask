@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.maintask.R
 import com.example.maintask.model.database.application.RoomApplication
+import com.example.maintask.model.database.entity.EmployeeEntity
+import com.example.maintask.model.database.entity.TeamMemberEntity
 import com.example.maintask.model.task.TaskModel
 import com.example.maintask.viewmodel.RoomViewModel
 import com.example.maintask.viewmodel.RoomViewModelFactory
@@ -36,7 +38,8 @@ class Splash : AppCompatActivity() {
             roomApplication.taskRepository,
             roomApplication.actionRepository,
             roomApplication.taskActionRepository,
-            roomApplication.teamMemberRepository
+            roomApplication.teamMemberRepository,
+            roomApplication.employeeRepository
         )
     }
 
@@ -67,6 +70,10 @@ class Splash : AppCompatActivity() {
         val taskEntity = taskViewModel.getTaskEntity(listOf(task))
         val actionEntity = taskViewModel.getActionEntity(task.actions)
         val relationEntity = taskViewModel.getTaskActionRelationEntity(taskEntity, actionEntity)
-        roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity)
+        val team = mutableListOf<EmployeeEntity>()
+        team.add(EmployeeEntity(0, "Carlos Eduardo", ""))
+        team.add(EmployeeEntity(1, "Davi Pereira", ""))
+        team.add(EmployeeEntity(2, "Heraldo", ""))
+        roomViewModel.populateDatabase(taskEntity, actionEntity, relationEntity, team)
     }
 }
