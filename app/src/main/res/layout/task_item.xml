@@ -21,7 +21,6 @@
         <ImageView
             android:id="@+id/task_item_marker"
             style="@style/task_item_marker"
-            android:backgroundTint="@color/urgency"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,49 +57,6 @@
             android:textSize="8pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/task_item_details_container"
-            android:layout_width="310dp"
-            android:layout_height="200dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintStart_toStartOf="@id/task_item_date"
-            app:layout_constraintTop_toBottomOf="@id/task_item_date"
-            android:visibility="gone"
-            >
-
-            <TextView
-                android:id="@+id/task_item_author"
-                style="@style/task_item_details"
-                android:text="@string/author"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/task_item_description"
-                style="@style/task_item_details"
-                android:layout_width="match_parent"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="@string/description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/task_item_author" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/task_item_details_button"
-                style="@style/default_button_style"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/detalhar_o_s"
-                android:textSize="8pt"
-                app:layout_constraintTop_toBottomOf="@id/task_item_description"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

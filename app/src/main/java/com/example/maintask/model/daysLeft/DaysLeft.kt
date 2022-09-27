@@ -11,7 +11,7 @@ class DaysLeft {
             return when {
                 daysLeft == 0 -> "Para hoje"
                 daysLeft > 0 -> "Faltam ${daysLeft} dias"
-                else -> "Esta à ${daysLeft * (-1)} dia(s) atrasado"
+                else -> "Esta há ${daysLeft * (-1)} dia(s) atrasado"
             }
         }
     }
