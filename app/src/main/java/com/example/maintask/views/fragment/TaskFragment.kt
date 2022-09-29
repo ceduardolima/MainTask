@@ -21,6 +21,7 @@ import com.example.maintask.model.adapters.TaskAdapter
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.task.StatusCode
 import com.example.maintask.viewmodel.TaskViewModel
+import java.time.LocalDate
 
 class TaskFragment : Fragment() {
     private val taskViewModel: TaskViewModel by viewModels()
@@ -38,7 +39,6 @@ class TaskFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        taskViewModel.loadData {}
         taskViewModel.observerButtonClickAndNavigate(requireActivity()) { id ->
             navigateToDetailTask(id)
         }
@@ -50,7 +50,6 @@ class TaskFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task, container, false)
         initializeViews(view)
-        setVisibility()
         initializeRecyclerView()
         changeLayoutParams(lateRecyclerView)
         changeLayoutParams(completedRecyclerView)
@@ -71,14 +70,6 @@ class TaskFragment : Fragment() {
         completedRecyclerView = view.findViewById(R.id.task_completed_recycler)
         progressBar = view.findViewById(R.id.task_progress_bar)
         container = view.findViewById(R.id.task_view_container)
-    }
-
-    private fun setVisibility() {
-        taskViewModel.loadDataStatus.observe(requireActivity()) { wasLoaded ->
-            if (wasLoaded) {
-                ableViewVisibility()
-            }
-        }
     }
 
     private fun ableViewVisibility() {
@@ -110,9 +101,18 @@ class TaskFragment : Fragment() {
         val taskMap = createTaskMap()
         for (task in taskList) {
             val status = task.status
-            taskMap[status]!!.add(task)
+            if (isNotLate(task) || status == StatusCode.COMPLETED)
+                taskMap[status]!!.add(task)
+            else
+                taskMap[StatusCode.LATE]!!.add(task)
         }
         return taskMap
+    }
+
+    private fun isNotLate(taskEntity: TaskEntity): Boolean {
+        val deadLine = LocalDate.parse(taskEntity.date).dayOfYear
+        val today = LocalDate.now().dayOfYear
+        return deadLine > today
     }
 
     private fun createTaskMap(): Map<Int, MutableList<TaskEntity>> {

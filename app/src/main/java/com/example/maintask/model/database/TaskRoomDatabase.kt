@@ -26,7 +26,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: TaskRoomDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): TaskRoomDatabase {
+        fun getDatabase(context: Context): TaskRoomDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

@@ -42,7 +42,10 @@ class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     private fun setText(task: TaskEntity) {
         val days = LocalDate.parse(task.date).dayOfYear
         titleTextView.text = task.title
-        dateTextView.text = DaysLeft.getDaysLeftString(days)
+        if (task.status == StatusCode.COMPLETED)
+            dateTextView.text = "Finalizada"
+        else
+            dateTextView.text = DaysLeft.getDaysLeftString(days)
     }
 
     private fun setMarker(task: TaskEntity) {

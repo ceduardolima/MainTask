@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="Essa Semana"
+            android:text="Afazeres"
             android:textSize="10pt"
             app:layout_constraintTop_toTopOf="@+id/task_todo_bt"
             app:layout_constraintBottom_toBottomOf="@+id/task_todo_bt"
