@@ -22,52 +22,6 @@ abstract class TaskRoomDatabase: RoomDatabase() {
     abstract fun teamMemberDao(): TeamMemberDao
     abstract fun employeeDao(): EmployeeDao
 
-    private class TaskDatabaseCallback(
-        private val scope: CoroutineScope
-    ): RoomDatabase.Callback() {
-
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let { database ->
-                scope.launch {
-                    populateDatabase(
-                        database.taskDao(),
-                        database.actionDao(),
-                        database.taskActionRelationDao()
-                    )
-                }
-            }
-        }
-
-        suspend fun populateDatabase(
-            taskDao: TaskDao,
-            actionDao: ActionDao,
-            taskActionDao: TaskActionRelationDao) {
-            taskDao.deleteAll()
-            actionDao.deleteAll()
-            taskDao.deleteAll()
-
-            taskDao.insert(
-                TaskEntity(
-                    1,
-                    "teste",
-                    "2020-01-01",
-                    0,
-                    true,
-                    "Carlos Eduardo",
-                    "O carro passou por um buraco e fucrou o pneu. Há urgência nessa solicitação pois precisamos do quanto antes que ele eteja em boas condições para que possamos executar as tarefas do dia",
-                    "Estepe, macaco, chave L",
-                )
-            )
-
-            actionDao.insert(ActionEntity("acao 1", 0, "00:00:00"))
-            actionDao.insert(ActionEntity("acao 2", 1, "00:00:00"))
-
-            taskActionDao.insert(TaskActionRelationEntity(1, 1))
-            taskActionDao.insert(TaskActionRelationEntity( 1, 2))
-        }
-    }
-
     companion object{
         @Volatile
         private var INSTANCE: TaskRoomDatabase? = null
@@ -79,7 +33,6 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                     TaskRoomDatabase::class.java,
                     "task_database"
                 )
-                    .addCallback(TaskDatabaseCallback(scope))
                     .addMigrations(ManualMigration.MIGRATION_1_2, ManualMigration.MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
