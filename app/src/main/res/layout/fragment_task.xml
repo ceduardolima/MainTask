@@ -16,6 +16,13 @@
         android:indeterminateDrawable="@drawable/progressbar_background"
         android:progress="0" />
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/task_view_container"
         android:layout_width="match_parent"
@@ -70,7 +77,7 @@
             app:layout_constraintTop_toBottomOf="@id/task_late_arrow" />
 
         <Button
-            android:id="@+id/task_completed_bt"
+            android:id="@+id/task_todo_bt"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
@@ -78,6 +85,55 @@
             app:layout_constraintEnd_toEndOf="@id/task_late_arrow"
             app:layout_constraintStart_toStartOf="@id/task_late_arrow"
             app:layout_constraintTop_toBottomOf="@id/task_late_recycler" />
+
+        <ImageView
+            android:id="@+id/task_todo_arrow"
+            style="@style/task_arrow"
+            android:rotation="90"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/task_todo_bt"
+            app:layout_constraintBottom_toBottomOf="@+id/task_todo_bt"/>
+
+        <TextView
+            android:id="@+id/task_todo"
+            style="@style/default_font_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Essa Semana"
+            android:textSize="10pt"
+            app:layout_constraintTop_toTopOf="@+id/task_todo_bt"
+            app:layout_constraintBottom_toBottomOf="@+id/task_todo_bt"
+            app:layout_constraintStart_toEndOf="@id/task_late_arrow" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_check"
+            app:layout_constraintTop_toTopOf="@+id/task_completed_bt"
+            app:layout_constraintBottom_toBottomOf="@+id/task_completed_bt"
+            app:layout_constraintStart_toEndOf="@id/task_completed" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/task_todo_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="10dp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@id/task_todo_arrow"
+            app:layout_constraintTop_toBottomOf="@id/task_todo_arrow" />
+
+        <Button
+            android:id="@+id/task_completed_bt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="@id/task_todo_arrow"
+            app:layout_constraintStart_toStartOf="@id/task_todo_arrow"
+            app:layout_constraintTop_toBottomOf="@id/task_todo_recycler" />
 
         <ImageView
             android:id="@+id/task_completed_arrow"
@@ -118,5 +174,6 @@
             app:layout_constraintStart_toStartOf="@id/task_completed_arrow"
             app:layout_constraintTop_toBottomOf="@id/task_completed_arrow" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

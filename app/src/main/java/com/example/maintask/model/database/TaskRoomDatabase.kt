@@ -66,8 +66,6 @@ abstract class TaskRoomDatabase: RoomDatabase() {
             taskActionDao.insert(TaskActionRelationEntity(1, 1))
             taskActionDao.insert(TaskActionRelationEntity( 1, 2))
         }
-
-
     }
 
     companion object{

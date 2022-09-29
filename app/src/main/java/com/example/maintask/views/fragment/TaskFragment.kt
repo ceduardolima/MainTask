@@ -27,13 +27,14 @@ class TaskFragment : Fragment() {
     private lateinit var container: ConstraintLayout
     private lateinit var lateButton: Button
     private lateinit var completedButton: Button
+    private lateinit var todoButton: Button
     private lateinit var arrowLate: ImageView
     private lateinit var arrowCompleted: ImageView
+    private lateinit var arrowTodo: ImageView
     private lateinit var lateRecyclerView: RecyclerView
+    private lateinit var todoRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var completedRecyclerView: RecyclerView
-    private lateinit var lateAdapter: TaskAdapter
-    private lateinit var completedAdapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,7 @@ class TaskFragment : Fragment() {
         initializeRecyclerView()
         changeLayoutParams(lateRecyclerView)
         changeLayoutParams(completedRecyclerView)
+        changeLayoutParams(todoRecyclerView)
         changeAllListVisibility()
         return view
     }
@@ -60,14 +62,15 @@ class TaskFragment : Fragment() {
     private fun initializeViews(view: View) {
         lateButton = view.findViewById(R.id.task_late_bt)
         completedButton = view.findViewById(R.id.task_completed_bt)
+        todoButton = view.findViewById(R.id.task_todo_bt)
         arrowLate = view.findViewById(R.id.task_late_arrow)
         arrowCompleted = view.findViewById(R.id.task_completed_arrow)
+        arrowTodo = view.findViewById(R.id.task_todo_arrow)
         lateRecyclerView = view.findViewById(R.id.task_late_recycler)
+        todoRecyclerView = view.findViewById(R.id.task_todo_recycler)
+        completedRecyclerView = view.findViewById(R.id.task_completed_recycler)
         progressBar = view.findViewById(R.id.task_progress_bar)
         container = view.findViewById(R.id.task_view_container)
-        completedRecyclerView = view.findViewById(R.id.task_completed_recycler)
-        lateAdapter = TaskAdapter(taskViewModel)
-        completedAdapter = TaskAdapter(taskViewModel)
     }
 
     private fun setVisibility() {
@@ -93,6 +96,7 @@ class TaskFragment : Fragment() {
         val taskMap = organizeTasks(taskList)
         createRecyclerView(lateRecyclerView, taskMap[StatusCode.LATE]!!)
         createRecyclerView(completedRecyclerView, taskMap[StatusCode.COMPLETED]!!)
+        createRecyclerView(todoRecyclerView, taskMap[StatusCode.TODO]!!)
     }
 
     private fun createRecyclerView(recyclerView: RecyclerView, taskList: List<TaskEntity>) {
@@ -102,9 +106,7 @@ class TaskFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-    private fun organizeTasks(
-        taskList: List<TaskEntity>
-    ): Map<Int, MutableList<TaskEntity>> {
+    private fun organizeTasks(taskList: List<TaskEntity>): Map<Int, MutableList<TaskEntity>> {
         val taskMap = createTaskMap()
         for (task in taskList) {
             val status = task.status
@@ -141,11 +143,12 @@ class TaskFragment : Fragment() {
         }
 
     private fun changeAllListVisibility() {
-        completedButtonListener(lateButton, arrowLate, lateRecyclerView)
-        completedButtonListener(completedButton, arrowCompleted, completedRecyclerView)
+        arrowButtonListener(lateButton, arrowLate, lateRecyclerView)
+        arrowButtonListener(completedButton, arrowCompleted, completedRecyclerView)
+        arrowButtonListener(todoButton, arrowTodo, todoRecyclerView)
     }
 
-    private fun completedButtonListener(button: Button, arrow: ImageView, recyclerView: RecyclerView) {
+    private fun arrowButtonListener(button: Button, arrow: ImageView, recyclerView: RecyclerView) {
         button.setOnClickListener { changeListVisibility(arrow, recyclerView) }
     }
 

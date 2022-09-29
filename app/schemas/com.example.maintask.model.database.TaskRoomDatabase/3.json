@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "b59b6f168fc6c12335ffe33cf9884aa5",
+    "identityHash": "6ec63ba2ecfa5cc449fef48d1f837197",
     "entities": [
       {
         "tableName": "task",
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "task_action",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`action` TEXT NOT NULL, `order` INTEGER NOT NULL, `elapsed_time` TEXT NOT NULL, `executor` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`action` TEXT NOT NULL, `order` INTEGER NOT NULL, `elapsed_time` TEXT NOT NULL, `executor` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "action",
@@ -105,7 +105,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -216,7 +216,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b59b6f168fc6c12335ffe33cf9884aa5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6ec63ba2ecfa5cc449fef48d1f837197')"
     ]
   }
 }

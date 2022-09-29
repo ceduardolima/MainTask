@@ -10,7 +10,7 @@ class NetworkChecker(private val connectivityManager: ConnectivityManager?) {
     fun performActionIfConnected(context: Context?, action: () -> Unit) {
         if (hasInternet())
             action()
-        else Toast.makeText(context, "Necessário conexão com a Internet", Toast.LENGTH_LONG).show()
+        else Toast.makeText(context, "Não há conexão com a Internet", Toast.LENGTH_LONG).show()
     }
 
     private fun hasInternet(): Boolean {

@@ -15,8 +15,6 @@ class RoomViewModel(
 ) : ViewModel() {
     val allTasks: LiveData<List<TaskEntity>> = taskRepository.taskList.asLiveData()
     val allActions: LiveData<List<ActionEntity>> = actionRepository.actionList.asLiveData()
-    val allTasActionRelations: LiveData<List<TaskActionRelationEntity>> =
-        taskActionRelationRepository.taskActionRelationList.asLiveData()
     val team: LiveData<List<TeamMemberEntity>> = teamMemberRepository.team.asLiveData()
     val employees: LiveData<List<EmployeeEntity>> = employeeRepository.employees.asLiveData()
 
@@ -112,7 +110,7 @@ class RoomViewModel(
         }
     }
 
-    private fun insertTask(taskEntity: TaskEntity) = viewModelScope.launch {
+    fun insertTask(taskEntity: TaskEntity) = viewModelScope.launch {
         taskRepository.insert(taskEntity)
     }
 
@@ -130,25 +128,6 @@ class RoomViewModel(
             taskRepository.deleteAll()
             actionRepository.deleteAll()
             taskActionRelationRepository.deleteAll()
-        }
-    }
-
-    fun populateDatabase(
-        task: List<TaskEntity>,
-        action: List<ActionEntity>,
-        relation: List<TaskActionRelationEntity>,
-        employees: List<EmployeeEntity>
-    ) {
-        viewModelScope.launch {
-            taskRepository.deleteAll()
-            actionRepository.deleteAll()
-            taskActionRelationRepository.deleteAll()
-            employeeRepository.deleteAll()
-
-            insertTaskList(task)
-            insertActionList(action)
-            insertRelationList(relation)
-            insertEmployeeList(employees)
         }
     }
 }

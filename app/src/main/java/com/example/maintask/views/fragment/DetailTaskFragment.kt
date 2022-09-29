@@ -2,6 +2,7 @@ package com.example.maintask.views.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,6 +89,7 @@ class DetailTaskFragment : Fragment() {
         sharedDataViewModel.currentTask.observe(requireActivity()) { task ->
             sharedDataViewModel.actionList.observe(requireActivity()) { actionList ->
                 if (task != null) {
+                    Log.i("task-teste", "$task")
                     val actionTitleList = TaskActionConverter().toActionTitleList(actionList)
                     setAllText(task, actionTitleList.joinToString(", "))
                 }

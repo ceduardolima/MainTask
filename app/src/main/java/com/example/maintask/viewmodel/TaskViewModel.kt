@@ -74,8 +74,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             TaskModel(
                 "Titulo da O.S",
                 LocalDate.parse("2022-08-19"),
-                status = TaskModel.LATE,
-                isEmergency = true,
+                status = 3,
+                isEmergency = false,
                 "Carlos Eduardo",
                 "Descrição detalhada da O.S.",
                 "Lista de ferramentas que serão usadas na O.S",
@@ -100,18 +100,20 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getTaskEntity(taskModelList: List<TaskModel>): MutableList<TaskEntity> {
         val taskEntityList = mutableListOf<TaskEntity>()
+        var i = 1
         for (task in taskModelList) {
             val taskEntity = TaskEntity(
-                1,
+                i,
                 title = task.title,
                 author = task.author,
                 date = task.date.toString(),
-                status = TaskModel.LATE,
+                status = task.status,
                 description = task.description,
                 tools = task.tools,
                 isEmergency = task.isEmergency
             )
             taskEntityList.add(taskEntity)
+            i++
         }
         return taskEntityList
     }

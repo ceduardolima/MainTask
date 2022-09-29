@@ -11,6 +11,6 @@ data class ActionEntity(
     @ColumnInfo(name = "elapsed_time")
     val elapsedTime: String,
     val executor: String = "",
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
 )
