@@ -15,6 +15,10 @@ class DetailViewModel: ViewModel() {
     val dataWasLoaded: LiveData<Boolean>
         get() = _dataWasLoaded
 
+    private var _teamIsEmpty = true
+    val teamIsEmpty: Boolean
+        get() = _teamIsEmpty
+
     fun loadData(block: suspend () -> Unit) {
         viewModelScope.launch {
             _dataWasLoaded.value = false
@@ -26,5 +30,9 @@ class DetailViewModel: ViewModel() {
 
     fun setButtonClick(click: Boolean) {
         this._buttonClick.value = click
+    }
+
+    fun setTeamIsEmpty(isEmpty: Boolean) {
+        this._teamIsEmpty = isEmpty
     }
 }

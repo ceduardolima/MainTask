@@ -99,4 +99,8 @@ class SharedDataViewModel(application: Application) : AndroidViewModel(applicati
     fun setTaskWasUpdated(wasUpdated: Boolean) {
         this._taskWasUpdated.value = wasUpdated
     }
+
+    fun team(): LiveData<List<TeamMemberEntity>> {
+        return roomViewModel.team
+    }
 }

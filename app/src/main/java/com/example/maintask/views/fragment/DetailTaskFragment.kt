@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -61,6 +62,7 @@ class DetailTaskFragment : Fragment() {
         observerIfDataWasLoaded()
         getButtonClick()
         observerChangeActivityButtonClick()
+        observerIfTeamIsEmpty()
         return view
     }
 
@@ -123,9 +125,24 @@ class DetailTaskFragment : Fragment() {
     private fun observerChangeActivityButtonClick() {
         detailViewModel.buttonClick.observe(requireActivity()) { click ->
             if(click) {
-                findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment)
-                detailViewModel.setButtonClick(false)
+                if (detailViewModel.teamIsEmpty)
+                {
+                    Toast.makeText(
+                        requireContext(),
+                        "Defina seu time antes de prosseguir.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    findNavController().navigate(R.id.action_detailTaskFragment_to_timerFragment)
+                    detailViewModel.setButtonClick(false)
+                }
             }
+        }
+    }
+
+    private fun observerIfTeamIsEmpty() {
+        sharedDataViewModel.team().observe(requireActivity()) {
+            team -> detailViewModel.setTeamIsEmpty(team.isNullOrEmpty())
         }
     }
 
