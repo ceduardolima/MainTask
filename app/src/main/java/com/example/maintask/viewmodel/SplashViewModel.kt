@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.maintask.model.database.application.RoomApplication
 import com.example.maintask.model.database.entity.ActionEntity
+import com.example.maintask.model.database.entity.EmployeeEntity
 import com.example.maintask.model.database.entity.TaskActionRelationEntity
 import com.example.maintask.model.database.entity.TaskEntity
 import com.example.maintask.model.repository.FirestoreRepository
@@ -21,6 +22,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     val taskActionList: LiveData<List<Pair<TaskEntity, List<ActionEntity>>>>
         get() = _taskActionList
 
+    private val _employeeList = MutableLiveData<List<EmployeeEntity>>()
+    val employeeList: LiveData<List<EmployeeEntity>>
+        get() = _employeeList
 
     init {
         val roomApplication = (application as RoomApplication)
@@ -40,6 +44,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
 
     fun launchFirebaseData() {
         fireStoreRepository.getTasks()
+        fireStoreRepository.getEmployees()
     }
 
     fun observerIfTaskWasLaunched(lifecycleOwner: LifecycleOwner) {
@@ -101,7 +106,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         return relationList
     }
 
-    fun insertData(
+    fun insertTaskData(
         taskEntity: TaskEntity,
         actionsEntityList: List<ActionEntity>,
         relation: List<TaskActionRelationEntity>
@@ -109,6 +114,29 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         roomViewModel.insertTask(taskEntity)
         roomViewModel.insertActionList(actionsEntityList)
         roomViewModel.insertRelationList(relation)
+    }
+
+    fun observerIfEmployeeWasLaunched(lifecycleOwner: LifecycleOwner) {
+        fireStoreRepository.employees.observe(lifecycleOwner, Observer { docList ->
+            val employeeList = mutableListOf<EmployeeEntity>()
+            for (doc in docList) {
+                val employeeEntity = docToEmployeeEntity(doc)
+                employeeList.add(employeeEntity)
+            }
+            _employeeList.value = employeeList
+        })
+    }
+
+    private fun docToEmployeeEntity(doc: DocumentSnapshot): EmployeeEntity {
+        return EmployeeEntity(
+            id = doc.id.toInt(),
+            name = doc.data?.get("name") as String,
+            photoPath = doc.data?.get("photoPath") as String
+        )
+    }
+
+    fun insertEmployee(employeeEntity: EmployeeEntity) {
+        roomViewModel.insertEmployee(employeeEntity)
     }
 
     fun deleteDatabaseData() {

@@ -128,6 +128,8 @@ class RoomViewModel(
             taskRepository.deleteAll()
             actionRepository.deleteAll()
             taskActionRelationRepository.deleteAll()
+            employeeRepository.deleteAll()
+            teamMemberRepository.deleteAll()
         }
     }
 }

@@ -48,6 +48,7 @@ class Splash : AppCompatActivity() {
 
     private fun observerIfDataWasLaunched() {
         splashViewModel.observerIfTaskWasLaunched(this)
+        splashViewModel.observerIfEmployeeWasLaunched(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +59,7 @@ class Splash : AppCompatActivity() {
         setAnimationListener()
         observerAnimationHasEnded()
         observerTaskActionListAndInsert()
+        observerEmployeeListAndInsert()
     }
 
     private fun initializeViews() {
@@ -65,7 +67,6 @@ class Splash : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
         imageView = findViewById(R.id.image_splash)
         titleTextView = findViewById(R.id.text_splash)
     }
@@ -114,6 +115,15 @@ class Splash : AppCompatActivity() {
         val actionList = taskAction.second
         val relationEntity = splashViewModel
             .getTaskActionRelationEntity(taskEntity, actionList)
-        splashViewModel.insertData(taskEntity, actionList, relationEntity)
+        splashViewModel.insertTaskData(taskEntity, actionList, relationEntity)
+    }
+
+    private fun observerEmployeeListAndInsert() {
+        splashViewModel.employeeList.observe(this) { employeeList ->
+            if ( !employeeList.isNullOrEmpty() ) {
+                for (employee in employeeList)
+                    splashViewModel.insertEmployee(employee)
+            }
+        }
     }
 }
